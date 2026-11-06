@@ -132,6 +132,19 @@ def nk(x):
 
 
 # ---------------------------------------------------------------------------
+# Player-name aliases. Basketball Monster shortens some first names
+# ("Herb Jones"); postasb and Basketball-Reference use the full form
+# ("Herbert Jones"). BM starter names are normalized through this map at
+# ingest, so stats lookups, the slate display, and the g map all agree.
+# Add entries here as new short forms surface — the run fails loudly on
+# an unmapped name, which is how the next one gets found.
+# ---------------------------------------------------------------------------
+PLAYER_ALIASES = {
+    "Herb Jones": "Herbert Jones",
+}
+
+
+# ---------------------------------------------------------------------------
 # HTTP helpers (plain requests first; Playwright only where JS is required)
 # ---------------------------------------------------------------------------
 class FetchError(Exception):
@@ -518,6 +531,7 @@ def _bm_absorb_table(rows, games):
             continue
         for side_list, cell in ((away, cells[1]), (home, cells[2])):
             name, tag = _bm_split_name(cell)
+            name = PLAYER_ALIASES.get(name, name)
             if name:
                 side_list.append({"pos": pos, "name": name, "tag": tag})
     if len(away) == 5 and len(home) == 5:
