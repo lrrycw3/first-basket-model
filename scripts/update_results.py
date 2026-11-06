@@ -167,7 +167,13 @@ def http_get(url, root, debug_name, timeout=30, retries=2):
 
 def playwright_fetch(url, root, debug_name, wait_for=None, timeout_ms=60000):
     """Fetch a JS-rendered page with Playwright. Returns (html, screenshot_path).
-    Raises FetchError on failure (saves screenshot + HTML first)."""
+    Raises FetchError on failure (saves screenshot + HTML first).
+
+    Waits for domcontentloaded, NOT networkidle: ad-heavy pages like Covers
+    never go idle (trackers keep the network busy) and goto times out at
+    60s — that killed nightly run #2 before Basketball Monster was even
+    reached. The wait_for selector (when given) is what actually gates on
+    the rendered content, with a 60s budget of its own."""
     from playwright.sync_api import sync_playwright
     shot = os.path.join(root, f"debug-{debug_name}.png")
     html_path = os.path.join(root, f"debug-{debug_name}.html")
@@ -175,9 +181,9 @@ def playwright_fetch(url, root, debug_name, wait_for=None, timeout_ms=60000):
         with sync_playwright() as pw:
             browser = pw.chromium.launch()
             page = browser.new_page(user_agent=UA)
-            page.goto(url, timeout=timeout_ms, wait_until="networkidle")
+            page.goto(url, timeout=timeout_ms, wait_until="domcontentloaded")
             if wait_for:
-                page.wait_for_selector(wait_for, timeout=30000)
+                page.wait_for_selector(wait_for, timeout=60000)
             page.wait_for_timeout(1500)
             html = page.content()
             page.screenshot(path=shot)
