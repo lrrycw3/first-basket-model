@@ -417,15 +417,17 @@ def fetch_bm_lineups(root):
     Each starter: {name, pos, tag} where tag is an injury tag like 'Q', 'GTD',
     'O', or ''.
 
-    NOTE: BM's rendered markup has not been inspectable from this VM (no
-    Chromium here). The parser below tries several generic strategies and
-    fails loudly with a screenshot + HTML dump if none matches; the first
-    runner test must confirm which strategy fires."""
+    Real markup (from the Nov 5, 2026 runner debug dump, debug-bm-lineups.html):
+    one <table class="datatable"> per game; row 0 is the header 'AAA @ BBB
+    9:00 PM ET ...'; row 1 is the team cells; then one row per position
+    [PG, away starter, home starter]. A name cell may carry a status note
+    after the name ('S' confirmed starter, 'IN', 'Off Inj'). BM uses PHO
+    for Phoenix; keys are normalized to the page's codes (PHO -> PHX)."""
     url = "https://basketballmonster.com/nbalineups.aspx"
     html = playwright_fetch(url, root, "bm-lineups", wait_for="table")
     soup = BeautifulSoup(html, "html.parser")
     text = soup.get_text("\n")
-    # Strategy 1: tables whose rows look like "PG  Player Name  (tag)".
+    # Strategy 1: datatables with the layout above.
     games = {}
     for table in soup.find_all("table"):
         rows = []
@@ -444,29 +446,58 @@ def fetch_bm_lineups(root):
     raise FetchError("Basketball Monster: no lineups parsed (see debug-bm-lineups.*)")
 
 
+def _bm_split_name(cell):
+    """Split a BM name cell into (name, injury tag). The cell may carry a
+    status note after the name: 'S' (confirmed starter), 'IN', 'Off Inj' —
+    none of those is an injury tag, so they are dropped. Only a Q/GTD/O/D/P
+    note becomes a tag."""
+    text = " ".join((cell or "").split())  # collapse all whitespace/newlines
+    if not text:
+        return "", ""
+    m = re.match(r"^(.*?)\s*\((Q|GTD|O|D|P)\)\s*$", text)
+    if m:
+        return m.group(1).strip(), m.group(2)
+    for suffix, tag in ((" Off Inj", ""), (" IN", ""), (" S", ""),
+                        (" Out", "O"), (" Q", "Q"), (" GTD", "GTD"),
+                        (" D", "D"), (" P", "P")):
+        if text.endswith(suffix):
+            return text[:-len(suffix)].strip(), tag
+    return text, ""
+
+
 def _bm_absorb_table(rows, games):
-    """Try to read one BM table as a game (two team columns of starters)."""
-    # A lineup table has rows with a position token and a player name.
-    starters = []
-    for cells in rows:
-        joined = " | ".join(c for c in cells if c)
-        m = re.search(r"\b(PG|SG|SF|PF|C)\b\s+([A-Z][A-Za-z'\.\- ]+?)(?:\s+\((Q|GTD|O|D|P)\))?\s*$",
-                      joined)
-        if m:
-            starters.append({"pos": m.group(1),
-                             "name": m.group(2).strip(),
-                             "tag": m.group(3) or ""})
-    # Without team headers we cannot attribute starters; only accept a table
-    # that also names the two teams.
-    teams = []
+    """Read one BM datatable as a game: header row 'AAA @ BBB', then one row
+    per position with the away starter in cell 1 and the home starter in
+    cell 2. Only accepts a table that yields exactly 5 starters per side."""
+    teams = None
     for cells in rows:
         for c in cells:
-            for abbr in PAGE_TEAMS:
-                if re.search(rf"\b{abbr}\b", c) and abbr not in teams:
-                    teams.append(abbr)
-    if len(teams) == 2 and len(starters) >= 10:
-        key = f"{teams[0]}@{teams[1]}"
-        games[key] = {"away": starters[:5], "home": starters[5:10]}
+            m = re.search(r"\b([A-Z]{2,3})\s*@\s*([A-Z]{2,3})\b", c or "")
+            if m:
+                try:
+                    a, h = norm_team(m.group(1)), norm_team(m.group(2))
+                except ValueError:
+                    continue
+                if a in PAGE_TEAMS and h in PAGE_TEAMS:
+                    teams = (a, h)
+                    break
+        if teams:
+            break
+    if not teams:
+        return games
+    away, home = [], []
+    for cells in rows:
+        if len(cells) < 3:
+            continue
+        pos = (cells[0] or "").strip()
+        if pos not in ("PG", "SG", "SF", "PF", "C"):
+            continue
+        for side_list, cell in ((away, cells[1]), (home, cells[2])):
+            name, tag = _bm_split_name(cell)
+            if name:
+                side_list.append({"pos": pos, "name": name, "tag": tag})
+    if len(away) == 5 and len(home) == 5:
+        games[f"{teams[0]}@{teams[1]}"] = {"away": away, "home": home}
     return games
 
 
