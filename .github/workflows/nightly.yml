@@ -1,0 +1,66 @@
+name: Nightly first-basket update
+
+# Keeps data.json current without any manual approval: the workflow reads
+# yesterday's first-basket results from JediBets, builds tonight's slate
+# from Covers lines + Basketball Monster lineups + Basketball-Reference
+# stats + StatPick / JediBets tip records, appends a calibration record
+# per game, and commits data.json + data/calibration_log.jsonl.
+#
+# Timing is different from the lottery Action on purpose: the slate must be
+# built BEFORE tonight's games tip off, so this runs in the late afternoon
+# (after lineups firm up), not after the games end. Yesterday's results are
+# long final by then, so the history fill works at the same hour.
+on:
+  schedule:
+    # 22:30 UTC = 17:30 EST / 18:30 EDT. After lineups firm up, before
+    # the evening tips (first tip is usually 19:00 ET).
+    - cron: "30 22 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright
+        timeout-minutes: 10
+        run: |
+          pip install requests beautifulsoup4 playwright
+          # No --with-deps: GitHub's ubuntu runner already carries the
+          # browser libraries, and --with-deps stalled for an hour on
+          # the Ubuntu font-mirror downloads in the lottery Action's
+          # run #1.
+          playwright install chromium
+
+      - name: Update data.json
+        timeout-minutes: 15
+        run: python scripts/update_results.py
+
+      - name: Upload debug artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-pages
+          path: |
+            debug-*.png
+            debug-*.html
+
+      - name: Commit and push if the data changed
+        run: |
+          git config user.name "first-basket-bot"
+          git config user.email "first-basket-bot@users.noreply.github.com"
+          git add data.json data/calibration_log.jsonl
+          if git diff --cached --quiet; then
+            echo "No changes — nothing to commit."
+          else
+            git commit -m "Nightly results: $(date -u +%Y-%m-%d)"
+            git push
+          fi
