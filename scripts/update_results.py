@@ -82,6 +82,8 @@ PAGE_TEAMS = {
 TEAM_ALIASES = {
     # Basketball-Reference
     "BRK": "BKN", "CHO": "CHA", "PHO": "PHX",
+    # Basketball Monster
+    "NOR": "NOP",
     # Covers
     "GS": "GSW",
     # JediBets
@@ -497,6 +499,8 @@ def _bm_absorb_table(rows, games):
                 try:
                     a, h = norm_team(m.group(1)), norm_team(m.group(2))
                 except ValueError:
+                    print(f"BM: unknown team code in header: {m.group(0)!r}",
+                          file=sys.stderr)
                     continue
                 if a in PAGE_TEAMS and h in PAGE_TEAMS:
                     teams = (a, h)
