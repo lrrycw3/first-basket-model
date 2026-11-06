@@ -1,0 +1,54 @@
+{
+  "_about": "Fallback tip records (wins/attempts) supplied by the user. Precedence: StatPick live record > this prior > team's 2026-27 tip wins/games (JediBets stats).",
+  "_source": "user task prompt 2026-11-05",
+  "priors": {
+    "Victor Wembanyama": {
+      "wins": 52,
+      "attempts": 57
+    },
+    "Jarrett Allen": {
+      "wins": 336,
+      "attempts": 491
+    },
+    "Bam Adebayo": {
+      "wins": 27,
+      "attempts": 38
+    },
+    "Walker Kessler": {
+      "wins": 8,
+      "attempts": 8
+    },
+    "Karl-Anthony Towns": {
+      "wins": 27,
+      "attempts": 67
+    },
+    "Myles Turner": {
+      "wins": 22,
+      "attempts": 65
+    },
+    "Joel Embiid": {
+      "wins": 12,
+      "attempts": 26
+    },
+    "Donovan Clingan": {
+      "wins": 44,
+      "attempts": 80
+    },
+    "Mitchell Robinson": {
+      "wins": 16,
+      "attempts": 19
+    },
+    "Domantas Sabonis": {
+      "wins": 7,
+      "attempts": 18
+    },
+    "DeAndre Jordan": {
+      "wins": 40,
+      "attempts": 63
+    },
+    "Paul Reed": {
+      "wins": 4,
+      "attempts": 13
+    }
+  }
+}
