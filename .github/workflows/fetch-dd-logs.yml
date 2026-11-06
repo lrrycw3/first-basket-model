@@ -1,0 +1,39 @@
+# One-off: fetch NBA game logs for the double-double fit and fit the correlation.
+# Run manually (Actions > Fetch DD game logs > Run workflow). The stats.nba.com
+# API is blocked from the assistant VM, so this runs on the GitHub runner instead.
+# Commits the raw logs (dd-fit/raw/) and the fit output (dd-fit/fit-output.txt).
+# It never changes data.json or the page; the fitted values are applied by hand
+# after review.
+name: Fetch DD game logs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-fit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install numpy
+        run: pip install numpy
+      - name: Fetch game logs from stats.nba.com
+        run: python3 dd-fit/fetch_logs.py
+      - name: Fit DD correlation
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 dd-fit/fit_dd.py --raw-dir dd-fit/raw --slate-json data.json | tee dd-fit/fit-output.txt
+      - name: Commit logs + fit output
+        run: |
+          git config user.name "dd-fit-bot"
+          git config user.email "dd-fit-bot@users.noreply.github.com"
+          git add dd-fit/raw dd-fit/fit-output.txt
+          git diff --cached --quiet || git commit -m "DD game logs + fit"
+          git push
