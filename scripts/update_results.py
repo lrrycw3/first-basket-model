@@ -172,8 +172,13 @@ def playwright_fetch(url, root, debug_name, wait_for=None, timeout_ms=60000):
     Waits for domcontentloaded, NOT networkidle: ad-heavy pages like Covers
     never go idle (trackers keep the network busy) and goto times out at
     60s — that killed nightly run #2 before Basketball Monster was even
-    reached. The wait_for selector (when given) is what actually gates on
-    the rendered content, with a 60s budget of its own."""
+    reached. The wait_for selector gates on the rendered content, with a
+    60s budget of its own. It waits for the selector to be ATTACHED, not
+    visible: nightly run #3 showed Covers' odds tables present in the DOM
+    (5, then 9 matches) but never visible within 60s, so a visibility wait
+    times out on a page whose content is already there. A second wait then
+    requires the matched elements to actually carry text, so slow JS fill
+    is caught before page.content() is read."""
     from playwright.sync_api import sync_playwright
     shot = os.path.join(root, f"debug-{debug_name}.png")
     html_path = os.path.join(root, f"debug-{debug_name}.html")
@@ -183,7 +188,13 @@ def playwright_fetch(url, root, debug_name, wait_for=None, timeout_ms=60000):
             page = browser.new_page(user_agent=UA)
             page.goto(url, timeout=timeout_ms, wait_until="domcontentloaded")
             if wait_for:
-                page.wait_for_selector(wait_for, timeout=60000)
+                page.wait_for_selector(wait_for, timeout=60000,
+                                       state="attached")
+                page.wait_for_function(
+                    "() => [...document.querySelectorAll('"
+                    + wait_for.replace("'", "\\'")
+                    + "')].some(el => (el.textContent || '').trim().length > 100)",
+                    timeout=60000)
             page.wait_for_timeout(1500)
             html = page.content()
             page.screenshot(path=shot)
@@ -319,9 +330,12 @@ def fetch_covers_board(root, target_day):
         games = _parse_covers_html(html, target_day)
         if games:
             return games
+        print("Covers plain HTTP returned no games for today; "
+              "trying Playwright", file=sys.stderr)
         debug_dump(root, "covers", html)
-    except FetchError:
-        pass  # fall through to Playwright
+    except FetchError as e:
+        print(f"Covers plain HTTP failed ({e}); trying Playwright",
+              file=sys.stderr)
     html = playwright_fetch(url, root, "covers", wait_for="table")
     games = _parse_covers_html(html, target_day)
     if not games:
