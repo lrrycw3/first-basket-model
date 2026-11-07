@@ -5,7 +5,7 @@
   "built_at": "2026-11-05T21:00:00-05:00",
   "note": "Initial data.json. postasb/fblog/slate/track carried over from the page. fblog.g starts empty for all teams (fallback = team games handles existing history); the pipeline writes explicit g entries for slate starters nightly, 0 for first-timers. Pipeline refreshes slate/track/fblog nightly.",
   "g_increment_date": "2026-11-07",
-  "updated": "2026-11-07T14:26:45-05:00",
+  "updated": "2026-11-07T14:39:38-05:00",
   "as_of": "2026-11-07"
  },
  "postasb": {
@@ -5369,8 +5369,69 @@
  },
  "slate": {
   "date": "2026-11-07",
-  "note": "6 games \u00b7 post-All-Star '25-26 + '26-27 blend, first-basket history, Covers lines, tip records",
+  "note": "7 games \u00b7 post-All-Star '25-26 + '26-27 blend, first-basket history, Covers lines, tip records",
   "games": [
+   {
+    "away": "BKN",
+    "home": "ATL",
+    "awayTip": 46.0,
+    "awayRate": 43.7,
+    "homeRate": 46.3,
+    "tipNote": "Day'Ron Sharpe vs Onyeka Okongwu",
+    "line": "ATL -6.5, total 227.5",
+    "players": [
+     {
+      "n": "Nolan Traore",
+      "s": "away",
+      "sh": 16.7
+     },
+     {
+      "n": "Chaney Johnson",
+      "s": "away",
+      "sh": 12.3
+     },
+     {
+      "n": "Michael Porter Jr.",
+      "s": "away",
+      "sh": 27.4
+     },
+     {
+      "n": "Julius Randle",
+      "s": "away",
+      "sh": 24.0
+     },
+     {
+      "n": "Day'Ron Sharpe",
+      "s": "away",
+      "sh": 15.5
+     },
+     {
+      "n": "Kingston Flemings",
+      "s": "home",
+      "sh": 13.3
+     },
+     {
+      "n": "Nickeil Alexander-Walker",
+      "s": "home",
+      "sh": 23.8
+     },
+     {
+      "n": "Dyson Daniels",
+      "s": "home",
+      "sh": 18.1
+     },
+     {
+      "n": "Jalen Johnson (P)",
+      "s": "home",
+      "sh": 23.4
+     },
+     {
+      "n": "Onyeka Okongwu",
+      "s": "home",
+      "sh": 17.4
+     }
+    ]
+   },
    {
     "away": "DEN",
     "home": "IND",
@@ -8196,58 +8257,115 @@
     "d": "2026-11-07",
     "games": [
      {
+      "g": "BKN@ATL",
+      "pa": 0.4698,
+      "p": [
+       [
+        "Nickeil Alexander-Walker",
+        "ATL",
+        0.1602
+       ],
+       [
+        "Michael Porter Jr.",
+        "BKN",
+        0.1464
+       ],
+       [
+        "Jalen Johnson",
+        "ATL",
+        0.1241
+       ],
+       [
+        "Dyson Daniels",
+        "ATL",
+        0.121
+       ],
+       [
+        "Julius Randle",
+        "BKN",
+        0.094
+       ],
+       [
+        "Nolan Traore",
+        "BKN",
+        0.0849
+       ],
+       [
+        "Day'Ron Sharpe",
+        "BKN",
+        0.0803
+       ],
+       [
+        "Kingston Flemings",
+        "ATL",
+        0.0669
+       ],
+       [
+        "Onyeka Okongwu",
+        "ATL",
+        0.0636
+       ],
+       [
+        "Chaney Johnson",
+        "BKN",
+        0.0482
+       ]
+      ],
+      "act": null
+     },
+     {
       "g": "DEN@IND",
       "pa": 0.5476,
       "p": [
        [
         "Nikola Jokic",
         "DEN",
-        0.1546
+        0.1489
        ],
        [
         "Jamal Murray",
         "DEN",
-        0.1399
+        0.1347
        ],
        [
         "Pascal Siakam",
         "IND",
-        0.1253
+        0.1208
        ],
        [
         "Aaron Gordon",
         "DEN",
-        0.0826
+        0.0795
        ],
        [
         "Cameron Johnson",
         "DEN",
-        0.0817
+        0.0787
        ],
        [
         "Aaron Nesmith",
         "IND",
-        0.0741
-       ],
-       [
-        "Christian Braun",
-        "DEN",
-        0.072
+        0.0714
        ],
        [
         "Ivica Zubac",
         "IND",
-        0.072
+        0.0695
+       ],
+       [
+        "Christian Braun",
+        "DEN",
+        0.0694
        ],
        [
         "Andrew Nembhard",
         "IND",
-        0.0637
+        0.0614
        ],
        [
         "Kelly Oubre",
         "IND",
-        0.0533
+        0.0514
        ]
       ],
       "act": null
@@ -8259,52 +8377,52 @@
        [
         "Devin Booker",
         "PHX",
-        0.1715
+        0.1646
        ],
        [
         "Kevin Durant",
         "HOU",
-        0.1173
+        0.1131
        ],
        [
         "Miles Bridges",
         "PHX",
-        0.1012
+        0.0971
        ],
        [
         "Alperen Sengun",
         "HOU",
-        0.0982
+        0.0947
        ],
        [
         "Amen Thompson",
         "HOU",
-        0.0888
+        0.0857
        ],
        [
         "Jalen Green",
         "PHX",
-        0.0862
+        0.0827
        ],
        [
         "Fred VanVleet",
         "HOU",
-        0.0852
+        0.0822
        ],
        [
         "Dillon Brooks",
         "PHX",
-        0.0832
+        0.0798
        ],
        [
         "Jabari Smith Jr.",
         "HOU",
-        0.064
+        0.0617
        ],
        [
         "Oso Ighodaro",
         "PHX",
-        0.0557
+        0.0535
        ]
       ],
       "act": null
@@ -8316,52 +8434,52 @@
        [
         "Jalen Brunson",
         "NYK",
-        0.1348
+        0.1298
        ],
        [
         "Karl-Anthony Towns",
         "NYK",
-        0.1075
+        0.1035
        ],
        [
         "O.G. Anunoby",
         "NYK",
-        0.1057
+        0.1018
        ],
        [
         "Donovan Mitchell",
         "CLE",
-        0.1039
+        0.1004
        ],
        [
         "James Harden",
         "CLE",
-        0.1028
+        0.0994
        ],
        [
         "Evan Mobley",
         "CLE",
-        0.0982
+        0.0949
        ],
        [
         "Landry Shamet",
         "NYK",
-        0.0637
+        0.0613
        ],
        [
         "Meleek Thomas",
         "CLE",
-        0.0575
+        0.0556
        ],
        [
         "Peyton Watson",
         "CLE",
-        0.055
+        0.0532
        ],
        [
         "Mikal Bridges",
         "NYK",
-        0.0527
+        0.0507
        ]
       ],
       "act": null
@@ -8373,52 +8491,52 @@
        [
         "Franz Wagner",
         "ORL",
-        0.1862
+        0.1791
        ],
        [
         "Wendell Carter Jr.",
         "ORL",
-        0.1464
+        0.1408
        ],
        [
         "Stephen Curry",
         "GSW",
-        0.097
+        0.0935
        ],
        [
         "Anthony Black",
         "ORL",
-        0.0945
+        0.0909
        ],
        [
         "Brandin Podziemski",
         "GSW",
-        0.0938
+        0.0905
        ],
        [
         "Yaxel Lendeborg",
         "GSW",
-        0.0711
+        0.0685
        ],
        [
         "Jamal Cain",
         "ORL",
-        0.0644
+        0.0619
        ],
        [
         "Gui Santos",
         "GSW",
-        0.0533
+        0.0514
        ],
        [
         "Jase Richardson",
         "ORL",
-        0.0454
+        0.0437
        ],
        [
         "Draymond Green",
         "GSW",
-        0.0309
+        0.0298
        ]
       ],
       "act": null
@@ -8430,52 +8548,52 @@
        [
         "Victor Wembanyama",
         "SAS",
-        0.2018
+        0.1948
        ],
        [
         "De'Aaron Fox",
         "SAS",
-        0.1461
+        0.1411
        ],
        [
         "Deni Avdija",
         "POR",
-        0.1061
+        0.102
        ],
        [
         "Devin Vassell",
         "SAS",
-        0.0852
+        0.0823
        ],
        [
         "Dylan Harper",
         "SAS",
-        0.0809
+        0.0781
        ],
        [
         "Stephon Castle",
         "SAS",
-        0.0774
+        0.0747
        ],
        [
         "Jrue Holiday",
         "POR",
-        0.0632
+        0.0608
        ],
        [
         "Toumani Camara",
         "POR",
-        0.0573
+        0.0551
        ],
        [
         "Donovan Clingan",
         "POR",
-        0.0566
+        0.0545
        ],
        [
         "Scoot Henderson",
         "POR",
-        0.0488
+        0.0469
        ]
       ],
       "act": null
@@ -8487,52 +8605,52 @@
        [
         "Shai Gilgeous-Alexander",
         "OKC",
-        0.1466
+        0.1414
        ],
        [
         "Anthony Davis",
         "WAS",
-        0.1302
+        0.1256
        ],
        [
         "Alex Sarr",
         "WAS",
-        0.1156
+        0.1115
        ],
        [
         "Ajay Mitchell",
         "OKC",
-        0.1007
+        0.0971
        ],
        [
         "Isaiah Hartenstein",
         "OKC",
-        0.0868
+        0.0837
        ],
        [
         "AJ Dybantsa",
         "WAS",
-        0.0832
+        0.0802
        ],
        [
         "Trae Young",
         "WAS",
-        0.0817
+        0.0788
        ],
        [
         "Jared McCain",
         "OKC",
-        0.0808
+        0.0779
        ],
        [
         "Kyshawn George",
         "WAS",
-        0.0675
+        0.0651
        ],
        [
         "Kenrich Williams",
         "OKC",
-        0.0586
+        0.0565
        ]
       ],
       "act": null
