@@ -51,12 +51,14 @@ Rules:
   - All model math mirrors the page's JS exactly (see SCHEMA.md).
 """
 import argparse
+import difflib
 import json
 import math
 import os
 import re
 import statistics
 import sys
+import time
 import unicodedata
 from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
@@ -148,6 +150,93 @@ PLAYER_ALIASES = {
 
 
 # ---------------------------------------------------------------------------
+# Fuzzy player-name resolution. Basketball Monster shortens first names
+# ("Cam Johnson", "Herb Jones") or uses a fuller form than the stats
+# sources ("Alexandre Sarr" vs "Alex Sarr"); an exact miss used to kill
+# the run in blend_stats ("no stats anywhere"). PLAYER_ALIASES above wins
+# over fuzzy matching. The resolver below is the safety net for the NEXT
+# short form: exact nk match first, then a fuzzy match that requires the
+# SAME last name and either a first-name prefix (BM's truncation pattern)
+# or a difflib ratio >= 0.85 on the full normalized name. Ambiguous
+# matches (two candidates tied at the top score) do NOT resolve — the run
+# fails loudly on the name instead of blending the wrong player's stats.
+#
+# Calibration (Nov 7): a full-name difflib ratio of 0.85 alone does NOT
+# catch the known cases — "cam johnson" vs "cameron johnson" is 0.846 and
+# "alexandre sarr" vs "alex sarr" is 0.783 — which is why the first-name
+# prefix rule exists. The prefix rule needs a first name of >= 3 letters
+# so a bare initial ("J. Smith") can never match.
+# ---------------------------------------------------------------------------
+def resolve_player_name(name, universe):
+    """Canonical display name for a starter name. universe: {nk: display}.
+    Returns (resolved_name, kind) where kind is 'alias', 'exact',
+    'fuzzy', or 'none'. Fuzzy matches print a WARNING with both names."""
+    if name in PLAYER_ALIASES:
+        return PLAYER_ALIASES[name], "alias"
+    key = nk(name)
+    if key in universe:
+        return universe[key], "exact"
+    parts = key.split()
+    if len(parts) < 2:
+        return name, "none"
+    first, last = parts[0], parts[-1]
+    best, best_score, tied = None, 0.0, False
+    for cand_key, disp in universe.items():
+        cparts = cand_key.split()
+        if len(cparts) < 2 or cparts[-1] != last:
+            continue  # never fuzzy-match across different last names
+        cfirst = cparts[0]
+        if len(first) >= 3 and (cfirst.startswith(first)
+                                or first.startswith(cfirst)):
+            score = 0.9
+        else:
+            score = difflib.SequenceMatcher(None, key, cand_key).ratio()
+        if score > best_score:
+            best, best_score, tied = disp, score, False
+        elif score == best_score and score > 0:
+            tied = True
+    if best is not None and best_score >= 0.85 and not tied:
+        print(f"WARNING: fuzzy player-name match: {name!r} -> {best!r} "
+              f"(score {best_score:.2f})", file=sys.stderr)
+        return best, "fuzzy"
+    return name, "none"
+
+
+def build_player_universe(postasb_players, bref_cur, bref_full, fblog):
+    """{nk: display} over every known player name: post-All-Star export,
+    both BRef tables, fblog seed + log, and alias targets."""
+    universe = {}
+    for name in postasb_players:
+        universe.setdefault(nk(name), name)
+    for tbl in (bref_cur, bref_full):
+        for rec in tbl.values():
+            universe.setdefault(nk(rec["name"]), rec["name"])
+    for v in (fblog.get("seed") or {}).values():
+        for name in v.get("p", {}):
+            universe.setdefault(nk(name), name)
+    for e in fblog.get("log") or []:
+        universe.setdefault(nk(e["fg"]), e["fg"])
+    for target in PLAYER_ALIASES.values():
+        universe.setdefault(nk(target), target)
+    return universe
+
+
+def canonicalize_lineups(bm, universe):
+    """Rewrite BM starter names to canonical display names (alias, exact
+    nk, or fuzzy). Returns the number of fuzzy resolutions (each already
+    logged as a WARNING by resolve_player_name)."""
+    fuzzy_n = 0
+    for sides in bm.values():
+        for side in ("away", "home"):
+            for s in sides[side]:
+                resolved, kind = resolve_player_name(s["name"], universe)
+                if kind == "fuzzy":
+                    fuzzy_n += 1
+                s["name"] = resolved
+    return fuzzy_n
+
+
+# ---------------------------------------------------------------------------
 # HTTP helpers (plain requests first; Playwright only where JS is required)
 # ---------------------------------------------------------------------------
 class FetchError(Exception):
@@ -162,6 +251,15 @@ def debug_dump(root, name, content, ext="html"):
     return path
 
 
+def _decode_html(content):
+    """Decode a response body as UTF-8. requests guesses ISO-8859-1 when
+    the server omits a charset (BRef sends bare 'Content-Type: text/html'),
+    which mojibakes non-ASCII names ('Jokić' -> 'JokiÄ\\x87') and silently
+    breaks every nk() lookup for diacritic players (Jokić, Dončić,
+    Porziņģis, ...). All of this pipeline's sources serve UTF-8."""
+    return content.decode("utf-8", errors="replace")
+
+
 def http_get(url, root, debug_name, timeout=30, retries=2):
     """GET with a browser UA. Raises FetchError (after saving a debug copy
     when a response body exists)."""
@@ -170,7 +268,7 @@ def http_get(url, root, debug_name, timeout=30, retries=2):
         try:
             r = requests.get(url, headers={"User-Agent": UA}, timeout=timeout)
             if r.status_code == 200 and len(r.content) > 1000:
-                return r.text
+                return _decode_html(r.content)
             last_exc = FetchError(
                 f"{url} -> HTTP {r.status_code} ({len(r.content)} bytes)")
             if r.content:
@@ -178,7 +276,6 @@ def http_get(url, root, debug_name, timeout=30, retries=2):
         except requests.RequestException as e:
             last_exc = FetchError(f"{url} -> {e}")
         if attempt < retries:
-            import time
             time.sleep(5)
     raise last_exc
 
@@ -602,6 +699,10 @@ def _parse_bref_html(html):
         cells = {}
         for c in tr.find_all(["th", "td"]):
             cells[c.get("data-stat")] = c.get_text(strip=True)
+            if c.get("data-stat") == "name_display":
+                a = c.find("a")
+                if a and a.get("href"):
+                    cells["_url"] = a["href"]
         name = cells.get("name_display")
         if not name:
             continue
@@ -614,6 +715,7 @@ def _parse_bref_html(html):
                    "pts": float(cells.get("pts_per_g") or 0),
                    "reb": float(cells.get("trb_per_g") or 0),
                    "ast": float(cells.get("ast_per_g") or 0),
+                   "url": cells.get("_url"),
                    "_tot": team_raw == "TOT"}
         except (TypeError, ValueError):
             continue
@@ -671,6 +773,240 @@ def fetch_nba_stats_per_game(root, season, label):
     if len(out) < 100:
         raise FetchError(f"NBA stats API {nba_season}: only {len(out)} players")
     return out
+
+
+# ---------------------------------------------------------------------------
+# Putback check (forward-only, Nov 7). A first basket that was a putback
+# off an offensive rebound was not a designed play for the scorer, so it
+# counts 0.5 in the history count c instead of 1. JediBets records WHO
+# scored first, not HOW — the how comes from Basketball-Reference
+# play-by-play pages, which return HTTP 200 from this VM and the runner
+# (stats.nba.com is blocked from both). The check is best-effort: an
+# unreachable or unparsable PBP page is a WARNING and the entry is logged
+# at full weight — a missed putback check never kills the run. Existing
+# fblog seed/log history is NOT backfilled (that would need a PBP fetch
+# for every past game); only results scored after this lands carry "w".
+# ---------------------------------------------------------------------------
+BREF_TEAM_CODES = {"BKN": "BRK", "CHA": "CHO", "PHX": "PHO"}
+
+
+def bref_team_code(page_code):
+    """Page team code -> Basketball-Reference code (BRef uses BRK/CHO/PHO)."""
+    return BREF_TEAM_CODES.get(page_code, page_code)
+
+
+def bref_pbp_url(day, home_team):
+    """BRef play-by-play URL: boxscores/pbp/<YYYYMMDD>0<HOME>.html."""
+    return ("https://www.basketball-reference.com/boxscores/pbp/"
+            f"{day.strftime('%Y%m%d')}0{bref_team_code(home_team)}.html")
+
+
+_MADE_FG = re.compile(r"\bmakes\s+(?:\d+-pt|dunk|layup|hook|floater)")
+
+
+def _pbp_events(html):
+    """Parse a BRef PBP page into [(side, text)] in game order. side is
+    'away'/'home' (which column carried the play). Quarter headers, the
+    column header row and the jump-ball row have no play text and are
+    skipped. Real markup (verified Nov 7, POR@LAL): 6 columns
+    [time, away play, '', score, '', home play]; play text sits in
+    column 1 (away) or column 5 (home)."""
+    soup = BeautifulSoup(html, "html.parser")
+    tbl = soup.find("table", id="pbp")
+    if tbl is None:
+        raise FetchError("BRef PBP: no pbp table")
+    events = []
+    for tr in tbl.find_all("tr"):
+        tds = tr.find_all("td")
+        if len(tds) < 6:
+            continue
+        away = tds[1].get_text(" ", strip=True)
+        home = tds[5].get_text(" ", strip=True)
+        if away:
+            events.append(("away", away))
+        elif home:
+            events.append(("home", home))
+    return events
+
+
+def _pbp_first_fg_putbacks(events):
+    """First field goal per side -> True if it was a putback. A putback is
+    a made basket by the team that missed a shot and grabbed the
+    offensive rebound in the same possession: no made basket, defensive
+    rebound, turnover or made free throw in between resets the state.
+    Free throws never count as a first FG (a missed FT can still set up
+    a putback). Returns {side: bool}; a side is absent if no first FG
+    was found for it."""
+    first = {}
+    miss_team = oreb_team = None
+    for side, text in events:
+        if "free throw" in text:
+            if "makes" in text:
+                miss_team = oreb_team = None
+            elif "misses" in text:
+                miss_team, oreb_team = side, None
+            continue
+        if _MADE_FG.search(text):
+            if side not in first:
+                first[side] = (miss_team == side and oreb_team == side)
+            miss_team = oreb_team = None
+            if len(first) == 2:
+                break
+            continue
+        if "misses" in text:
+            miss_team, oreb_team = side, None
+            continue
+        if text.startswith("Offensive rebound"):
+            oreb_team = side
+            continue
+        if (text.startswith("Defensive rebound") or "Turnover" in text
+                or text.startswith("Offensive foul")
+                or "violation" in text.lower()):
+            miss_team = oreb_team = None
+    return first
+
+
+def fetch_bref_pbp_putbacks(root, day, away, home):
+    """BRef PBP for one game -> {side: bool} for each side's first FG.
+    Best-effort: any failure returns {} with a WARNING (the caller logs
+    the entry at full weight)."""
+    url = bref_pbp_url(day, home)
+    try:
+        html = http_get(url, root, f"bref-pbp-{day.isoformat()}-{away}-{home}",
+                        timeout=20, retries=0)
+    except FetchError as e:
+        print(f"WARNING: putback check skipped for {away}@{home} {day}: {e}",
+              file=sys.stderr)
+        return {}
+    try:
+        return _pbp_first_fg_putbacks(_pbp_events(html))
+    except Exception as e:
+        print(f"WARNING: putback check unparsable for {away}@{home} {day}: {e}",
+              file=sys.stderr)
+        return {}
+
+
+# ---------------------------------------------------------------------------
+# Matchup-adjusted double-double means (Nov 7). A DD-list player's
+# season-average rebounds/assists are shrunk toward how he has played
+# against TONIGHT'S opponent:
+#     adjusted = (n*matchup_mean + 5*season_mean) / (n + 5)
+# with n = matchup games found — this season first, then last season if
+# fewer than 3, most recent meetings, up to 8 total. 5 meetings = 50/50,
+# 1 meeting barely moves it, 0 meetings = season means unchanged. The
+# exact-Poisson DD calc then runs on the ADJUSTED means; nothing else in
+# the DD math changes. Source: BRef player game logs
+# (/players/<initial>/<slug>/gamelog/<season>/, table
+# player_game_log_reg). Only the top-25 DD players' logs are fetched,
+# ~1s apart; any failure is a WARNING + season-means fallback, never
+# fatal. The player page URL comes from the BRef per-game table's name
+# link (captured in _parse_bref_html as rec["url"]).
+# ---------------------------------------------------------------------------
+MATCHUP_K = 5
+MATCHUP_MAX_GAMES = 8
+MATCHUP_MIN_CURRENT = 3
+
+
+def gamelog_url(player_url, season):
+    """Player page URL (/players/x/xxxxxx01.html) -> game-log URL for a
+    BRef season (2027 = 2026-27, 2026 = 2025-26)."""
+    base = (player_url[:-len(".html")] if player_url.endswith(".html")
+            else player_url)
+    return f"https://www.basketball-reference.com{base}/gamelog/{season}/"
+
+
+def _parse_gamelog_html(html):
+    """Parse a BRef player game-log page into [{date, opp, trb, ast}] in
+    chronological order. Rows without a parseable date or trb/ast (DNP,
+    inactive, header/footer) are skipped. opp is normalized to the page's
+    team codes (BRef uses BRK/CHO/PHO)."""
+    soup = BeautifulSoup(html, "html.parser")
+    tbl = soup.find("table", id="player_game_log_reg")
+    if tbl is None:
+        raise FetchError("BRef game log: no player_game_log_reg table")
+    games = []
+    for tr in tbl.find_all("tr"):
+        cells = {}
+        for c in tr.find_all(["th", "td"]):
+            cells[c.get("data-stat")] = c.get_text(strip=True)
+        d = cells.get("date") or ""
+        if not re.match(r"^\d{4}-\d{2}-\d{2}$", d):
+            continue
+        try:
+            opp = norm_team(cells.get("opp_name_abbr") or "")
+            trb = float(cells.get("trb"))
+            ast = float(cells.get("ast"))
+        except (ValueError, TypeError):
+            continue
+        games.append({"date": d, "opp": opp, "trb": trb, "ast": ast})
+    return games
+
+
+def fetch_bref_gamelog(root, player_url, season):
+    """One season of a player's game log. Raises FetchError on failure."""
+    url = gamelog_url(player_url, season)
+    html = http_get(url, root, f"bref-gamelog-{season}", timeout=20,
+                    retries=0)
+    return _parse_gamelog_html(html)
+
+
+def _matchup_means(games, opponent, max_n=MATCHUP_MAX_GAMES):
+    """Most recent games vs opponent (up to max_n): (n, mean_trb,
+    mean_ast). games are chronological; the most recent are at the end."""
+    vs = [g for g in games if g["opp"] == opponent][-max_n:]
+    if not vs:
+        return 0, None, None
+    return (len(vs),
+            sum(g["trb"] for g in vs) / len(vs),
+            sum(g["ast"] for g in vs) / len(vs))
+
+
+def blend_matchup(season_mean, matchup_mean, n, k=MATCHUP_K):
+    """Shrinkage blend: (n*matchup + k*season) / (n + k). n=0 -> season."""
+    return (n * matchup_mean + k * season_mean) / (n + k) if n else season_mean
+
+
+def adjust_dd_for_matchup(name, opponent, season_reb, season_ast,
+                          url_map, root, fetch=fetch_bref_gamelog):
+    """Adjusted (reb, ast, n, matchup_reb, matchup_ast) for one DD-list
+    player. url_map: {nk: player page URL} from the BRef tables. Any
+    resolution/fetch failure is a WARNING + season means (n=0)."""
+    key = nk(re.sub(r"\s*\([A-Z]+\)$", "", name))
+    url = url_map.get(key)
+    if not url:
+        print(f"WARNING: matchup adjustment skipped for {name}: "
+              f"no BRef player page resolved", file=sys.stderr)
+        return season_reb, season_ast, 0, None, None
+    try:
+        cur = fetch(root, url, 2027)
+    except Exception as e:
+        print(f"WARNING: matchup adjustment skipped for {name}: "
+              f"2026-27 game log unreadable: {e}", file=sys.stderr)
+        return season_reb, season_ast, 0, None, None
+    n, m_reb, m_ast = _matchup_means(cur, opponent)
+    if n < MATCHUP_MIN_CURRENT:
+        time.sleep(1.0)  # polite delay between BRef game-log pages
+        try:
+            prev = fetch(root, url, 2026)
+        except Exception as e:
+            print(f"WARNING: matchup adjustment for {name}: last-season "
+                  f"game log unreadable ({e}); using {n} current-season "
+                  f"meeting(s)", file=sys.stderr)
+            prev = []
+        pn, pm_reb, pm_ast = _matchup_means(
+            prev, opponent, MATCHUP_MAX_GAMES - n)
+        if pn:
+            if n:
+                m_reb = (n * m_reb + pn * pm_reb) / (n + pn)
+                m_ast = (n * m_ast + pn * pm_ast) / (n + pn)
+            else:
+                m_reb, m_ast = pm_reb, pm_ast
+            n += pn
+    if not n:
+        return season_reb, season_ast, 0, None, None
+    return (blend_matchup(season_reb, m_reb, n),
+            blend_matchup(season_ast, m_ast, n),
+            n, m_reb, m_ast)
 
 
 # ---------------------------------------------------------------------------
@@ -736,7 +1072,12 @@ def build_history(fblog):
         h = hist.setdefault(e["t"], {"n": 0, "c": {}})
         h["n"] += 1
         key = nk(e["fg"])
-        h["c"][key] = h["c"].get(key, 0) + 1
+        # Log entries carry a weight ("w", default 1): a first basket that
+        # was a putback off an offensive rebound counts 0.5 (see the
+        # putback check). The page's blend accepts fractional c, but the
+        # page's own log accumulation must sum (e.w || 1) for the display
+        # to match — see PROBE_NOTES.md (page one-liner, Nov 7).
+        h["c"][key] = h["c"].get(key, 0) + float(e.get("w", 1))
     return hist
 
 
@@ -918,6 +1259,59 @@ def fill_calibration_yesterday(recs, day, games_by_matchup):
 
 
 # ---------------------------------------------------------------------------
+# Validation gate (pre-commit). validate_slate() returns a list of problem
+# strings (empty = pass). main() calls it after the slate/track are built
+# and before ANY write, so a failed gate leaves the previous data.json
+# (and calibration log) untouched on disk. The shares band is 94-98 per
+# side: compute_shares() targets BENCH_SHARE=96.0 with each share rounded
+# to 0.1, so a good slate sums to ~96.0, never ~100 — a 96-104 band would
+# be wrong for this code.
+# ---------------------------------------------------------------------------
+def validate_slate(games_out, track_games, dd_out, all_starters, line_for_cal):
+    """Pre-commit checks on the built slate. Returns [problems] (empty =
+    pass). Checks: >= 1 game; exactly 5 starters per side per game;
+    shares sum 94-98 per side; 0 < awayTip < 100; rates 25-60; every game
+    has a line and a total in range; dd list non-empty and the expected
+    length; track prob sums 0.85-1.05 with all probs in (0,1)."""
+    problems = []
+    if len(games_out) < 1:
+        problems.append("slate has no games")
+    for g in games_out:
+        key = f"{g['away']}@{g['home']}"
+        for side in ("away", "home"):
+            n = sum(1 for p in g["players"] if p["s"] == side)
+            if n != 5:
+                problems.append(f"{key} {side} has {n} starters (need 5)")
+            sh = sum(p["sh"] for p in g["players"] if p["s"] == side)
+            if not (94.0 <= sh <= 98.0):
+                problems.append(f"{key} {side} shares sum {sh}")
+        if not (0 < g["awayTip"] < 100):
+            problems.append(f"{key} awayTip {g['awayTip']}")
+        if not (25 <= g["awayRate"] <= 60 and 25 <= g["homeRate"] <= 60):
+            problems.append(f"{key} rates {g['awayRate']}/{g['homeRate']}")
+        line = g.get("line") or ""
+        if not line or "total" not in line:
+            problems.append(f"{key} missing line/total")
+        cal = line_for_cal.get(key)
+        if cal is None:
+            problems.append(f"{key} missing calibration line")
+        elif not (150 <= float(cal[1]) <= 300):
+            problems.append(f"{key} total {cal[1]} out of range")
+    for tg in track_games:
+        s = sum(p[2] for p in tg["p"])
+        if not (0.85 <= s <= 1.05):
+            problems.append(f"track {tg['g']} prob sum {s:.4f}")
+        if not all(0 < p[2] < 1 for p in tg["p"]):
+            problems.append(f"track {tg['g']} has out-of-range prob")
+    if len(dd_out) < 1:
+        problems.append("dd list is empty")
+    if len(dd_out) != min(DD_TOP, len(all_starters)):
+        problems.append(f"dd list has {len(dd_out)} entries "
+                        f"(need {min(DD_TOP, len(all_starters))})")
+    return problems
+
+
+# ---------------------------------------------------------------------------
 # Main run
 # ---------------------------------------------------------------------------
 def main():
@@ -956,13 +1350,48 @@ def main():
     if filled_cal:
         notes.append(f"calibration: filled outcome for {filled_cal} "
                      f"games on {yesterday}")
+    # Putback check (forward-only): one BRef PBP page per game; a first
+    # basket that was a putback counts 0.5 in the history count. Best
+    # effort — a skipped page only costs the discount for that game.
+    putbacks = {}  # (team, scorer) -> True
+    matchups = {}
+    for m in games_by_matchup:
+        parts = re.match(r"(.+?) at (.+)", m)
+        if not parts:
+            continue
+        aw = FULL_NAME_TO_ABBR.get(parts.group(1))
+        hm = FULL_NAME_TO_ABBR.get(parts.group(2))
+        if aw and hm:
+            matchups[m] = (aw, hm)
+    first_page = True
+    for m, (aw, hm) in sorted(matchups.items()):
+        if not first_page:
+            time.sleep(1.0)  # polite delay between BRef PBP pages
+        first_page = False
+        flags = fetch_bref_pbp_putbacks(root, yesterday, aw, hm)
+        if not flags:
+            continue  # fetch/parse already warned; log at full weight
+        for r in games_by_matchup[m]:
+            side = "away" if r["team"] == aw else "home"
+            if side not in flags:
+                print(f"WARNING: putback check found no first FG for "
+                      f"{r['team']} in {aw}@{hm} on {yesterday}",
+                      file=sys.stderr)
+            elif flags[side]:
+                putbacks[(r["team"], r["scorer"])] = True
+    if putbacks:
+        notes.append(f"putback: {len(putbacks)} of yesterday's first "
+                     f"baskets were putbacks (counted 0.5)")
     existing_log = {(e["d"], e["t"], e["fg"]) for e in fblog.get("log") or []}
     added_log = 0
     for r in rows:
         key = (yesterday.isoformat(), r["team"], r["scorer"])
         if key not in existing_log:
-            fblog.setdefault("log", []).append(
-                {"d": yesterday.isoformat(), "t": r["team"], "fg": r["scorer"]})
+            entry = {"d": yesterday.isoformat(), "t": r["team"],
+                     "fg": r["scorer"]}
+            if putbacks.get((r["team"], r["scorer"])):
+                entry["w"] = 0.5  # putback: half weight in the history count
+            fblog.setdefault("log", []).append(entry)
             existing_log.add(key)
             added_log += 1
     notes.append(f"fblog: +{added_log} log entries for {yesterday}")
@@ -1034,6 +1463,16 @@ def main():
     notes.append(f"statpick: {len(statpick)} tip records; "
                  f"jedibets team tips: {len(team_tips)} teams")
 
+    # Canonicalize BM starter names against the known player universe
+    # (alias > exact > fuzzy). A new BM short form resolves here instead
+    # of killing the run in blend_stats.
+    universe = build_player_universe(postasb_players, bref_cur, bref_full,
+                                     fblog)
+    fuzzy_n = canonicalize_lineups(bm, universe)
+    if fuzzy_n:
+        notes.append(f"names: {fuzzy_n} fuzzy BM name resolution(s) "
+                     f"(see WARNINGs)")
+
     hist = build_history(fblog)
     gmap = fblog.get("g") or {}
     postasb_nk = {nk(k): v for k, v in postasb_players.items()}
@@ -1060,8 +1499,15 @@ def main():
         for side in ("away", "home"):
             fgm_map = {}
             for s in starters[side]:
-                vals = blend_stats(s["name"], postasb_nk,
-                                   bref_cur, bref_full)
+                try:
+                    vals = blend_stats(s["name"], postasb_nk,
+                                       bref_cur, bref_full)
+                except Exception as e:
+                    # Was an uncaught traceback (exit 1) in run #8; now a
+                    # FATAL naming the game/side/player (exit 2).
+                    print(f"FATAL: {key} {side} {s['name']}: "
+                          f"blend failed: {e}", file=sys.stderr)
+                    return 2
                 blended[s["name"]] = vals
                 fgm_map[s["name"]] = vals[0]
             shares = compute_shares(fgm_map)
@@ -1097,8 +1543,13 @@ def main():
         recs = {}
         for side in ("away", "home"):
             team = away if side == "away" else home
-            recs[side], tip_src[side] = resolve_tip_record(
-                jumpers[side], team, statpick, priors, team_tips)
+            try:
+                recs[side], tip_src[side] = resolve_tip_record(
+                    jumpers[side], team, statpick, priors, team_tips)
+            except Exception as e:
+                print(f"FATAL: {key} {side} jumper {jumpers[side]} "
+                      f"({team}): tip record failed: {e}", file=sys.stderr)
+                return 2
         away_tip = round(tip_pct(recs["away"][0], recs["away"][1],
                                  recs["home"][0], recs["home"][1]), 1)
         notes.append(
@@ -1121,9 +1572,42 @@ def main():
         dd_ranked.append({"n": name, "t": team,
                           "pts": round(pts, 1), "reb": round(reb, 1),
                           "ast": round(ast, 1),
+                          "_reb": reb, "_ast": ast,
+                          "matchup_n": 0, "matchup_reb": None,
+                          "matchup_ast": None,
                           "_p": dd_prob(pts, reb, ast)})
     dd_ranked.sort(key=lambda d: -d["_p"])
-    dd_out = [{k: d[k] for k in ("n", "t", "pts", "reb", "ast")}
+    # Matchup adjustment (Nov 7): for the top-25 DD players only, shrink
+    # reb/ast means toward their games vs tonight's opponent. The blend
+    # runs on full-precision season means; the stored (and page-displayed)
+    # values are the rounded adjusted means, and _p is recomputed from
+    # those so the notes match what the page will show.
+    team_to_opp = {}
+    for g in games_out:
+        team_to_opp[g["away"]] = g["home"]
+        team_to_opp[g["home"]] = g["away"]
+    url_map = {}
+    for tbl in (bref_cur, bref_full):
+        for k, rec in tbl.items():
+            if rec.get("url"):
+                url_map.setdefault(k, rec["url"])
+    first_log = True
+    for d in dd_ranked[:DD_TOP]:
+        opp = team_to_opp.get(d["t"])
+        if opp is None:
+            continue
+        if not first_log:
+            time.sleep(1.0)  # polite delay between BRef game-log pages
+        first_log = False
+        adj_reb, adj_ast, n, m_reb, m_ast = adjust_dd_for_matchup(
+            d["n"], opp, d["_reb"], d["_ast"], url_map, root)
+        d["reb"], d["ast"] = round(adj_reb, 1), round(adj_ast, 1)
+        d["matchup_n"] = n
+        d["matchup_reb"] = round(m_reb, 1) if n else None
+        d["matchup_ast"] = round(m_ast, 1) if n else None
+        d["_p"] = dd_prob(d["pts"], d["reb"], d["ast"])
+    dd_out = [{k: d[k] for k in ("n", "t", "pts", "reb", "ast",
+                                 "matchup_n", "matchup_reb", "matchup_ast")}
               for d in dd_ranked[:DD_TOP]]
     notes.append("dd top25: " + ", ".join(
         f"{d['n']} {d['_p']*100:.1f}%" for d in dd_ranked[:DD_TOP]))
@@ -1221,26 +1705,10 @@ def main():
     notes.append(f"calibration: +{len(cal_tonight)} records for {today}")
 
     # ---- 5. Validation ------------------------------------------------------
-    problems = []
-    for g in games_out:
-        for side in ("away", "home"):
-            sh = sum(p["sh"] for p in g["players"] if p["s"] == side)
-            if not (94.0 <= sh <= 98.0):
-                problems.append(f"{g['away']}@{g['home']} {side} shares sum {sh}")
-        if not (0 < g["awayTip"] < 100):
-            problems.append(f"{g['away']}@{g['home']} awayTip {g['awayTip']}")
-        if not (25 <= g["awayRate"] <= 60 and 25 <= g["homeRate"] <= 60):
-            problems.append(f"{g['away']}@{g['home']} rates "
-                            f"{g['awayRate']}/{g['homeRate']}")
-    for tg in track_games:
-        s = sum(p[2] for p in tg["p"])
-        if not (0.85 <= s <= 1.05):
-            problems.append(f"track {tg['g']} prob sum {s:.4f}")
-        if not all(0 < p[2] < 1 for p in tg["p"]):
-            problems.append(f"track {tg['g']} has out-of-range prob")
-    if len(dd_out) != min(DD_TOP, len(all_starters)):
-        problems.append(f"dd list has {len(dd_out)} entries "
-                        f"(need {min(DD_TOP, len(all_starters))})")
+    # Pre-commit gate (validate_slate): a failed gate returns 2 BEFORE
+    # any write, so the previous data.json stays live on disk.
+    problems = validate_slate(games_out, track_games, dd_out, all_starters,
+                              line_for_cal)
     if problems:
         print("FATAL: validation failed:", file=sys.stderr)
         for p in problems:
