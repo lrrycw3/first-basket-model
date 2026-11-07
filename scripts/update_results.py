@@ -85,7 +85,7 @@ TEAM_ALIASES = {
     # Basketball Monster
     "NOR": "NOP",
     # Covers
-    "GS": "GSW",
+    "BK": "BKN", "GS": "GSW",
     # JediBets
     "NO": "NOP", "NY": "NYK", "SA": "SAS", "UTAH": "UTA", "WSH": "WAS",
 }
@@ -367,6 +367,10 @@ def _parse_covers_html(html, target_day):
     prices in the rest. We merge across tables by (away, home)."""
     soup = BeautifulSoup(html, "html.parser")
     games = {}
+    skipped_codes = set()  # Covers codes norm_team() doesn't know — a game
+    # dropped here never reaches the slate, so surface it loudly instead
+    # of silently skipping the row (BKN@ATL vanished this way: Covers
+    # abbreviates Brooklyn as BK, which was missing from TEAM_ALIASES).
     month_names = {1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun",
                    7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"}
     for table in soup.find_all("table"):
@@ -399,6 +403,9 @@ def _parse_covers_html(html, target_day):
             try:
                 away, home = norm_team(away_raw), norm_team(home_raw)
             except ValueError:
+                skipped_codes.add(away_raw if away_raw not in PAGE_TEAMS
+                                  and away_raw not in TEAM_ALIASES
+                                  else home_raw)
                 continue
             key = f"{away}@{home}"
             g = games.setdefault(key, {"away": away, "home": home,
@@ -443,6 +450,11 @@ def _parse_covers_html(html, target_day):
                         continue
                     if -30 < v < 30:
                         g["spreads"].append(v)
+    if skipped_codes:
+        print("WARNING: Covers rows skipped — unknown team code(s) "
+              f"{sorted(skipped_codes)}; add them to TEAM_ALIASES or "
+              "those games are dropped from the slate",
+              file=sys.stderr)
     # Keep only games with an Open spread and at least one total.
     return {k: v for k, v in games.items()
             if v["spread_open"] is not None and (v["totals"] or v["total_open"] is not None)}
@@ -994,6 +1006,17 @@ def main():
         print(f"FATAL: {e}", file=sys.stderr)
         return 2
     notes.append(f"basketball-monster: lineups for {len(bm)} games")
+    # A BM game with no Covers entry is skipped from the slate by the
+    # loop below — never silently. If this fires, check the game on a
+    # second source (FanDuel / BetMGM / Action Network) before trusting
+    # the drop: it may be a missing TEAM_ALIASES entry (BKN@ATL, Nov 7:
+    # Covers calls Brooklyn "BK"), not a genuinely unlined game.
+    bm_only = sorted(set(bm) - set(covers))
+    if bm_only:
+        warnings.append(
+            f"BM games with NO Covers lines (skipped from slate): "
+            f"{', '.join(bm_only)} — verify on a second source before "
+            f"trusting the drop")
     try:
         bref_cur = fetch_bref_per_game(root, 2027, "2026-27")
         bref_full = fetch_bref_per_game(root, 2026, "2025-26")
