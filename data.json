@@ -5,7 +5,7 @@
   "built_at": "2026-11-05T21:00:00-05:00",
   "note": "Initial data.json. postasb/fblog/slate/track carried over from the page. fblog.g starts empty for all teams (fallback = team games handles existing history); the pipeline writes explicit g entries for slate starters nightly, 0 for first-timers. Pipeline refreshes slate/track/fblog nightly.",
   "g_increment_date": "2026-11-07",
-  "updated": "2026-11-07T15:23:36-05:00",
+  "updated": "2026-11-07T16:47:56-05:00",
   "as_of": "2026-11-07"
  },
  "postasb": {
@@ -5383,27 +5383,27 @@
      {
       "n": "Nolan Traore",
       "s": "away",
-      "sh": 16.7
+      "sh": 17.2
      },
      {
       "n": "Chaney Johnson",
       "s": "away",
-      "sh": 12.3
+      "sh": 12.2
      },
      {
       "n": "Michael Porter Jr.",
       "s": "away",
-      "sh": 27.4
+      "sh": 27.3
      },
      {
       "n": "Julius Randle",
       "s": "away",
-      "sh": 24.0
+      "sh": 23.9
      },
      {
       "n": "Day'Ron Sharpe",
       "s": "away",
-      "sh": 15.5
+      "sh": 15.4
      },
      {
       "n": "Kingston Flemings",
@@ -5438,13 +5438,13 @@
     "awayTip": 60.0,
     "awayRate": 46.3,
     "homeRate": 43.7,
-    "tipNote": "Nikola Jokic vs Ivica Zubac",
+    "tipNote": "Nikola Joki\u0107 vs Ivica Zubac",
     "line": "DEN -6.5, total 229.5",
     "players": [
      {
       "n": "Jamal Murray",
       "s": "away",
-      "sh": 23.2
+      "sh": 23.3
      },
      {
       "n": "Christian Braun",
@@ -5459,37 +5459,37 @@
      {
       "n": "Aaron Gordon",
       "s": "away",
-      "sh": 14.6
+      "sh": 14.7
      },
      {
-      "n": "Nikola Jokic",
+      "n": "Nikola Joki\u0107",
       "s": "away",
-      "sh": 26.7
+      "sh": 26.4
+     },
+     {
+      "n": "Braden Smith",
+      "s": "home",
+      "sh": 10.2
      },
      {
       "n": "Andrew Nembhard",
       "s": "home",
-      "sh": 19.0
-     },
-     {
-      "n": "Kelly Oubre (Q)",
-      "s": "home",
-      "sh": 15.9
+      "sh": 20.3
      },
      {
       "n": "Aaron Nesmith",
       "s": "home",
-      "sh": 17.1
+      "sh": 18.4
      },
      {
       "n": "Pascal Siakam",
       "s": "home",
-      "sh": 27.4
+      "sh": 29.4
      },
      {
       "n": "Ivica Zubac",
       "s": "home",
-      "sh": 16.5
+      "sh": 17.7
      }
     ]
    },
@@ -5500,7 +5500,7 @@
     "awayRate": 46.3,
     "homeRate": 43.7,
     "tipNote": "Alperen Sengun vs Oso Ighodaro",
-    "line": "HOU -6.5, total 223.5",
+    "line": "HOU -6.5, total 223.8",
     "players": [
      {
       "n": "Fred VanVleet",
@@ -5515,7 +5515,7 @@
      {
       "n": "Kevin Durant",
       "s": "away",
-      "sh": 22.6
+      "sh": 22.5
      },
      {
       "n": "Jabari Smith Jr.",
@@ -5525,7 +5525,7 @@
      {
       "n": "Alperen Sengun",
       "s": "away",
-      "sh": 22.3
+      "sh": 22.4
      },
      {
       "n": "Jalen Green",
@@ -5579,7 +5579,7 @@
       "sh": 14.3
      },
      {
-      "n": "O.G. Anunoby",
+      "n": "OG Anunoby",
       "s": "away",
       "sh": 18.7
      },
@@ -5711,29 +5711,29 @@
       "sh": 26.4
      },
      {
-      "n": "Scoot Henderson",
+      "n": "Damian Lillard (Q)",
       "s": "home",
-      "sh": 15.6
+      "sh": 20.6
      },
      {
-      "n": "Jrue Holiday",
+      "n": "Scoot Henderson",
       "s": "home",
-      "sh": 20.2
+      "sh": 15.5
      },
      {
       "n": "Toumani Camara",
       "s": "home",
-      "sh": 18.3
+      "sh": 18.2
      },
      {
       "n": "Deni Avdija",
       "s": "home",
-      "sh": 23.9
+      "sh": 23.7
      },
      {
       "n": "Donovan Clingan",
       "s": "home",
-      "sh": 18.1
+      "sh": 17.9
      }
     ]
    },
@@ -5744,7 +5744,7 @@
     "awayRate": 42.7,
     "homeRate": 47.3,
     "tipNote": "Alex Sarr vs Isaiah Hartenstein",
-    "line": "OKC -11.5, total 222.5",
+    "line": "OKC -11.5, total 223.5",
     "players": [
      {
       "n": "Trae Young",
@@ -5801,179 +5801,254 @@
   ],
   "dd": [
    {
-    "n": "Nikola Jokic",
+    "n": "Nikola Joki\u0107",
     "t": "DEN",
-    "pts": 26.2,
-    "reb": 13.7,
-    "ast": 10.8
+    "pts": 25.3,
+    "reb": 12.0,
+    "ast": 11.2,
+    "matchup_n": 2,
+    "matchup_reb": 11.0,
+    "matchup_ast": 13.5
    },
    {
     "n": "Victor Wembanyama",
     "t": "SAS",
     "pts": 27.2,
     "reb": 12.3,
-    "ast": 3.4
+    "ast": 3.4,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Karl-Anthony Towns",
     "t": "NYK",
     "pts": 20.4,
-    "reb": 12.4,
-    "ast": 3.2
+    "reb": 11.8,
+    "ast": 2.6,
+    "matchup_n": 3,
+    "matchup_reb": 10.7,
+    "matchup_ast": 1.7
    },
    {
     "n": "Anthony Davis (Q)",
     "t": "WAS",
     "pts": 21.9,
-    "reb": 10.2,
-    "ast": 2.4
+    "reb": 10.0,
+    "ast": 3.0,
+    "matchup_n": 2,
+    "matchup_reb": 9.5,
+    "matchup_ast": 4.5
    },
    {
     "n": "Jalen Johnson (P)",
     "t": "ATL",
     "pts": 20.0,
-    "reb": 9.3,
-    "ast": 7.4
+    "reb": 9.5,
+    "ast": 6.6,
+    "matchup_n": 4,
+    "matchup_reb": 9.8,
+    "matchup_ast": 5.8
    },
    {
     "n": "Donovan Clingan",
     "t": "POR",
     "pts": 13.0,
     "reb": 11.4,
-    "ast": 2.0
+    "ast": 2.5,
+    "matchup_n": 3,
+    "matchup_reb": 11.3,
+    "matchup_ast": 3.3
+   },
+   {
+    "n": "Alperen Sengun",
+    "t": "HOU",
+    "pts": 20.6,
+    "reb": 8.7,
+    "ast": 6.3,
+    "matchup_n": 2,
+    "matchup_reb": 9.5,
+    "matchup_ast": 5.5
    },
    {
     "n": "Evan Mobley",
     "t": "CLE",
     "pts": 18.8,
-    "reb": 8.9,
-    "ast": 3.1
-   },
-   {
-    "n": "Alperen Sengun",
-    "t": "HOU",
-    "pts": 19.8,
-    "reb": 8.0,
-    "ast": 6.0
+    "reb": 8.6,
+    "ast": 2.8,
+    "matchup_n": 3,
+    "matchup_reb": 8.0,
+    "matchup_ast": 2.3
    },
    {
     "n": "Deni Avdija",
     "t": "POR",
     "pts": 22.5,
-    "reb": 6.4,
-    "ast": 6.9
+    "reb": 6.8,
+    "ast": 7.3,
+    "matchup_n": 3,
+    "matchup_reb": 7.3,
+    "matchup_ast": 8.0
    },
    {
     "n": "Andrew Nembhard",
     "t": "IND",
     "pts": 16.7,
     "reb": 2.3,
-    "ast": 7.8
+    "ast": 7.8,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Wendell Carter Jr.",
     "t": "ORL",
     "pts": 12.9,
     "reb": 8.2,
-    "ast": 1.6
+    "ast": 1.6,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Amen Thompson",
     "t": "HOU",
     "pts": 18.0,
     "reb": 7.4,
-    "ast": 4.4
+    "ast": 4.4,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Onyeka Okongwu",
     "t": "ATL",
     "pts": 13.1,
     "reb": 7.9,
-    "ast": 2.8
+    "ast": 2.8,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Trae Young",
     "t": "WAS",
     "pts": 17.0,
     "reb": 3.1,
-    "ast": 7.5
+    "ast": 7.5,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Stephon Castle",
     "t": "SAS",
     "pts": 16.3,
     "reb": 5.8,
-    "ast": 6.9
+    "ast": 6.9,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Jalen Brunson",
     "t": "NYK",
     "pts": 24.6,
     "reb": 3.1,
-    "ast": 7.2
+    "ast": 7.2,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Yaxel Lendeborg",
     "t": "GSW",
     "pts": 21.0,
     "reb": 7.1,
-    "ast": 4.1
+    "ast": 4.1,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "James Harden",
     "t": "CLE",
     "pts": 19.2,
     "reb": 4.9,
-    "ast": 6.9
+    "ast": 6.9,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Dyson Daniels",
     "t": "ATL",
     "pts": 11.5,
     "reb": 7.4,
-    "ast": 5.3
+    "ast": 5.3,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Michael Porter Jr.",
     "t": "BKN",
     "pts": 21.8,
     "reb": 7.0,
-    "ast": 2.2
+    "ast": 2.2,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Julius Randle",
     "t": "BKN",
     "pts": 19.6,
     "reb": 6.6,
-    "ast": 4.5
+    "ast": 4.5,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Pascal Siakam",
     "t": "IND",
     "pts": 23.5,
     "reb": 6.6,
-    "ast": 3.5
+    "ast": 3.5,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Ivica Zubac",
     "t": "IND",
     "pts": 10.6,
     "reb": 7.3,
-    "ast": 1.7
+    "ast": 1.7,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Isaiah Hartenstein",
     "t": "OKC",
     "pts": 7.0,
     "reb": 9.3,
-    "ast": 3.3
+    "ast": 3.3,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Jamal Murray",
     "t": "DEN",
     "pts": 25.0,
     "reb": 4.7,
-    "ast": 6.1
+    "ast": 6.1,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    }
   ]
  },
@@ -8415,7 +8490,7 @@
        [
         "Michael Porter Jr.",
         "BKN",
-        0.1464
+        0.146
        ],
        [
         "Jalen Johnson",
@@ -8430,17 +8505,17 @@
        [
         "Julius Randle",
         "BKN",
-        0.094
+        0.0936
        ],
        [
         "Nolan Traore",
         "BKN",
-        0.0849
+        0.0869
        ],
        [
         "Day'Ron Sharpe",
         "BKN",
-        0.0803
+        0.0799
        ],
        [
         "Kingston Flemings",
@@ -8455,7 +8530,7 @@
        [
         "Chaney Johnson",
         "BKN",
-        0.0482
+        0.0478
        ]
       ],
       "act": null
@@ -8465,24 +8540,24 @@
       "pa": 0.5476,
       "p": [
        [
-        "Nikola Jokic",
+        "Nikola Joki\u0107",
         "DEN",
-        0.1489
+        0.1477
        ],
        [
         "Jamal Murray",
         "DEN",
-        0.1347
+        0.1351
        ],
        [
         "Pascal Siakam",
         "IND",
-        0.1208
+        0.1273
        ],
        [
         "Aaron Gordon",
         "DEN",
-        0.0795
+        0.0799
        ],
        [
         "Cameron Johnson",
@@ -8492,12 +8567,12 @@
        [
         "Aaron Nesmith",
         "IND",
-        0.0714
+        0.0756
        ],
        [
         "Ivica Zubac",
         "IND",
-        0.0695
+        0.0733
        ],
        [
         "Christian Braun",
@@ -8507,12 +8582,12 @@
        [
         "Andrew Nembhard",
         "IND",
-        0.0614
+        0.0656
        ],
        [
-        "Kelly Oubre",
+        "Braden Smith",
         "IND",
-        0.0514
+        0.0509
        ]
       ],
       "act": null
@@ -8529,7 +8604,7 @@
        [
         "Kevin Durant",
         "HOU",
-        0.1131
+        0.1127
        ],
        [
         "Miles Bridges",
@@ -8539,7 +8614,7 @@
        [
         "Alperen Sengun",
         "HOU",
-        0.0947
+        0.095
        ],
        [
         "Amen Thompson",
@@ -8589,7 +8664,7 @@
         0.1035
        ],
        [
-        "O.G. Anunoby",
+        "OG Anunoby",
         "NYK",
         0.1018
        ],
@@ -8705,7 +8780,12 @@
        [
         "Deni Avdija",
         "POR",
-        0.102
+        0.1014
+       ],
+       [
+        "Damian Lillard",
+        "POR",
+        0.0957
        ],
        [
         "Devin Vassell",
@@ -8723,24 +8803,19 @@
         0.0747
        ],
        [
-        "Jrue Holiday",
-        "POR",
-        0.0608
-       ],
-       [
         "Toumani Camara",
         "POR",
-        0.0551
+        0.0548
        ],
        [
         "Donovan Clingan",
         "POR",
-        0.0545
+        0.0539
        ],
        [
         "Scoot Henderson",
         "POR",
-        0.0469
+        0.0466
        ]
       ],
       "act": null
