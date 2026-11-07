@@ -69,6 +69,7 @@ UA = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/120.0 Safari/537.36")
 K_BLEND = 20
 BENCH_SHARE = 96.0  # model shares of the 5 starters sum to ~96%; rest is bench
+DD_TOP = 25  # double-double tab shows the top 25 starters by ddProb
 
 # ---------------------------------------------------------------------------
 # Team-code normalization. The page uses one set of abbreviations; every source
@@ -1111,7 +1112,9 @@ def main():
             "awayRate": away_rate, "homeRate": home_rate,
             "tipNote": f"{jumpers['away']} vs {jumpers['home']}",
             "line": line, "players": players_out})
-    # Double-double list: top 4 by ddProb among tonight's starters.
+    # Double-double list: top DD_TOP by ddProb among tonight's starters.
+    # (On a light night there may be fewer starters than DD_TOP; the list
+    # is then every starter, and validation expects min(DD_TOP, starters).)
     dd_ranked = []
     for name, team, vals in all_starters:
         _fgm, pts, reb, ast = vals
@@ -1121,9 +1124,9 @@ def main():
                           "_p": dd_prob(pts, reb, ast)})
     dd_ranked.sort(key=lambda d: -d["_p"])
     dd_out = [{k: d[k] for k in ("n", "t", "pts", "reb", "ast")}
-              for d in dd_ranked[:4]]
-    notes.append("dd top4: " + ", ".join(
-        f"{d['n']} {d['_p']*100:.1f}%" for d in dd_ranked[:4]))
+              for d in dd_ranked[:DD_TOP]]
+    notes.append("dd top25: " + ", ".join(
+        f"{d['n']} {d['_p']*100:.1f}%" for d in dd_ranked[:DD_TOP]))
 
     # ---- 3. Tonight's slate + frozen track predictions --------------------
     slate = {"date": today.isoformat(),
@@ -1235,8 +1238,9 @@ def main():
             problems.append(f"track {tg['g']} prob sum {s:.4f}")
         if not all(0 < p[2] < 1 for p in tg["p"]):
             problems.append(f"track {tg['g']} has out-of-range prob")
-    if len(dd_out) != 4:
-        problems.append(f"dd list has {len(dd_out)} entries (need 4)")
+    if len(dd_out) != min(DD_TOP, len(all_starters)):
+        problems.append(f"dd list has {len(dd_out)} entries "
+                        f"(need {min(DD_TOP, len(all_starters))})")
     if problems:
         print("FATAL: validation failed:", file=sys.stderr)
         for p in problems:
