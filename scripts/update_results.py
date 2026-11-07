@@ -142,6 +142,7 @@ def nk(x):
 PLAYER_ALIASES = {
     "Herb Jones": "Herbert Jones",
     "Alexandre Sarr": "Alex Sarr",
+    "Cam Johnson": "Cameron Johnson",
 }
 
 
