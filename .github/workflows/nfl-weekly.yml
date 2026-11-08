@@ -1,0 +1,52 @@
+name: NFL weekly First TD update
+
+# Early Tuesday: score the week the site is showing, then build next
+# week's slate. Plain HTTP only (nflverse + ESPN); no Playwright, no
+# Covers. Scoring is idempotent (re-running replaces the week's track
+# entry), so a retry after a partial failure is safe.
+on:
+  schedule:
+    # 11:00 UTC Tuesday = 6:00am EST / 7:00am EDT. After Monday night
+    # ends, before the new week's lines move much.
+    - cron: "0 11 * * 2"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Score last week and build next week's slate
+        timeout-minutes: 10
+        run: |
+          mkdir -p nfl/data
+          # Scores whatever week the slate in data.json holds (no date
+          # arithmetic needed), then builds the following week.
+          python nfl/score_week.py --data-json data.json --data-dir nfl/data
+          NEXT_WEEK=$(python -c "import json; print(json.load(open('data.json'))['nfl']['week'] + 1)")
+          echo "Next week: $NEXT_WEEK"
+          python nfl/build_td_slate.py --week "$NEXT_WEEK" --season 2026 \
+            --data-dir nfl/data --merge-into data.json
+
+      - name: Commit and push if the data changed
+        run: |
+          git config user.name "first-basket-bot"
+          git config user.email "first-basket-bot@users.noreply.github.com"
+          git add data.json
+          if git diff --cached --quiet; then
+            echo "No changes — nothing to commit."
+          else
+            git commit -m "NFL weekly: score week, build next slate"
+            git push
+          fi
