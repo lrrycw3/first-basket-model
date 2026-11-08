@@ -1,0 +1,46 @@
+name: NFL daily injury and line check
+
+# Daily ~11am ET: fresh injuries + ESPN lines for the current week's
+# slate. Drops newly-Out players (next man up), marks new
+# Questionables, refreshes spreads/totals. Never rebuilds shares,
+# never touches basketball keys or nfl.track. Commits only on change.
+on:
+  schedule:
+    # 16:00 UTC daily = 11:00am EST / 12:00pm EDT.
+    - cron: "0 16 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Refresh current slate
+        timeout-minutes: 10
+        run: |
+          mkdir -p nfl/data
+          python nfl/build_td_slate.py --refresh \
+            --data-json data.json --data-dir nfl/data
+
+      - name: Commit and push if the data changed
+        run: |
+          git config user.name "first-basket-bot"
+          git config user.email "first-basket-bot@users.noreply.github.com"
+          git add data.json
+          if git diff --cached --quiet; then
+            echo "No changes — nothing to commit."
+          else
+            git commit -m "NFL daily refresh: injuries and lines"
+            git push
+          fi
