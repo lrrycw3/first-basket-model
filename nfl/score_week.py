@@ -6,9 +6,19 @@ actual first OFFENSIVE touchdown scorer of every completed game in that
 week from nflverse play-by-play, and appends one entry per scored week
 to ``data.json["nfl"]["track"]``:
 
-    {"week": 9, "scored_at": "2026-11-10",
-     "games": [{"g": "DAL@IND", "pred": "Jonathan Taylor",
-                "pred_p": 0.23, "act": "Jonathan Taylor", "hit": true}]}
+    {"weeks": [{"week": 9, "scored_at": "2026-11-10",
+      "games": [{"g": "DAL@IND", "d": "2026-11-08",
+        "p": [["Jonathan Taylor", "IND", 0.3242], ...],
+        "pred": "Jonathan Taylor", "pred_p": 0.3242,
+        "act": "Jonathan Taylor", "hit": true}]}]}
+
+The shape is dictated by the page: its First TD track renderer
+(`renderTDTrack` / `collectTDGames`) reads ``track.weeks[].games`` and
+needs, per game, the RANKED list ``p`` ([name, team, prob-as-fraction],
+highest first) plus ``act`` to find the scorer's rank and probability.
+A bare top pick is not enough -- without ``p`` the page shows dashes
+for rank and prob and no hit stats. ``pred`` / ``pred_p`` / ``hit``
+are kept alongside for convenience; the page ignores them.
 
 The prediction for a game is the slate's top pick: the player with the
 highest model probability P = poff * teamFirstTD * sh/100 (poff is
@@ -31,8 +41,9 @@ Rules (deliberate, matching the basketball track record):
     ``nfl.track`` re-scores and REPLACES that week's entry (same
     result when the data is unchanged; picks up late-final games or
     stat corrections). Nothing is ever appended twice.
-  - ``nfl.track`` is a LIST of week entries. An old single-object
-    track (if one ever existed) is converted to a one-element list.
+  - ``nfl.track`` is an OBJECT ``{"weeks": [...]}`` of week entries.
+    An old list-form track is converted to that shape; an old
+    single-object track is wrapped as a one-element ``weeks`` list.
 
 Usage:
     score_week.py [--week N] [--season 2026]
@@ -65,25 +76,37 @@ def _strip_q(name):
     return re.sub(r"\s*\(Q\)$", "", str(name)).strip()
 
 
+def ranked_picks(game, poff):
+    """All slate players in a game, ranked by model probability.
+
+    Returns [[name, team, prob_fraction], ...] highest first, names
+    without a " (Q)" suffix, probs rounded to 4 dp. The page's track
+    renderer needs this full ranking to find the actual scorer's rank.
+    """
+    away_first = game.get("awayFirstTD")
+    if away_first is None:
+        return []
+    ranked = []
+    for p in game.get("players") or []:
+        team = game.get("away") if p.get("s") == "away" else game.get("home")
+        team_p = (away_first / 100.0) if p.get("s") == "away" \
+            else (1.0 - away_first / 100.0)
+        prob = poff * team_p * (p.get("sh", 0) / 100.0)
+        ranked.append([_strip_q(p.get("n", "")), team, round(prob, 4)])
+    ranked.sort(key=lambda x: -x[2])
+    return ranked
+
+
 def top_pick(game, poff):
     """Highest-model-probability player in a slate game.
 
     Returns (name, prob_fraction) or (None, None) when the game has
     no players. Names are returned without a " (Q)" suffix.
     """
-    away_first = game.get("awayFirstTD")
-    if away_first is None:
+    ranked = ranked_picks(game, poff)
+    if not ranked:
         return None, None
-    best, best_p = None, -1.0
-    for p in game.get("players") or []:
-        team_p = (away_first / 100.0) if p.get("s") == "away" \
-            else (1.0 - away_first / 100.0)
-        prob = poff * team_p * (p.get("sh", 0) / 100.0)
-        if prob > best_p:
-            best, best_p = _strip_q(p.get("n", "")), prob
-    if best is None:
-        return None, None
-    return best, round(best_p, 4)
+    return ranked[0][0], ranked[0][2]
 
 
 def score_week(slate, pbp_rows, games_rows, season, players):
@@ -137,6 +160,8 @@ def score_week(slate, pbp_rows, games_rows, season, players):
                 f"({team}) to a full name -- using short form")
         scored.append({
             "g": label,
+            "d": g.get("gameday"),
+            "p": ranked_picks(slate_game, poff),
             "pred": pred,
             "pred_p": pred_p,
             "act": act,
@@ -206,20 +231,24 @@ def main():
 
     track = nfl.get("track")
     if track is None:
-        track = []
+        weeks = []
+    elif isinstance(track, dict) and isinstance(track.get("weeks"), list):
+        weeks = track["weeks"]
     elif isinstance(track, dict):
-        track = [track]
-    elif not isinstance(track, list):
+        weeks = [track]  # old single-object track
+    elif isinstance(track, list):
+        weeks = track  # old list-form track
+    else:
         print("FATAL: nfl.track is neither a list nor an object",
               file=sys.stderr)
         return 2
-    track = [t for t in track if t.get("week") != week]
-    track.append(entry)
-    track.sort(key=lambda t: t.get("week", 0))
-    data["nfl"]["track"] = track
+    weeks = [t for t in weeks if t.get("week") != week]
+    weeks.append(entry)
+    weeks.sort(key=lambda t: t.get("week", 0))
+    data["nfl"]["track"] = {"weeks": weeks}
     with open(args.data_json, "w") as f:
         json.dump(data, f, indent=1, ensure_ascii=False)
-    print(f"wrote {args.data_json}: track now has {len(track)} week(s)")
+    print(f"wrote {args.data_json}: track now has {len(weeks)} week(s)")
     return 0
 
 
