@@ -886,6 +886,121 @@ def fetch_bref_pbp_putbacks(root, day, away, home):
         return {}
 
 
+def bref_boxscore_url(day, home_team):
+    """BRef box-score URL: boxscores/<YYYYMMDD>0<HOME>.html."""
+    return ("https://www.basketball-reference.com/boxscores/"
+            f"{day.strftime('%Y%m%d')}0{bref_team_code(home_team)}.html")
+
+
+def _parse_boxscore_html(html):
+    """Parse a BRef box-score page into {nk_name: (pts, reb, ast)}.
+
+    Reads both teams' "Basic Box Score" tables (id box-<TEAM>-game-basic).
+    DNP rows have no stat cells and Team Totals rows are not players;
+    both are skipped. A player who did not record a stat still gets a
+    row with 0s, so a missing name means "not in the box score at all".
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    out = {}
+    for table in soup.find_all("table", id=re.compile(r"^box-.*-game-basic$")):
+        for row in table.find_all("tr"):
+            name_cell = row.find("th", {"data-stat": "player"})
+            if name_cell is None:
+                continue
+            name = name_cell.get_text(strip=True)
+            if not name or name in ("Team Totals", "Player"):
+                continue
+            cells = {td.get("data-stat"): td.get_text(strip=True)
+                     for td in row.find_all("td")}
+            if "pts" not in cells:
+                continue  # DNP / inactive row
+
+            def _num(key):
+                try:
+                    return int(float(cells.get(key) or 0))
+                except ValueError:
+                    return 0
+
+            out[nk(name)] = (_num("pts"), _num("trb"), _num("ast"))
+    return out
+
+
+def fetch_bref_boxscore(root, day, away, home):
+    """BRef box score for one game -> {nk_name: (pts, reb, ast)}.
+
+    Best-effort: any failure returns {} with a WARNING (the caller
+    leaves those DD entries unscored for that night).
+    """
+    url = bref_boxscore_url(day, home)
+    try:
+        html = http_get(url, root, f"bref-box-{day.isoformat()}-{away}-{home}",
+                        timeout=20, retries=0)
+    except FetchError as e:
+        print(f"WARNING: box-score fetch skipped for {away}@{home} {day}: {e}",
+              file=sys.stderr)
+        return {}
+    try:
+        return _parse_boxscore_html(html)
+    except Exception as e:
+        print(f"WARNING: box score unparsable for {away}@{home} {day}: {e}",
+              file=sys.stderr)
+        return {}
+
+
+def is_double_double(pts, reb, ast):
+    """True when at least two of pts/reb/ast reach 10."""
+    return sum(1 for v in (pts, reb, ast) if v >= 10) >= 2
+
+
+def build_track_dd(dd_ranked):
+    """Frozen DD predictions for tonight's track night.
+
+    Takes dd_ranked (top DD_TOP, with _p probabilities) and returns the
+    list stored on the night: name without injury tag, team, model
+    probability (4 dp), the means the probability was computed from,
+    and act=None until tomorrow night's run fills it from box scores.
+    """
+    return [{"n": re.sub(r"\s*\([A-Z]+\)$", "", d["n"]), "t": d["t"],
+             "p": round(d["_p"], 4),
+             "pts": d["pts"], "reb": d["reb"], "ast": d["ast"],
+             "act": None} for d in dd_ranked[:DD_TOP]]
+
+
+def fill_dd_actuals(night, yesterday, matchups, fetch_box):
+    """Fill 'act' on a track night's DD entries from box scores.
+
+    ``matchups`` maps "Full Away at Full Home" -> (away_code, home_code)
+    (the same map the putback check builds). ``fetch_box(away, home)``
+    returns {nk_name: (pts, reb, ast)} for that game ({} on failure).
+    Returns (filled, warnings). Never raises for a missing page or a
+    missing player line: those entries simply stay unscored.
+    """
+    filled, warnings = 0, []
+    entries = night.get("dd") or []
+    if not entries:
+        return 0, []
+    for m, (aw, hm) in sorted(matchups.items()):
+        pending = [e for e in entries
+                   if e.get("act") is None and e.get("t") in (aw, hm)]
+        if not pending:
+            continue
+        box = fetch_box(aw, hm)
+        if not box:
+            continue
+        for e in pending:
+            key = nk(re.sub(r"\s*\([A-Z]+\)$", "", e["n"]))
+            got = box.get(key)
+            if got is None:
+                warnings.append(f"no box-score line for {e['n']} "
+                                f"({e['t']}) on {yesterday}")
+                continue
+            pts, reb, ast = got
+            e["act"] = {"pts": pts, "reb": reb, "ast": ast,
+                        "hit": is_double_double(pts, reb, ast)}
+            filled += 1
+    return filled, warnings
+
+
 # ---------------------------------------------------------------------------
 # Matchup-adjusted double-double means (Nov 7). A DD-list player's
 # season-average rebounds/assists are shrunk toward how he has played
@@ -1424,6 +1539,25 @@ def main():
             filled_act += 1
         notes.append(f"track: filled act for {filled_act} games on {yesterday}")
 
+    # Fill DD actuals for yesterday's night from BRef box scores.
+    # Best-effort like the putback check: a missed page only leaves
+    # those entries unscored for that night (they are not retried on
+    # later nights, mirroring the track-act fill).
+    if night is not None and night.get("dd"):
+        _box_first = [True]
+
+        def _fetch_box(aw, hm, _first=_box_first):
+            if not _first[0]:
+                time.sleep(1.0)  # polite delay between BRef box pages
+            _first[0] = False
+            return fetch_bref_boxscore(root, yesterday, aw, hm)
+
+        dd_filled, dd_warnings = fill_dd_actuals(
+            night, yesterday, matchups, _fetch_box)
+        warnings.extend(dd_warnings)
+        notes.append(f"track: filled DD actuals for {dd_filled} players "
+                     f"on {yesterday}")
+
     # ---- 2. Tonight's inputs ---------------------------------------------
     covers = fetch_covers_board(root, today)
     if not covers:
@@ -1662,10 +1796,12 @@ def main():
                             "total": line_for_cal[g_key][1],
                             "starters": starters_cal,
                             "team_first": None, "first_fg": None})
+    track_dd = build_track_dd(dd_ranked)
     # Replace tonight's night on re-runs (idempotent); else append.
     track["nights"] = [n for n in track["nights"]
                        if n["d"] != today.isoformat()]
-    track["nights"].append({"d": today.isoformat(), "games": track_games})
+    track["nights"].append({"d": today.isoformat(), "games": track_games,
+                            "dd": track_dd})
 
     # ---- 4. Increment g for tonight's starters (once per date) ------------
     # g entries are created here, from real Basketball Monster lineups —
