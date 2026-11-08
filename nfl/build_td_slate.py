@@ -48,6 +48,14 @@ appended to the name, the same convention as the basketball page.
 Usage:  build_td_slate.py --week 9 --season 2026 [--data-dir DIR]
         [--out FILE] [--sunday-only]  (default: all games of the week
         that have not been played yet at build time)
+        build_td_slate.py --week 10 --merge-into data.json
+        (Tuesday workflow: build next week's slate straight into
+        data.json, basketball keys + nfl.track preserved)
+        build_td_slate.py --refresh [--data-json data.json]
+        (daily ~11am check: fresh injuries + lines for games that
+        have not started; drops newly-Out players, marks new
+        Questionables, never rebuilds shares, never touches
+        basketball keys or nfl.track)
 """
 import argparse
 import csv
@@ -91,8 +99,8 @@ def nk(name):
     return s.strip()
 
 
-def download(url, path):
-    if os.path.exists(path) and os.path.getsize(path) > 1000:
+def download(url, path, force=False):
+    if not force and os.path.exists(path) and os.path.getsize(path) > 1000:
         return path
     r = requests.get(url, headers=UA, timeout=120)
     r.raise_for_status()
@@ -122,9 +130,10 @@ def load_pbp(data_dir, season):
     return rows
 
 
-def load_injuries(data_dir, season, week):
+def load_injuries(data_dir, season, week, force=False):
     path = download(f"{NFLVERSE}/injuries/injuries_{season}.csv",
-                    os.path.join(data_dir, f"injuries_{season}.csv"))
+                    os.path.join(data_dir, f"injuries_{season}.csv"),
+                    force=force)
     out, q = {}, {}
     with open(path, newline="") as f:
         for r in csv.DictReader(f):
@@ -228,7 +237,14 @@ def fetch_lines(dates):
             teams = {c["homeAway"]: c["team"]["abbreviation"]
                      for c in comp["competitors"]}
             away, home = teams.get("away"), teams.get("home")
-            odds = (comp.get("odds") or [{}])[0]
+            odds_list = comp.get("odds") or [{}]
+            # Prefer the DraftKings entry explicitly: ESPN returns
+            # several providers and the [0] slot is not guaranteed
+            # stable, so a provider reorder must never flip the line.
+            odds = next(
+                (o for o in odds_list
+                 if "draft" in str((o.get("provider") or {}).get("name", "")).lower()),
+                odds_list[0])
             spread, total = odds.get("spread"), odds.get("overUnder")
             details = (odds.get("details") or "").strip()
             # details uses ESPN abbreviations (LAR/WSH); translate to
@@ -276,44 +292,30 @@ def first_td_facts(pbp_rows, completed_ids):
     return facts
 
 
-def build(season, week, data_dir, today=None):
-    today = today or date.today()
-    games = load_games(data_dir, season)
-    week_games = [g for g in games
-                  if int(g["week"]) == week and g["game_type"] == "REG"]
-    completed = [g for g in games if g.get("away_score") not in ("", None)]
-    completed_ids = {g["game_id"] for g in completed}
+def strip_q(name):
+    """Remove a trailing " (Q)" injury marker from a stored name."""
+    return re.sub(r"\s*\(Q\)$", "", str(name)).strip()
 
-    # --- team games played / first-offensive-TD counts -------------------
-    games_played = Counter()
-    for g in completed:
-        games_played[g["away_team"]] += 1
-        games_played[g["home_team"]] += 1
 
-    pbp = load_pbp(data_dir, season)
-    facts = first_td_facts(pbp, completed_ids)
-    first_off = Counter()
-    n_first_td_games = 0
-    n_first_off = 0
-    for gid, f in facts.items():
-        if f["first_any_off"] is None:
-            continue  # game with no TD at all
-        n_first_td_games += 1
-        if f["first_any_off"]:
-            n_first_off += 1
-        if f["first_off_team"]:
-            first_off[f["first_off_team"]] += 1
-    poff = round(n_first_off / n_first_td_games, 4) if n_first_td_games else 0.0
+def compute_player_stats(pbp, completed_ids, facts):
+    """Per-player counters from PBP (completed games only).
 
-    def team_rate(team):
-        return ((first_off[team] + SHRINK_WINS)
-                / (games_played[team] + SHRINK_GAMES))
+    Returns a dict with the counters build() and --refresh share:
+    off_tds, rz_touches, team_off_tds, team_rz, played (game_ids per
+    player), first_td_count. PBP names are SHORT forms ('J.Allen');
+    all counters are keyed by (team, short name) so same-short-name
+    collisions on different teams never mix.
 
-    # --- player stats from PBP (completed games only) --------------------
-    # NOTE: PBP player names are SHORT forms ('J.Allen'); resolved to full
-    # names + positions later via resolve_player(). All counters below are
-    # keyed by (team, short name) so same-short-name collisions on
-    # different teams never mix.
+    Trials proxy (kept deliberately, Nov 8): trials = games with a
+    rush attempt, target, or pass attempt. The design doc suggested
+    swapping this for weekly player-stats games-played, but a
+    player-stats row only exists when a player records a stat, so it
+    misses blocking-only appearances exactly like the proxy does --
+    and it would add a second download plus a new failure mode for no
+    measured gain. The proxy already counts pass attempts (passer),
+    so QBs are covered. Revisit only with a GP source that counts
+    snaps, not stat lines.
+    """
     off_tds = Counter()       # (team, short) -> offensive TDs
     rz_touches = Counter()    # (team, short) -> red-zone touches
     team_off_tds = Counter()
@@ -365,6 +367,108 @@ def build(season, week, data_dir, today=None):
         if f["first_off_scorer"] and f["first_off_team"]:
             first_td_count[(f["first_off_team"],
                             f["first_off_scorer"])] += 1
+    return {
+        "off_tds": off_tds, "rz_touches": rz_touches,
+        "team_off_tds": team_off_tds, "team_rz": team_rz,
+        "played": played, "first_td_count": first_td_count,
+    }
+
+
+def rank_team_players(team, side, stats, by_team, by_short,
+                      out_status, q_status, gameday=""):
+    """Rank one team's skill players by blended first-TD share.
+
+    Same formula as the slate build: modelShare = 0.5*TD share +
+    0.5*red-zone-touch share, history blend K=20. Returns
+    (players, warnings, unresolved): the top 5 after dropping Out
+    players, with " (Q)" appended for Questionable/Doubtful. This is
+    the single implementation used by both build() and --refresh, so
+    a refresh can promote the next man up with exactly the ranking
+    the build would have produced.
+    """
+    off_tds = stats["off_tds"]
+    rz_touches = stats["rz_touches"]
+    team_off_tds = stats["team_off_tds"]
+    team_rz = stats["team_rz"]
+    played = stats["played"]
+    first_td_count = stats["first_td_count"]
+    cands, warnings, unresolved = [], [], []
+    keys = {k for k in off_tds if k[0] == team} | \
+           {k for k in rz_touches if k[0] == team}
+    for (t, short) in keys:
+        hit = resolve_player(by_team, by_short, team, short)
+        if hit is None:
+            if (team, short) not in unresolved:
+                unresolved.append((team, short))
+            continue
+        name, pos = hit
+        if pos not in SKILL_POS:
+            continue
+        tds = off_tds.get((team, short), 0)
+        rz = rz_touches.get((team, short), 0)
+        td_share = tds / team_off_tds[team] if team_off_tds[team] else 0
+        rz_share = rz / team_rz[team] if team_rz[team] else 0
+        model_share = 0.5 * td_share + 0.5 * rz_share
+        trials = len(played.get((team, short), set()))
+        c = first_td_count.get((team, short), 0)
+        adj = 100 * (K_BLEND * model_share + c) / (K_BLEND + trials) \
+            if (K_BLEND + trials) else 0
+        cands.append({
+            "n": name, "s": side, "pos": pos,
+            "sh": round(adj, 1), "td": int(tds),
+            "g": int(trials), "c": int(c),
+            "trials": int(trials),
+        })
+    cands.sort(key=lambda c: -c["sh"])
+    players, kept = [], 0
+    for c in cands:
+        if kept >= 5:
+            break
+        if nk(c["n"]) in out_status:
+            warnings.append(
+                f"{gameday} {team} {c['n']} excluded (Out)".strip())
+            continue
+        if nk(c["n"]) in q_status:
+            c["n"] = c["n"] + " (Q)"
+        players.append(c)
+        kept += 1
+    return players, warnings, unresolved
+
+
+def build(season, week, data_dir, today=None):
+    today = today or date.today()
+    games = load_games(data_dir, season)
+    week_games = [g for g in games
+                  if int(g["week"]) == week and g["game_type"] == "REG"]
+    completed = [g for g in games if g.get("away_score") not in ("", None)]
+    completed_ids = {g["game_id"] for g in completed}
+
+    # --- team games played / first-offensive-TD counts -------------------
+    games_played = Counter()
+    for g in completed:
+        games_played[g["away_team"]] += 1
+        games_played[g["home_team"]] += 1
+
+    pbp = load_pbp(data_dir, season)
+    facts = first_td_facts(pbp, completed_ids)
+    first_off = Counter()
+    n_first_td_games = 0
+    n_first_off = 0
+    for gid, f in facts.items():
+        if f["first_any_off"] is None:
+            continue  # game with no TD at all
+        n_first_td_games += 1
+        if f["first_any_off"]:
+            n_first_off += 1
+        if f["first_off_team"]:
+            first_off[f["first_off_team"]] += 1
+    poff = round(n_first_off / n_first_td_games, 4) if n_first_td_games else 0.0
+
+    def team_rate(team):
+        return ((first_off[team] + SHRINK_WINS)
+                / (games_played[team] + SHRINK_GAMES))
+
+    stats = compute_player_stats(pbp, completed_ids, facts)
 
     by_team, by_short = load_players(data_dir)
     out_status, q_status = load_injuries(data_dir, season, week)
@@ -392,46 +496,14 @@ def build(season, week, data_dir, today=None):
         away_first = round(100 * (1 - home_p), 1)
         players = []
         for team, side in ((away, "away"), (home, "home")):
-            cands = []
-            keys = {k for k in off_tds if k[0] == team} | \
-                   {k for k in rz_touches if k[0] == team}
-            for (t, short) in keys:
-                hit = resolve_player(by_team, by_short, team, short)
-                if hit is None:
-                    if (team, short) not in unresolved:
-                        unresolved.append((team, short))
-                    continue
-                name, pos = hit
-                if pos not in SKILL_POS:
-                    continue
-                tds = off_tds.get((team, short), 0)
-                rz = rz_touches.get((team, short), 0)
-                td_share = tds / team_off_tds[team] if team_off_tds[team] else 0
-                rz_share = rz / team_rz[team] if team_rz[team] else 0
-                model_share = 0.5 * td_share + 0.5 * rz_share
-                trials = len(played.get((team, short), set()))
-                c = first_td_count.get((team, short), 0)
-                adj = 100 * (K_BLEND * model_share + c) / (K_BLEND + trials) \
-                    if (K_BLEND + trials) else 0
-                cands.append({
-                    "n": name, "s": side, "pos": pos,
-                    "sh": round(adj, 1), "td": int(tds),
-                    "g": int(trials), "c": int(c),
-                    "trials": int(trials),
-                })
-            cands.sort(key=lambda c: -c["sh"])
-            kept = 0
-            for c in cands:
-                if kept >= 5:
-                    break
-                if nk(c["n"]) in out_status:
-                    warnings.append(
-                        f"{g['gameday']} {team} {c['n']} excluded (Out)")
-                    continue
-                if nk(c["n"]) in q_status:
-                    c["n"] = c["n"] + " (Q)"
-                players.append(c)
-                kept += 1
+            side_players, w, u = rank_team_players(
+                team, side, stats, by_team, by_short,
+                out_status, q_status, gameday=g["gameday"])
+            warnings.extend(w)
+            for item in u:
+                if item not in unresolved:
+                    unresolved.append(item)
+            players.extend(side_players)
         line = lines.get((away, home))
         if line is None:
             warnings.append(f"no line for {away}@{home}")
@@ -464,18 +536,215 @@ def build(season, week, data_dir, today=None):
     }
 
 
+def merge_into_data_json(data_path, block):
+    """Merge a freshly built slate block into data.json's ``nfl`` block.
+
+    Only the slate fields (week, season, as_of, poff, note, games) are
+    replaced. Everything else in the file -- the basketball keys and,
+    crucially, ``nfl.track`` -- passes through untouched. Refuses a
+    block for an EARLIER week than the one already stored (rebuilding
+    the same week is allowed).
+    """
+    with open(data_path) as f:
+        data = json.load(f)
+    old = data.get("nfl") or {}
+    if old.get("week") is not None and block["week"] < old["week"]:
+        raise ValueError(
+            f"refusing to merge week {block['week']} over stored "
+            f"week {old['week']}")
+    merged = dict(old)
+    merged.update(block)
+    if "track" not in block:
+        merged["track"] = old.get("track")
+    data["nfl"] = merged
+    with open(data_path, "w") as f:
+        json.dump(data, f, indent=1, ensure_ascii=False)
+    return merged
+
+
+def refresh_slate(data, season, data_dir, today=None):
+    """Daily ~11am injury/line refresh of the current week's slate.
+
+    Updates the ``nfl`` block inside ``data`` IN PLACE and returns
+    (changed, summary). Rules:
+      - Only games that have NOT started yet are touched. A game is
+        skipped entirely when games.csv shows a score OR the PBP
+        already has plays for it (covers in-progress London games).
+      - For a touched game, each side's top 5 is recomputed with the
+        same rank_team_players() the build uses, against FRESH
+        injuries (force-downloaded) and fresh ESPN lines. Out
+        players drop out and the next man moves up; newly
+        Questionable/Doubtful players get " (Q)"; cleared players
+        lose it.
+      - Shares are NEVER re-priced by a refresh: for a team whose
+        Week N game has not started, every input to its shares is
+        its own completed games, which have not changed since the
+        build -- so a recompute is identical by construction. If a
+        kept player's share nevertheless moved by more than 0.05
+        (a stat correction, or a stale games.csv), that is printed
+        as a loud WARNING; the recomputed list still stands, since
+        it is the current ranking from the same formula.
+      - A missing fresh line never blanks a line: the old line is
+        kept and a warning is printed.
+      - Never touches the basketball keys, ``nfl.track``, poff, or
+        the team probabilities. ``nfl.as_of`` moves to today only
+        when something actually changed.
+    """
+    today = today or date.today()
+    nfl = data.get("nfl") or {}
+    if not nfl.get("games"):
+        raise ValueError("no nfl slate in data.json -- nothing to refresh")
+    week = nfl["week"]
+
+    games = load_games(data_dir, season)
+    sched = {(g["away_team"], g["home_team"]): g for g in games
+             if int(g["week"]) == week and g["game_type"] == "REG"
+             and int(g["season"]) == season}
+    pbp = load_pbp(data_dir, season)
+    pbp_ids = {r["game_id"] for r in pbp}
+    completed_ids = {g["game_id"] for g in games
+                     if g.get("away_score") not in ("", None)}
+    facts = first_td_facts(pbp, completed_ids)
+    stats = compute_player_stats(pbp, completed_ids, facts)
+    by_team, by_short = load_players(data_dir)
+    out_status, q_status = load_injuries(data_dir, season, week, force=True)
+
+    dates = set()
+    for game in nfl["games"]:
+        row = sched.get((game["away"], game["home"]))
+        if row is not None and not row.get("away_score") \
+                and row["game_id"] not in pbp_ids:
+            dates.add(date.fromisoformat(row["gameday"]))
+    try:
+        lines = fetch_lines(dates)
+    except Exception as exc:  # lines are best-effort; injuries still apply
+        lines = {}
+        fetch_warning = f"ESPN lines fetch failed ({exc}) -- keeping old lines"
+    else:
+        fetch_warning = None
+
+    changes, warnings = [], []
+    if fetch_warning:
+        warnings.append(fetch_warning)
+    for game in nfl["games"]:
+        away, home = game["away"], game["home"]
+        label = f"{away}@{home}"
+        row = sched.get((away, home))
+        if row is None:
+            warnings.append(f"{label}: not in the Week {week} schedule "
+                            f"-- left untouched")
+            continue
+        if row.get("away_score") or row["game_id"] in pbp_ids:
+            continue  # final or in progress -- leave exactly as built
+        for team, side in ((away, "away"), (home, "home")):
+            stored = [p for p in game.get("players", [])
+                      if p.get("s") == side]
+            fresh, w, u = rank_team_players(
+                team, side, stats, by_team, by_short,
+                out_status, q_status, gameday=row["gameday"])
+            warnings.extend(w)
+            for item in u:
+                warnings.append(f"UNRESOLVED (skipped): {item}")
+            stored_by_name = {strip_q(p["n"]): p for p in stored}
+            for p in fresh:
+                old = stored_by_name.get(strip_q(p["n"]))
+                if old is not None and abs(p["sh"] - old["sh"]) > 0.05:
+                    warnings.append(
+                        f"{label} {team} {p['n']}: share moved "
+                        f"{old['sh']} -> {p['sh']} in refresh "
+                        f"(stat correction or stale schedule?)")
+            if [strip_q(p["n"]) for p in fresh] != \
+                    [strip_q(p["n"]) for p in stored] or \
+                    [p["n"] for p in fresh] != [p["n"] for p in stored]:
+                dropped = [strip_q(p["n"]) for p in stored
+                           if strip_q(p["n"]) not in
+                           {strip_q(q["n"]) for q in fresh}]
+                added = [strip_q(p["n"]) for p in fresh
+                         if strip_q(p["n"]) not in stored_by_name]
+                changes.append(
+                    f"{label} {team}: "
+                    + (f"dropped {', '.join(dropped)}; " if dropped else "")
+                    + (f"promoted {', '.join(added)}; " if added else "")
+                    + "Q marks updated")
+                game["players"] = [p for p in game.get("players", [])
+                                   if p.get("s") != side] + fresh
+                # keep away players before home players, as built
+                game["players"].sort(key=lambda p: 0 if p["s"] == "away" else 1)
+        new_line = lines.get((away, home))
+        if new_line and new_line != game.get("line"):
+            changes.append(f"{label}: line {game.get('line')} -> {new_line}")
+            game["line"] = new_line
+        elif not new_line and not game.get("line"):
+            warnings.append(f"{label}: still no line available")
+    if changes:
+        nfl["as_of"] = today.isoformat()
+    return bool(changes), {"week": week, "changes": changes,
+                           "warnings": warnings}
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--week", type=int, required=True)
+    ap.add_argument("--week", type=int, default=None,
+                    help="required to build; in --refresh mode defaults "
+                         "to the week in data.json")
     ap.add_argument("--season", type=int, default=2026)
     ap.add_argument("--data-dir", default=os.path.expanduser(
         "~/workspace/first-basket-model/nfl/data"))
     ap.add_argument("--out", default=None)
+    ap.add_argument("--data-json", default="data.json",
+                    help="data.json to refresh or merge into")
+    ap.add_argument("--refresh", action="store_true",
+                    help="daily injury/line refresh of the current slate "
+                         "in --data-json; never rebuilds shares")
+    ap.add_argument("--merge-into", default=None, metavar="DATA_JSON",
+                    help="merge the built slate into this data.json "
+                         "(basketball keys + nfl.track preserved)")
     args = ap.parse_args()
+
+    if args.refresh:
+        with open(args.data_json) as f:
+            data = json.load(f)
+        nfl = data.get("nfl") or {}
+        if not nfl.get("games"):
+            print("FATAL: no nfl slate in data.json -- nothing to refresh",
+                  file=sys.stderr)
+            return 2
+        if args.week is not None and args.week != nfl.get("week"):
+            print(f"FATAL: --week {args.week} does not match the slate "
+                  f"in data.json (week {nfl.get('week')})", file=sys.stderr)
+            return 2
+        try:
+            changed, summary = refresh_slate(data, args.season, args.data_dir)
+        except ValueError as exc:
+            print(f"FATAL: {exc}", file=sys.stderr)
+            return 2
+        for w in summary["warnings"]:
+            print("WARNING:", w)
+        if not changed:
+            print(f"Week {summary['week']}: no changes -- "
+                  f"{args.data_json} untouched")
+            return 0
+        with open(args.data_json, "w") as f:
+            json.dump(data, f, indent=1, ensure_ascii=False)
+        print(f"Week {summary['week']}: refreshed {args.data_json}")
+        for c in summary["changes"]:
+            print("  -", c)
+        return 0
+
+    if args.week is None:
+        print("FATAL: --week is required to build a slate",
+              file=sys.stderr)
+        return 2
     block, meta = build(args.season, args.week, args.data_dir)
-    out = args.out or os.path.join(
-        os.path.dirname(args.data_dir.rstrip("/")),
-        f"week{args.week}_slate.json")
+    out = args.out
+    if args.merge_into and not out:
+        import tempfile
+        out = os.path.join(tempfile.gettempdir(),
+                           f"week{args.week}_slate.json")
+    if not out:
+        out = os.path.join(
+            os.path.dirname(args.data_dir.rstrip("/")),
+            f"week{args.week}_slate.json")
     with open(out, "w") as f:
         json.dump(block, f, indent=1, ensure_ascii=False)
     print(f"wrote {out}: {len(block['games'])} games, poff={block['poff']}")
@@ -485,6 +754,15 @@ def main():
         print("WARNING:", w)
     for u in meta["unresolved"]:
         print("UNRESOLVED (skipped, no full name/position):", u)
+    if args.merge_into:
+        try:
+            merge_into_data_json(args.merge_into, block)
+        except ValueError as exc:
+            print(f"FATAL: {exc}", file=sys.stderr)
+            return 2
+        print(f"merged week {args.week} slate into {args.merge_into} "
+              f"(basketball keys + nfl.track preserved)")
+    return 0
 
 
 if __name__ == "__main__":
