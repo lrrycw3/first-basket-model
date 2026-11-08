@@ -16,9 +16,15 @@ Steps:
    for each completed game, take the actual first OFFENSIVE TD scorer from
    the PBP; compare against the slate's top pick per game (highest model
    probability) and record hit/miss. Append to `data.json`'s `nfl.track`:
-   `{"week": 9, "games": [{"g": "DAL@IND", "pred": "Jonathan Taylor",
-   "pred_p": 0.24, "act": "Jonathan Taylor", "hit": true}], ...}`.
-   The page's First TD Track record view already reads `nfl.track`.
+   `{"weeks": [{"week": 9, "games": [{"g": "DAL@IND", "d": "2026-11-08",
+   "p": [["Jonathan Taylor", "IND", 0.3242], ...],
+   "pred": "Jonathan Taylor", "pred_p": 0.3242,
+   "act": "Jonathan Taylor", "hit": true}]}]}`.
+   The shape is dictated by the page: its First TD track renderer reads
+   `track.weeks[].games` and needs the RANKED list `p` per game plus
+   `act` to find the scorer's rank and probability (a bare top pick
+   renders as dashes). The page's First TD Track record view already
+   reads `nfl.track`.
 3. Refresh team first-TD rates + player shares with the new week's data
    (same formulas as `build_td_slate.py`: shrinkage `r=(c+5)/(n+10)`,
    log5 team prob, share = 0.5*TD share + 0.5*red-zone-touch share,
@@ -42,13 +48,70 @@ Steps:
 3. Commit `data.json` only if something changed.
 
 ## Still to build
-- `score_week.py` (Tuesday scoring + `nfl.track` append).
-- `--refresh` mode on `build_td_slate.py` (daily injury/line update).
-- The two workflow files (`.github/workflows/nfl-weekly.yml`,
-  `.github/workflows/nfl-daily.yml`) — via web UI like the basketball one,
-  since the Muse GitHub App can't push.
+- ~~`score_week.py` (Tuesday scoring + `nfl.track` append)~~ — **BUILT
+  Nov 8, tested (see below).** Lives at `nfl/score_week.py`.
+- ~~`--refresh` mode on `build_td_slate.py` (daily injury/line update)~~ —
+  **BUILT Nov 8, tested.** `--refresh` + `--merge-into` on
+  `build_td_slate.py`; the candidate ranking is now one shared helper
+  (`rank_team_players`, used by both build and refresh) and the PBP
+  counters are one shared helper (`compute_player_stats`).
+- ~~The two workflow files (`.github/workflows/nfl-weekly.yml`,
+  `.github/workflows/nfl-daily.yml`)~~ — **WRITTEN Nov 8** (staging
+  copies in `pipeline/workflows/`); land via web UI like the basketball
+  one, since the Muse GitHub App can't push.
 - Double-double result logging is a SEPARATE basketball-pipeline addition
   (see todo); it is not part of this NFL design.
+
+## Built Nov 8 — how it works (verified by local tests, 35/35 PASS)
+- **Scoring (`nfl/score_week.py`)**: top pick per game = highest
+  P = poff * teamFirstTD * sh/100 (`pred_p` stored as a fraction,
+  4 dp — e.g. Taylor DAL@IND 0.3242, the landed 32.4%). Actual =
+  first OFFENSIVE TD scorer from PBP (`td_team == posteam`), resolved
+  to full name via the same `resolve_player` as the build (verified:
+  JAX@BAL Thu Nov 5 scorer resolves `B.Tuten` → Bhayshul Tuten).
+  `nfl.track` is a LIST of week entries; re-scoring a week REPLACES
+  its entry (idempotent, retry-safe). Skipped with a WARNING, never
+  guessed: no-TD games, week games with no slate prediction (Week 9's
+  JAX@BAL was final before the slate was built — it has no prediction
+  to score), slate games not yet final in games.csv. `--week` defaults
+  to the slate in data.json, so the Tuesday workflow needs no date math.
+- **Refresh (`--refresh`)**: only games that have NOT started are
+  touched — skipped when games.csv shows a score OR the PBP already
+  has plays for the game (covers in-progress London games). Each side
+  is re-ranked with the same helper as the build, against FRESH
+  injuries (force-downloaded) and fresh ESPN lines. Out players drop
+  and the next man promotes; Q marks follow the current report. Shares
+  are never re-priced: for an unplayed team every share input is its
+  own completed games, unchanged since the build — verified live in
+  tests (refresh of the live Week 9 slate produced ZERO share-moved
+  warnings). A share move >0.05 still prints a loud WARNING (stat
+  correction or stale schedule). A missing fresh line never blanks a
+  line. `nfl.as_of` moves only when something changed; no change →
+  data.json untouched, exit 0. Basketball keys, `nfl.track`, poff and
+  team probabilities are never touched (verified by byte-compare).
+- **Merge (`--merge-into data.json`)**: replaces only the slate fields
+  (week/season/as_of/poff/note/games); `nfl.track` and all basketball
+  keys pass through. Refuses a block for an earlier week.
+- **Lines**: `fetch_lines` now prefers the DraftKings provider entry
+  explicitly instead of `odds[0]` (ESPN's provider order is not
+  guaranteed stable). Note: live game-day totals genuinely move —
+  DET@MIA flipped 50.5 ↔ 49.5 between fetches minutes apart on Nov 8 —
+  so the daily refresh may commit line-only changes on game days; that
+  is the market moving, not a bug.
+- **Trials proxy — KEPT, deliberately (Nov 8)**: the design doc
+  suggested swapping touch-games for weekly player-stats GP, but a
+  player-stats row only exists when a player records a stat, so it
+  misses blocking-only appearances exactly like the proxy — and adds a
+  second download + failure mode for no measured gain. The proxy
+  already counts pass attempts (passer), so QBs are covered. Revisit
+  only with a GP source that counts snaps, not stat lines.
+- **Known limitation**: if Monday night's score is not in nflverse's
+  games.csv by Tuesday 6am ET, that game is skipped (warning) and the
+  week's track entry stays partial — the daily refresh does not
+  re-score, and by Wednesday the slate has moved on to the next week.
+  Mitigation is manual: re-run `score_week.py` against a copy of
+  data.json holding the old slate. In practice nflverse updates
+  overnight, so this should not trigger.
 
 ## Model fits — home field (Nov 7) + pre-registered fit grid
 **Home field, fitted Nov 7 from the 122 completed games (leave-one-out
@@ -78,7 +141,9 @@ priced; pick by out-of-sample log-loss on first-TD outcomes:**
 - Also fix the trials proxy when building the automation: use weekly
   player-stats games-played instead of touch-games (the proxy undercounts
   GP for non-ball-carriers and inflates fringe players, e.g. Quitoriano
-  trials=1, c=1, sh 11.2).
+  trials=1, c=1, sh 11.2). **Decided Nov 8 — KEPT the proxy; see
+  "Built Nov 8" above for why (a stat row misses blocking-only
+  appearances just like the proxy does).**
 
 ## Proven so far (Nov 7)
 - Re-running the ORIGINAL `build_td_slate.py` reproduced the Week 9
