@@ -9795,14 +9795,14 @@
       "trials": 6
      },
      {
-      "n": "Jahan Dotson",
+      "n": "Bijan Robinson",
       "s": "home",
-      "pos": "WR",
+      "pos": "RB",
       "sh": 6.3,
-      "td": 2,
-      "g": 9,
+      "td": 1,
+      "g": 1,
       "c": 0,
-      "trials": 9
+      "trials": 1
      }
     ]
    },
@@ -9918,7 +9918,7 @@
     "away": "MIN",
     "home": "GB",
     "awayFirstTD": 12.6,
-    "line": "GB -4.5, total 41.5",
+    "line": "GB -4.5, total 40.5",
     "players": [
      {
       "n": "Justin Jefferson",
@@ -10134,7 +10134,7 @@
     "away": "CAR",
     "home": "NO",
     "awayFirstTD": 49.6,
-    "line": "NO -1.5, total 47.5",
+    "line": "NO -1.5, total 48.5",
     "players": [
      {
       "n": "Chuba Hubbard",
@@ -10674,7 +10674,7 @@
     "away": "SF",
     "home": "DAL",
     "awayFirstTD": 58.3,
-    "line": "SF -3.5, total 55.5",
+    "line": "SF -4.5, total 55.5",
     "players": [
      {
       "n": "Christian McCaffrey",
@@ -10805,16 +10805,6 @@
       "trials": 8
      },
      {
-      "n": "Darnell Washington",
-      "s": "away",
-      "pos": "TE",
-      "sh": 14.1,
-      "td": 3,
-      "g": 8,
-      "c": 1,
-      "trials": 8
-     },
-     {
       "n": "Roman Wilson",
       "s": "away",
       "pos": "WR",
@@ -10823,6 +10813,16 @@
       "g": 5,
       "c": 2,
       "trials": 5
+     },
+     {
+      "n": "Darnell Washington",
+      "s": "away",
+      "pos": "TE",
+      "sh": 14.1,
+      "td": 3,
+      "g": 8,
+      "c": 1,
+      "trials": 8
      },
      {
       "n": "Rico Dowdle",
