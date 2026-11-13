@@ -686,7 +686,9 @@ def fetch_bref_per_game(root, season, label):
 def _parse_bref_html(html):
     """Parse a BRef per-game table. Current BRef markup uses data-stat names
     name_display / team_name_abbr / games / fg_per_g / pts_per_g /
-    trb_per_g / ast_per_g (the classic player/fg/pts names are gone)."""
+    fg3_per_g / trb_per_g / ast_per_g (the classic player/fg/pts names
+    are gone). fg3 is the per-game 3-pointers-made mean (props fallback
+    when a player's game log cannot be fetched)."""
     soup = BeautifulSoup(html, "html.parser")
     tbl = soup.find("table", id="per_game_stats")
     if tbl is None:
@@ -713,6 +715,7 @@ def _parse_bref_html(html):
                    "g": int(cells.get("games") or 0),
                    "fgm": float(cells.get("fg_per_g") or 0),
                    "pts": float(cells.get("pts_per_g") or 0),
+                   "fg3": float(cells.get("fg3_per_g") or 0),
                    "reb": float(cells.get("trb_per_g") or 0),
                    "ast": float(cells.get("ast_per_g") or 0),
                    "url": cells.get("_url"),
@@ -892,8 +895,9 @@ def bref_boxscore_url(day, home_team):
             f"{day.strftime('%Y%m%d')}0{bref_team_code(home_team)}.html")
 
 
-def _parse_boxscore_html(html):
-    """Parse a BRef box-score page into {nk_name: (pts, reb, ast)}.
+def _parse_boxscore_html(html, want_fg3=False):
+    """Parse a BRef box-score page into {nk_name: (pts, reb, ast)} — or,
+    with want_fg3, (pts, reb, ast, fg3) for the props track fill.
 
     Reads both teams' "Basic Box Score" tables (id box-<TEAM>-game-basic).
     DNP rows have no stat cells and Team Totals rows are not players;
@@ -921,12 +925,17 @@ def _parse_boxscore_html(html):
                 except ValueError:
                     return 0
 
-            out[nk(name)] = (_num("pts"), _num("trb"), _num("ast"))
+            if want_fg3:
+                out[nk(name)] = (_num("pts"), _num("trb"), _num("ast"),
+                                 _num("fg3"))
+            else:
+                out[nk(name)] = (_num("pts"), _num("trb"), _num("ast"))
     return out
 
 
-def fetch_bref_boxscore(root, day, away, home):
-    """BRef box score for one game -> {nk_name: (pts, reb, ast)}.
+def fetch_bref_boxscore(root, day, away, home, want_fg3=False):
+    """BRef box score for one game -> {nk_name: (pts, reb, ast)} — or
+    (pts, reb, ast, fg3) with want_fg3=True.
 
     Best-effort: any failure returns {} with a WARNING (the caller
     leaves those DD entries unscored for that night).
@@ -940,7 +949,7 @@ def fetch_bref_boxscore(root, day, away, home):
               file=sys.stderr)
         return {}
     try:
-        return _parse_boxscore_html(html)
+        return _parse_boxscore_html(html, want_fg3=want_fg3)
     except Exception as e:
         print(f"WARNING: box score unparsable for {away}@{home} {day}: {e}",
               file=sys.stderr)
@@ -994,7 +1003,7 @@ def fill_dd_actuals(night, yesterday, matchups, fetch_box):
                 warnings.append(f"no box-score line for {e['n']} "
                                 f"({e['t']}) on {yesterday}")
                 continue
-            pts, reb, ast = got
+            pts, reb, ast = got[:3]  # 4-tuples (with fg3) also accepted
             e["act"] = {"pts": pts, "reb": reb, "ast": ast,
                         "hit": is_double_double(pts, reb, ast)}
             filled += 1
@@ -1031,10 +1040,12 @@ def gamelog_url(player_url, season):
 
 
 def _parse_gamelog_html(html):
-    """Parse a BRef player game-log page into [{date, opp, trb, ast}] in
-    chronological order. Rows without a parseable date or trb/ast (DNP,
-    inactive, header/footer) are skipped. opp is normalized to the page's
-    team codes (BRef uses BRK/CHO/PHO)."""
+    """Parse a BRef player game-log page into
+    [{date, opp, trb, ast, pts, fg3}] in chronological order. Rows
+    without a parseable date or trb/ast (DNP, inactive, header/footer)
+    are skipped. opp is normalized to the page's team codes (BRef uses
+    BRK/CHO/PHO). pts/fg3 default to 0.0 when a game row lacks them, so
+    a real game is never dropped for a missing shooting column."""
     soup = BeautifulSoup(html, "html.parser")
     tbl = soup.find("table", id="player_game_log_reg")
     if tbl is None:
@@ -1053,7 +1064,15 @@ def _parse_gamelog_html(html):
             ast = float(cells.get("ast"))
         except (ValueError, TypeError):
             continue
-        games.append({"date": d, "opp": opp, "trb": trb, "ast": ast})
+
+        def _f(key):
+            try:
+                return float(cells.get(key))
+            except (ValueError, TypeError):
+                return 0.0
+
+        games.append({"date": d, "opp": opp, "trb": trb, "ast": ast,
+                      "pts": _f("pts"), "fg3": _f("fg3")})
     return games
 
 
@@ -1168,6 +1187,152 @@ def dd_prob(pts, reb, ast):
     pr = _pois_ge(reb or 0, 10)
     pa = _pois_ge(ast or 0, 10)
     return pp * pr + pp * pa + pr * pa - 2 * pp * pr * pa
+
+
+# ---------------------------------------------------------------------------
+# Player props: points + threes (Nov 13). Manual-entry lines on the page:
+# the pipeline supplies each player's scoring distribution (points mean +
+# SD from season game logs; threes mean from the same logs) and a
+# reference line (nearest .5 to the mean — the model's median line, NOT a
+# book line). The page computes P(over) live from the distribution when
+# the user types a line, using the same normGE/poisGE math as the DD tab.
+# The track record freezes the reference-line call each night and scores
+# it against the box score the next night, like the DD track.
+# ---------------------------------------------------------------------------
+PROPS_TOP = 40  # props table covers the top 40 starters by points mean
+
+
+def ref_line(mean):
+    """Nearest .5 line to a mean. The .5 lines sit exactly at the
+    midpoint of each unit interval, so the nearest one is always
+    floor(mean) + 0.5 — and it is always a half-point line (no pushes).
+    (A round-to-nearest-half would be wrong here: for mean 24.8 it
+    rounds to 25.0 and bumps to 25.5, but 24.5 is closer.)"""
+    return math.floor(mean) + 0.5
+
+
+def _mean_sd(values):
+    """(mean, sample SD, n) for a list of numbers; SD needs n >= 2."""
+    n = len(values)
+    if n == 0:
+        return 0.0, 0.0, 0
+    mean = sum(values) / n
+    if n < 2:
+        return mean, 0.0, n
+    var = sum((v - mean) ** 2 for v in values) / (n - 1)
+    return mean, math.sqrt(var), n
+
+
+def props_stats_from_log(games):
+    """(pts_mean, pts_sd, fg3_mean, n) from parsed game-log games."""
+    pm, psd, n = _mean_sd([g["pts"] for g in games])
+    fm, _, _ = _mean_sd([g["fg3"] for g in games])
+    return pm, psd, fm, n
+
+
+def assumed_pts_sd(pts_mean):
+    """Fallback SD when no game log could be fetched — the same assumed
+    spread the DD points model uses (0.28*mean + 2, min 3.0)."""
+    return max(3.0, 0.28 * pts_mean + 2)
+
+
+def build_props(all_starters, url_map, bref_cur, root,
+                fetch=fetch_bref_gamelog):
+    """Tonight's props players: top PROPS_TOP starters by blended points
+    mean, each with a season game log (best-effort, 1s polite delay).
+    Returns (players, warnings). A failed log fetch falls back to the
+    blended season mean + assumed SD for points, and the BRef per-game
+    3PM mean for threes when available; a player with no threes source
+    gets fg3=None (points-only row on the page)."""
+    ranked = sorted(all_starters, key=lambda s: -s[2][1])[:PROPS_TOP]
+    players, warnings = [], []
+    first = True
+    for name, team, vals in ranked:
+        _fgm, pts_mean, _reb, _ast = vals
+        pname = re.sub(r"\s*\([A-Z]+\)$", "", name)
+        key = nk(pname)
+        pts, sd, fg3, g, fg3g = pts_mean, assumed_pts_sd(pts_mean), None, 0, 0
+        url = url_map.get(key)
+        log = None
+        if url:
+            if not first:
+                time.sleep(1.0)  # polite delay between BRef game-log pages
+            first = False
+            try:
+                log = fetch(root, url, 2027)
+            except Exception as e:
+                warnings.append(f"props log unreadable for {name}: {e}")
+        if log:
+            pm, psd, fm, n = props_stats_from_log(log)
+            if n:
+                pts, fg3, g, fg3g = pm, fm, n, n
+                sd = psd if psd > 0 else assumed_pts_sd(pm)
+        if fg3 is None:
+            rec = bref_cur.get(key) or {}
+            if rec.get("fg3") is not None:
+                fg3 = round(rec["fg3"], 2)
+                fg3g = rec.get("g") or 0
+        line_pts = ref_line(pts)
+        entry = {"n": pname, "t": team, "pts": round(pts, 1),
+                 "sd": round(sd, 1), "g": g,
+                 "fg3": (round(fg3, 2) if fg3 is not None else None),
+                 "fg3g": fg3g,
+                 "line_pts": line_pts,
+                 "p_pts": round(_norm_ge(pts, sd, int(line_pts + 0.5)), 4),
+                 "line_fg3": None, "p_fg3": None}
+        if fg3 is not None:
+            line_fg3 = ref_line(fg3)
+            entry["line_fg3"] = line_fg3
+            entry["p_fg3"] = round(_pois_ge(fg3, int(line_fg3 + 0.5)), 4)
+        players.append(entry)
+    return players, warnings
+
+
+def build_track_props(players):
+    """Frozen props calls for tonight's track night: one entry per player
+    per market (points + threes where available) at the reference line,
+    with the model P(over). act=None until tomorrow night's run fills it
+    from box scores."""
+    out = []
+    for p in players:
+        out.append({"n": p["n"], "t": p["t"], "mkt": "pts",
+                    "line": p["line_pts"], "p": p["p_pts"], "act": None})
+        if p.get("fg3") is not None:
+            out.append({"n": p["n"], "t": p["t"], "mkt": "fg3",
+                        "line": p["line_fg3"], "p": p["p_fg3"],
+                        "act": None})
+    return out
+
+
+def fill_props_actuals(night, yesterday, matchups, fetch_box):
+    """Fill 'act' on a track night's props entries from box scores.
+    fetch_box(away, home) returns {nk_name: (pts, reb, ast, fg3)}.
+    Returns (filled, warnings). Never raises: missing pages/players stay
+    unscored, mirroring fill_dd_actuals."""
+    filled, warnings = 0, []
+    entries = night.get("props") or []
+    if not entries:
+        return 0, []
+    for m, (aw, hm) in sorted(matchups.items()):
+        pending = [e for e in entries
+                   if e.get("act") is None and e.get("t") in (aw, hm)]
+        if not pending:
+            continue
+        box = fetch_box(aw, hm)
+        if not box:
+            continue
+        for e in pending:
+            key = nk(re.sub(r"\s*\([A-Z]+\)$", "", e["n"]))
+            got = box.get(key)
+            if got is None:
+                warnings.append(f"no box-score line for {e['n']} "
+                                f"({e['t']}) on {yesterday}")
+                continue
+            pts, _reb, _ast, fg3 = got
+            val = pts if e["mkt"] == "pts" else fg3
+            e["act"] = {"val": val, "hit": val > e["line"]}
+            filled += 1
+    return filled, warnings
 
 
 def tip_pct(wins_a, att_a, wins_h, att_h):
@@ -1382,12 +1547,16 @@ def fill_calibration_yesterday(recs, day, games_by_matchup):
 # to 0.1, so a good slate sums to ~96.0, never ~100 — a 96-104 band would
 # be wrong for this code.
 # ---------------------------------------------------------------------------
-def validate_slate(games_out, track_games, dd_out, all_starters, line_for_cal):
+def validate_slate(games_out, track_games, dd_out, all_starters, line_for_cal,
+                   props_out=None):
     """Pre-commit checks on the built slate. Returns [problems] (empty =
     pass). Checks: >= 1 game; exactly 5 starters per side per game;
     shares sum 94-98 per side; 0 < awayTip < 100; rates 25-60; every game
     has a line and a total in range; dd list non-empty and the expected
-    length; track prob sums 0.85-1.05 with all probs in (0,1)."""
+    length; track prob sums 0.85-1.05 with all probs in (0,1). When
+    props_out is given: props list non-empty and the expected length
+    (top PROPS_TOP starters), every points mean/SD and reference-line
+    probability in range, threes means in range where present."""
     problems = []
     if len(games_out) < 1:
         problems.append("slate has no games")
@@ -1423,6 +1592,21 @@ def validate_slate(games_out, track_games, dd_out, all_starters, line_for_cal):
     if len(dd_out) != min(DD_TOP, len(all_starters)):
         problems.append(f"dd list has {len(dd_out)} entries "
                         f"(need {min(DD_TOP, len(all_starters))})")
+    if props_out is not None:
+        if len(props_out) < 1:
+            problems.append("props list is empty")
+        if len(props_out) != min(PROPS_TOP, len(all_starters)):
+            problems.append(f"props list has {len(props_out)} entries "
+                            f"(need {min(PROPS_TOP, len(all_starters))})")
+        for p in props_out:
+            if not (0 <= p["pts"] < 60 and 0 < p["sd"] <= 20):
+                problems.append(f"props {p['n']} pts/sd out of range")
+            if not (0 < p["p_pts"] < 1):
+                problems.append(f"props {p['n']} p_pts out of range")
+            if p.get("fg3") is not None and not (0 <= p["fg3"] <= 10):
+                problems.append(f"props {p['n']} fg3 out of range")
+            if p.get("p_fg3") is not None and not (0 < p["p_fg3"] < 1):
+                problems.append(f"props {p['n']} p_fg3 out of range")
     return problems
 
 
@@ -1542,21 +1726,36 @@ def main():
     # Fill DD actuals for yesterday's night from BRef box scores.
     # Best-effort like the putback check: a missed page only leaves
     # those entries unscored for that night (they are not retried on
-    # later nights, mirroring the track-act fill).
+    # later nights, mirroring the track-act fill). The box fetch is
+    # shared with the props fill (same pages, cached per game) and
+    # returns fg3 as well, so one fetch serves both fills.
+    _box_cache = {}
+    _box_first = [True]
+
+    def _fetch_box(aw, hm, _first=_box_first):
+        if (aw, hm) in _box_cache:
+            return _box_cache[(aw, hm)]
+        if not _first[0]:
+            time.sleep(1.0)  # polite delay between BRef box pages
+        _first[0] = False
+        box = fetch_bref_boxscore(root, yesterday, aw, hm, want_fg3=True)
+        _box_cache[(aw, hm)] = box
+        return box
+
     if night is not None and night.get("dd"):
-        _box_first = [True]
-
-        def _fetch_box(aw, hm, _first=_box_first):
-            if not _first[0]:
-                time.sleep(1.0)  # polite delay between BRef box pages
-            _first[0] = False
-            return fetch_bref_boxscore(root, yesterday, aw, hm)
-
         dd_filled, dd_warnings = fill_dd_actuals(
             night, yesterday, matchups, _fetch_box)
         warnings.extend(dd_warnings)
         notes.append(f"track: filled DD actuals for {dd_filled} players "
                      f"on {yesterday}")
+
+    # Fill props actuals for yesterday's night (same box scores).
+    if night is not None and night.get("props"):
+        props_filled, props_warnings = fill_props_actuals(
+            night, yesterday, matchups, _fetch_box)
+        warnings.extend(props_warnings)
+        notes.append(f"track: filled props actuals for {props_filled} "
+                     f"entries on {yesterday}")
 
     # ---- 2. Tonight's inputs ---------------------------------------------
     covers = fetch_covers_board(root, today)
@@ -1725,6 +1924,16 @@ def main():
         for k, rec in tbl.items():
             if rec.get("url"):
                 url_map.setdefault(k, rec["url"])
+    # Memoized game-log fetch, shared by the DD matchup adjustment and
+    # the props build below so a player in both lists is fetched once.
+    _log_cache = {}
+
+    def _fetch_log(root_, url_, season_):
+        key = (url_, season_)
+        if key not in _log_cache:
+            _log_cache[key] = fetch_bref_gamelog(root_, url_, season_)
+        return _log_cache[key]
+
     first_log = True
     for d in dd_ranked[:DD_TOP]:
         opp = team_to_opp.get(d["t"])
@@ -1734,7 +1943,8 @@ def main():
             time.sleep(1.0)  # polite delay between BRef game-log pages
         first_log = False
         adj_reb, adj_ast, n, m_reb, m_ast = adjust_dd_for_matchup(
-            d["n"], opp, d["_reb"], d["_ast"], url_map, root)
+            d["n"], opp, d["_reb"], d["_ast"], url_map, root,
+            fetch=_fetch_log)
         d["reb"], d["ast"] = round(adj_reb, 1), round(adj_ast, 1)
         d["matchup_n"] = n
         d["matchup_reb"] = round(m_reb, 1) if n else None
@@ -1745,6 +1955,16 @@ def main():
               for d in dd_ranked[:DD_TOP]]
     notes.append("dd top25: " + ", ".join(
         f"{d['n']} {d['_p']*100:.1f}%" for d in dd_ranked[:DD_TOP]))
+
+    # Player props (Nov 13): top PROPS_TOP starters by points mean, with
+    # season game-log distributions. Best-effort: a failed log falls back
+    # to season means (see build_props); props never fail the run.
+    props_out, props_warnings = build_props(
+        all_starters, url_map, bref_cur, root, fetch=_fetch_log)
+    warnings.extend(props_warnings)
+    notes.append(f"props: {len(props_out)} players "
+                 f"({sum(1 for p in props_out if p.get('fg3') is not None)} "
+                 f"with threes)")
 
     # ---- 3. Tonight's slate + frozen track predictions --------------------
     slate = {"date": today.isoformat(),
@@ -1797,11 +2017,12 @@ def main():
                             "starters": starters_cal,
                             "team_first": None, "first_fg": None})
     track_dd = build_track_dd(dd_ranked)
+    track_props = build_track_props(props_out)
     # Replace tonight's night on re-runs (idempotent); else append.
     track["nights"] = [n for n in track["nights"]
                        if n["d"] != today.isoformat()]
     track["nights"].append({"d": today.isoformat(), "games": track_games,
-                            "dd": track_dd})
+                            "dd": track_dd, "props": track_props})
 
     # ---- 4. Increment g for tonight's starters (once per date) ------------
     # g entries are created here, from real Basketball Monster lineups —
@@ -1844,7 +2065,7 @@ def main():
     # Pre-commit gate (validate_slate): a failed gate returns 2 BEFORE
     # any write, so the previous data.json stays live on disk.
     problems = validate_slate(games_out, track_games, dd_out, all_starters,
-                              line_for_cal)
+                              line_for_cal, props_out)
     if problems:
         print("FATAL: validation failed:", file=sys.stderr)
         for p in problems:
@@ -1853,6 +2074,14 @@ def main():
 
     # ---- 6. Write -----------------------------------------------------------
     data["slate"] = slate
+    data["props"] = {
+        "as_of": today.isoformat(),
+        "note": ("Points: Normal(mean, sd) from season game logs. Threes: "
+                 "Poisson(mean 3PM). Reference line = nearest .5 to the "
+                 "mean (the model's median line, NOT a book line). Book "
+                 "lines are entered by hand on the page; the pipeline "
+                 "never copies a book line."),
+        "players": props_out}
     meta["updated"] = (datetime.now(NY).isoformat(timespec="seconds"))
     meta["as_of"] = today.isoformat()
     meta["version"] = int(meta.get("version") or 1)
