@@ -595,16 +595,22 @@ def fetch_bm_lineups(root):
 
 def _bm_split_name(cell):
     """Split a BM name cell into (name, injury tag). The cell may carry a
-    status note after the name: 'S' (confirmed starter), 'IN', 'Off Inj' —
-    none of those is an injury tag, so they are dropped. Only a Q/GTD/O/D/P
-    note becomes a tag."""
+    status note after the name: 'S' (confirmed starter), 'IN', 'Off Inj',
+    'NOTE' (a Basketball Monster note badge — Nov 13: 'Jeremiah Fears
+    NOTE' and 'Domantas Sabonis NOTE' killed the nightly run because the
+    suffixed name matched no stats table) — none of those is an injury
+    tag, so they are dropped. Only a Q/GTD/O/D/P note becomes a tag."""
     text = " ".join((cell or "").split())  # collapse all whitespace/newlines
     if not text:
         return "", ""
     m = re.match(r"^(.*?)\s*\((Q|GTD|O|D|P)\)\s*$", text)
     if m:
-        return m.group(1).strip(), m.group(2)
+        name = m.group(1).strip()
+        if name.endswith(" NOTE"):
+            name = name[:-len(" NOTE")].strip()
+        return name, m.group(2)
     for suffix, tag in ((" Off Inj", ""), (" IN", ""), (" S", ""),
+                        (" NOTE", ""),
                         (" Out", "O"), (" Q", "Q"), (" GTD", "GTD"),
                         (" D", "D"), (" P", "P")):
         if text.endswith(suffix):
