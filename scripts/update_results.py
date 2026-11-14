@@ -434,11 +434,13 @@ def _parse_statpick_html(html, root=None):
 
 
 def fetch_covers_board(root, target_day):
-    """Covers NBA odds board. Returns {game_key: {away, home, spread_open,
-    total_open, totals(list), spreads(list)}} for games on target_day.
-    spread_open: the Open-column spread from the HOME team's perspective
-    (negative = home favored). total_open: Open total. totals: per-book totals.
-    Plain HTTP first; Playwright fallback if the tables are missing."""
+    """Covers NBA odds board. Returns {game_key: {away, home, time,
+    spread_open, total_open, totals(list), spreads(list)}} for games on
+    target_day. time is the tip-off time from the board (ET, e.g. "7:00
+    PM"). spread_open: the Open-column spread from the HOME team's
+    perspective (negative = home favored). total_open: Open total.
+    totals: per-book totals. Plain HTTP first; Playwright fallback if
+    the tables are missing."""
     url = "https://www.covers.com/sport/basketball/nba/odds"
     try:
         html = http_get(url, root, "covers")
@@ -507,8 +509,13 @@ def _parse_covers_html(html, target_day):
                 continue
             key = f"{away}@{home}"
             g = games.setdefault(key, {"away": away, "home": home,
+                                       "time": None,
                                        "spread_open": None, "total_open": None,
                                        "totals": [], "spreads": []})
+            # Tip-off time, e.g. "7:00 PM" (ET, per the Covers board).
+            # First table wins; every table lists the same time.
+            if g.get("time") is None:
+                g["time"] = " ".join(_time.split())
             # Open total: "o 224.0" in the first cell.
             mo = re.search(r"\bo\s+(\d{2,3}\.\d)\b", first)
             if mo and g["total_open"] is None:
@@ -1907,7 +1914,7 @@ def main():
             "away": away, "home": home, "awayTip": away_tip,
             "awayRate": away_rate, "homeRate": home_rate,
             "tipNote": f"{jumpers['away']} vs {jumpers['home']}",
-            "line": line, "players": players_out})
+            "line": line, "time": cov.get("time"), "players": players_out})
     # Double-double list: top DD_TOP by ddProb among tonight's starters.
     # (On a light night there may be fewer starters than DD_TOP; the list
     # is then every starter, and validation expects min(DD_TOP, starters).)
