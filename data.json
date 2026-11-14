@@ -19,7 +19,7 @@
   ],
   "_src": "NBA.com 2025-26 post-All-Star per game",
   "players": {
-   "Luka Don\u010di\u0107": [
+   "Luka Dončić": [
     "LAL",
     22,
     11.6,
@@ -99,7 +99,7 @@
     5.7,
     5.4
    ],
-   "Nikola Joki\u0107": [
+   "Nikola Jokić": [
     "DEN",
     26,
     9.7,
@@ -667,7 +667,7 @@
     9.5,
     1.8
    ],
-   "Kristaps Porzi\u0146\u0123is": [
+   "Kristaps Porziņģis": [
     "GSW",
     15,
     5.1,
@@ -2075,7 +2075,7 @@
     2.6,
     1.4
    ],
-   "Nikola Vu\u010devi\u0107": [
+   "Nikola Vučević": [
     "BOS",
     13,
     3.5,
@@ -2243,7 +2243,7 @@
     7.7,
     1.3
    ],
-   "Dennis Schr\u00f6der": [
+   "Dennis Schröder": [
     "CLE",
     26,
     2.8,
@@ -2467,7 +2467,7 @@
     5.0,
     1.6
    ],
-   "Karlo Matkovi\u0107": [
+   "Karlo Matković": [
     "NOP",
     19,
     2.8,
@@ -2539,7 +2539,7 @@
     4.4,
     2.8
    ],
-   "Yanic Konan Niederh\u00e4user": [
+   "Yanic Konan Niederhäuser": [
     "LAC",
     7,
     2.3,
@@ -2563,7 +2563,7 @@
     8.0,
     0.8
    ],
-   "Moussa Diabat\u00e9": [
+   "Moussa Diabaté": [
     "CHA",
     23,
     3.0,
@@ -2619,7 +2619,7 @@
     8.5,
     0.7
    ],
-   "Kasparas Jaku\u010dionis": [
+   "Kasparas Jakučionis": [
     "MIA",
     24,
     2.1,
@@ -2627,7 +2627,7 @@
     2.8,
     2.8
    ],
-   "Bogdan Bogdanovi\u0107": [
+   "Bogdan Bogdanović": [
     "LAC",
     6,
     2.3,
@@ -2699,7 +2699,7 @@
     1.6,
     1.1
    ],
-   "Egor D\u00ebmin": [
+   "Egor Dëmin": [
     "BKN",
     6,
     2.3,
@@ -2859,7 +2859,7 @@
     2.1,
     0.9
    ],
-   "V\u00edt Krej\u010d\u00ed": [
+   "Vít Krejčí": [
     "POR",
     13,
     2.1,
@@ -2995,7 +2995,7 @@
     3.1,
     1.2
    ],
-   "Nikola Topi\u0107": [
+   "Nikola Topić": [
     "OKC",
     9,
     2.3,
@@ -3323,7 +3323,7 @@
     2.9,
     0.9
    ],
-   "Tidjane Sala\u00fcn": [
+   "Tidjane Salaün": [
     "CHA",
     5,
     1.4,
@@ -3347,7 +3347,7 @@
     0.8,
     1.3
    ],
-   "Hugo Gonz\u00e1lez": [
+   "Hugo González": [
     "BOS",
     25,
     1.7,
@@ -3427,7 +3427,7 @@
     0.7,
     0.9
    ],
-   "Pac\u00f4me Dadiet": [
+   "Pacôme Dadiet": [
     "NYK",
     9,
     1.4,
@@ -3899,7 +3899,7 @@
     1.0,
     0.0
    ],
-   "Nikola Jovi\u0107": [
+   "Nikola Jović": [
     "MIA",
     3,
     0.7,
@@ -4075,7 +4075,7 @@
     1.3,
     0.2
    ],
-   "Chris Ma\u00f1on": [
+   "Chris Mañon": [
     "LAL",
     4,
     0.5,
@@ -5573,7 +5573,7 @@
     "Julius Randle": 7,
     "Day'Ron Sharpe": 7,
     "Terance Mann": 6,
-    "Egor D\u00ebmin": 6
+    "Egor Dëmin": 6
    },
    "BOS": {
     "Derrick White": 8,
@@ -5705,7 +5705,7 @@
     "Herbert Jones": 8,
     "Trey Murphy": 8,
     "Zion Williamson": 9,
-    "Karlo Matkovi\u0107": 9
+    "Karlo Matković": 9
    },
    "NYK": {
     "Jalen Brunson": 9,
@@ -5800,7 +5800,7 @@
  },
  "slate": {
   "date": "2026-11-13",
-  "note": "3 games \u00b7 post-All-Star '25-26 + '26-27 blend, first-basket history, Covers lines, tip records",
+  "note": "3 games · post-All-Star '25-26 + '26-27 blend, first-basket history, Covers lines, tip records",
   "games": [
    {
     "away": "GSW",
@@ -9306,7 +9306,7 @@
         0.0692
        ],
        [
-        "Karlo Matkovi\u0107",
+        "Karlo Matković",
         "NOP",
         0.0588
        ],
@@ -10364,12 +10364,12 @@
         0.0661
        ],
        [
-        "Karlo Matkovi\u0107",
+        "Karlo Matković",
         "NOP",
         0.0651
        ],
        [
-        "Egor D\u00ebmin",
+        "Egor Dëmin",
         "BKN",
         0.0563
        ],
@@ -10514,7 +10514,7 @@
         0.1385
        ],
        [
-        "Nikola Joki\u0107",
+        "Nikola Jokić",
         "DEN",
         0.1306
        ],
@@ -10629,7 +10629,7 @@
       "pa": 0.5723,
       "p": [
        [
-        "Luka Don\u010di\u0107",
+        "Luka Dončić",
         "LAL",
         0.214
        ],
@@ -10927,7 +10927,7 @@
     ],
     "dd": [
      {
-      "n": "Nikola Joki\u0107",
+      "n": "Nikola Jokić",
       "t": "DEN",
       "p": 0.925,
       "pts": 25.0,
@@ -11025,7 +11025,7 @@
       }
      },
      {
-      "n": "Luka Don\u010di\u0107",
+      "n": "Luka Dončić",
       "t": "LAL",
       "p": 0.455,
       "pts": 36.5,
@@ -11306,7 +11306,7 @@
         0.0987
        ],
        [
-        "Moussa Diabat\u00e9",
+        "Moussa Diabaté",
         "CHA",
         0.0855
        ],
@@ -11650,7 +11650,7 @@
       }
      },
      {
-      "n": "Moussa Diabat\u00e9",
+      "n": "Moussa Diabaté",
       "t": "CHA",
       "p": 0.1413,
       "pts": 7.8,
@@ -12757,9 +12757,9 @@
  "nfl": {
   "week": 10,
   "season": 2026,
-  "as_of": "2026-11-13",
+  "as_of": "2026-11-14",
   "poff": 0.9778,
-  "note": "Week 10 First TD \u2014 team first-TD rates from 2026 nflverse PBP (shrinkage r=(c+5)/(n+10)), log5 team prob plus fitted home-field shift (+0.467 logit), player shares 0.5*TD share + 0.5*red-zone-touch share, history blend K=20. Lines: ESPN/DraftKings. Poff (first TD offensive) = 0.9778.",
+  "note": "Week 10 First TD — team first-TD rates from 2026 nflverse PBP (shrinkage r=(c+5)/(n+10)), log5 team prob plus fitted home-field shift (+0.467 logit), player shares 0.5*TD share + 0.5*red-zone-touch share, history blend K=20. Lines: ESPN/DraftKings. Poff (first TD offensive) = 0.9778.",
   "games": [
    {
     "away": "WAS",
@@ -12948,7 +12948,7 @@
       "trials": 8
      },
      {
-      "n": "Amon-Ra St. Brown",
+      "n": "Amon-Ra St. Brown (Q)",
       "s": "home",
       "pos": "WR",
       "sh": 13.4,
@@ -12988,7 +12988,7 @@
     "line": "KC -3, total 47.5",
     "players": [
      {
-      "n": "Kenneth Walker III",
+      "n": "Kenneth Walker III (Q)",
       "s": "away",
       "pos": "RB",
       "sh": 46.3,
@@ -13098,7 +13098,7 @@
     "line": "HOU -4.5, total 40.5",
     "players": [
      {
-      "n": "David Montgomery",
+      "n": "David Montgomery (Q)",
       "s": "away",
       "pos": "RB",
       "sh": 15.3,
@@ -13168,7 +13168,7 @@
       "trials": 9
      },
      {
-      "n": "Denzel Boston",
+      "n": "Denzel Boston (Q)",
       "s": "home",
       "pos": "WR",
       "sh": 12.2,
@@ -13205,7 +13205,7 @@
     "away": "MIN",
     "home": "GB",
     "awayFirstTD": 12.6,
-    "line": "GB -3, total 42.5",
+    "line": "GB -2.5, total 42.5",
     "players": [
      {
       "n": "Justin Jefferson",
@@ -13228,16 +13228,6 @@
       "trials": 8
      },
      {
-      "n": "T.J. Hockenson",
-      "s": "away",
-      "pos": "TE",
-      "sh": 16.2,
-      "td": 3,
-      "g": 8,
-      "c": 0,
-      "trials": 8
-     },
-     {
       "n": "Jordan Mason",
       "s": "away",
       "pos": "RB",
@@ -13248,7 +13238,7 @@
       "trials": 4
      },
      {
-      "n": "Jordan Addison",
+      "n": "Jordan Addison (Q)",
       "s": "away",
       "pos": "WR",
       "sh": 4.2,
@@ -13256,6 +13246,16 @@
       "g": 7,
       "c": 0,
       "trials": 7
+     },
+     {
+      "n": "Myles Price",
+      "s": "away",
+      "pos": "WR",
+      "sh": 1.9,
+      "td": 0,
+      "g": 4,
+      "c": 0,
+      "trials": 4
      },
      {
       "n": "Christian Watson",
@@ -13288,21 +13288,21 @@
       "trials": 8
      },
      {
-      "n": "Josh Jacobs",
-      "s": "home",
-      "pos": "RB",
-      "sh": 12.8,
-      "td": 3,
-      "g": 3,
-      "c": 0,
-      "trials": 3
-     },
-     {
       "n": "Tucker Kraft",
       "s": "home",
       "pos": "TE",
       "sh": 11.5,
       "td": 3,
+      "g": 9,
+      "c": 1,
+      "trials": 9
+     },
+     {
+      "n": "Jordan Love",
+      "s": "home",
+      "pos": "QB",
+      "sh": 7.3,
+      "td": 2,
       "g": 9,
       "c": 1,
       "trials": 9
@@ -13398,20 +13398,20 @@
       "trials": 9
      },
      {
-      "n": "Mo Alie-Cox",
-      "s": "home",
-      "pos": "TE",
-      "sh": 7.2,
-      "td": 1,
-      "g": 4,
-      "c": 1,
-      "trials": 4
-     },
-     {
       "n": "Josh Downs",
       "s": "home",
       "pos": "WR",
       "sh": 5.4,
+      "td": 1,
+      "g": 9,
+      "c": 0,
+      "trials": 9
+     },
+     {
+      "n": "Daniel Jones",
+      "s": "home",
+      "pos": "QB",
+      "sh": 4.5,
       "td": 1,
       "g": 9,
       "c": 0,
@@ -13598,7 +13598,7 @@
       "trials": 9
      },
      {
-      "n": "Garrett Wilson",
+      "n": "Garrett Wilson (Q)",
       "s": "home",
       "pos": "WR",
       "sh": 13.1,
@@ -13738,14 +13738,14 @@
       "trials": 8
      },
      {
-      "n": "Carnell Tate",
+      "n": "Chimere Dike",
       "s": "home",
       "pos": "WR",
-      "sh": 4.2,
+      "sh": 3.4,
       "td": 1,
-      "g": 7,
+      "g": 5,
       "c": 0,
-      "trials": 7
+      "trials": 5
      }
     ],
     "date": "2026-11-15",
@@ -13798,7 +13798,7 @@
       "trials": 7
      },
      {
-      "n": "Davis Allen",
+      "n": "Davis Allen (Q)",
       "s": "away",
       "pos": "TE",
       "sh": 7.8,
@@ -13975,7 +13975,7 @@
     "away": "SF",
     "home": "DAL",
     "awayFirstTD": 58.3,
-    "line": "SF -3.5, total 55.5",
+    "line": "SF -4.5, total 55.5",
     "players": [
      {
       "n": "Christian McCaffrey",
@@ -14008,21 +14008,21 @@
       "trials": 5
      },
      {
-      "n": "Mike Evans",
-      "s": "away",
-      "pos": "WR",
-      "sh": 11.8,
-      "td": 4,
-      "g": 6,
-      "c": 1,
-      "trials": 6
-     },
-     {
       "n": "Kaelon Black",
       "s": "away",
       "pos": "RB",
       "sh": 6.2,
       "td": 1,
+      "g": 8,
+      "c": 0,
+      "trials": 8
+     },
+     {
+      "n": "Brock Purdy",
+      "s": "away",
+      "pos": "QB",
+      "sh": 5.8,
+      "td": 2,
       "g": 8,
       "c": 0,
       "trials": 8
@@ -14048,16 +14048,6 @@
       "trials": 9
      },
      {
-      "n": "Jake Ferguson",
-      "s": "home",
-      "pos": "TE",
-      "sh": 7.2,
-      "td": 4,
-      "g": 8,
-      "c": 0,
-      "trials": 8
-     },
-     {
       "n": "Ryan Flournoy",
       "s": "home",
       "pos": "WR",
@@ -14076,6 +14066,16 @@
       "g": 8,
       "c": 0,
       "trials": 8
+     },
+     {
+      "n": "KaVontae Turpin",
+      "s": "home",
+      "pos": "WR",
+      "sh": 2.7,
+      "td": 1,
+      "g": 4,
+      "c": 0,
+      "trials": 4
      }
     ],
     "date": "2026-11-15",
@@ -14108,16 +14108,6 @@
       "trials": 8
      },
      {
-      "n": "Roman Wilson",
-      "s": "away",
-      "pos": "WR",
-      "sh": 14.1,
-      "td": 2,
-      "g": 5,
-      "c": 2,
-      "trials": 5
-     },
-     {
       "n": "Darnell Washington",
       "s": "away",
       "pos": "TE",
@@ -14126,6 +14116,16 @@
       "g": 8,
       "c": 1,
       "trials": 8
+     },
+     {
+      "n": "Roman Wilson",
+      "s": "away",
+      "pos": "WR",
+      "sh": 14.1,
+      "td": 2,
+      "g": 5,
+      "c": 2,
+      "trials": 5
      },
      {
       "n": "Rico Dowdle",
@@ -14538,7 +14538,7 @@
          0.0257
         ],
         [
-         "Audric Estim\u00e9",
+         "Audric Estimé",
          "CLE",
          0.0169
         ]
