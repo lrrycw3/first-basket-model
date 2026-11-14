@@ -90,6 +90,34 @@ SKILL_POS = {"QB", "RB", "WR", "TE"}
 ESPN_ABBR = {"LA": "LAR", "WAS": "WSH"}
 
 
+def fmt_gametime(gt):
+    """nflverse gametime ("20:15", a 24-hour ET clock time) -> "8:15 PM".
+
+    Returns None for a missing/blank value. A value that already
+    carries AM/PM passes through whitespace-normalized. Never guesses:
+    an unparseable value returns None, and the page then shows the
+    matchup and date only.
+    """
+    if gt is None:
+        return None
+    s = str(gt).strip()
+    if not s:
+        return None
+    if re.search(r"[APap][Mm]\s*$", s):
+        return " ".join(s.split())
+    m = re.match(r"^(\d{1,2}):(\d{2})", s)
+    if not m:
+        return None
+    h, minute = int(m.group(1)), m.group(2)
+    if h == 0:
+        return f"12:{minute} AM"
+    if h < 12:
+        return f"{h}:{minute} AM"
+    if h == 12:
+        return f"12:{minute} PM"
+    return f"{h - 12}:{minute} PM"
+
+
 def nk(name):
     """Name key: strip accents, punctuation, suffixes; lowercase."""
     s = unicodedata.normalize("NFD", str(name))
@@ -509,6 +537,8 @@ def build(season, week, data_dir, today=None):
             warnings.append(f"no line for {away}@{home}")
         out_games.append({
             "away": away, "home": home,
+            "date": g["gameday"],
+            "time": fmt_gametime(g.get("gametime")),
             "awayFirstTD": away_first,
             "line": line,
             "players": players,
@@ -586,6 +616,10 @@ def refresh_slate(data, season, data_dir, today=None):
         it is the current ranking from the same formula.
       - A missing fresh line never blanks a line: the old line is
         kept and a warning is printed.
+      - Date/kickoff (Nov 14): backfilled from the schedule when a
+        game lacks them, and never dropped afterwards. The schedule
+        is the source of truth, so a refresh sets them to the
+        scheduled values (and records a change if they moved).
       - Never touches the basketball keys, ``nfl.track``, poff, or
         the team probabilities. ``nfl.as_of`` moves to today only
         when something actually changed.
@@ -634,6 +668,18 @@ def refresh_slate(data, season, data_dir, today=None):
             warnings.append(f"{label}: not in the Week {week} schedule "
                             f"-- left untouched")
             continue
+        # Date/kickoff from the schedule (Nov 14): the schedule is the
+        # source of truth. A slate built before date/time existed gets
+        # them backfilled here; a refresh never drops them, and the
+        # schedule never moves them. This runs before the started-game
+        # skip so even final games get their date/time.
+        sched_date = row["gameday"]
+        sched_time = fmt_gametime(row.get("gametime"))
+        if game.get("date") != sched_date or game.get("time") != sched_time:
+            changes.append(
+                f"{label}: date/time {game.get('date')} "
+                f"{game.get('time')} -> {sched_date} {sched_time}")
+            game["date"], game["time"] = sched_date, sched_time
         if row.get("away_score") or row["game_id"] in pbp_ids:
             continue  # final or in progress -- leave exactly as built
         for team, side in ((away, "away"), (home, "home")):
