@@ -40,6 +40,12 @@ Formulas (same shape as the basketball model):
             attempt, target, or pass attempt in the PBP).
   - Page probability (computed on the page, not stored here):
         P(player scores first TD) = Poff * teamFirstTD * adjSh/100
+  - Anytime TD (parallel block ``nfl.anytime``, same games/players):
+        lam_team = (team_off_TDs + 5*lam_league) / (games + 5)
+        lam_league = league-average offensive TDs per team per game
+        P(player scores >= 1 TD) = 1 - exp(-lam_team * adjSh/100)
+        (Poisson; team_off_TDs counts rush+pass TDs, the same counter
+        as the shares. The daily refresh never touches this block.)
 
 Injuries: players listed Out in the week's injury report are excluded
 (the next player by adjSh moves up); Questionable/Doubtful get " (Q)"
@@ -116,6 +122,36 @@ def fmt_gametime(gt):
     if h == 12:
         return f"12:{minute} PM"
     return f"{h - 12}:{minute} PM"
+
+
+def team_td_rates(stats, games_played):
+    """League-average and per-team expected offensive TDs per game.
+
+    lam_league = total rush+pass TDs / total team-games (completed
+    games only). lam_team = (team_off_TDs + 5*lam_league) / (games+5):
+    a 5-game prior toward league average. Uses the same rush+pass TD
+    counter as the player shares, so lam stays consistent with sh.
+    """
+    team_off = stats["team_off_tds"]
+    total_tds = sum(team_off.values())
+    total_games = sum(games_played.values())
+    lam_league = total_tds / total_games if total_games else 0.0
+    lam = {team: (team_off.get(team, 0) + 5 * lam_league)
+           / (games_played[team] + 5)
+           for team in games_played}
+    return lam_league, lam
+
+
+def anytime_prob(lam_team, sh):
+    """P(player scores >= 1 TD) = 1 - exp(-lam_team * sh/100).
+
+    lam_team = the player's team expected offensive TDs this game;
+    sh = the player's history-blended share of team TDs (percent).
+    Rounded to 4 decimals, like every other stored probability.
+    """
+    if not lam_team or not sh:
+        return 0.0
+    return round(1.0 - math.exp(-lam_team * sh / 100.0), 4)
 
 
 def nk(name):
@@ -557,10 +593,44 @@ def build(season, week, data_dir, today=None):
                  f"Poff (first TD offensive) = {poff}."),
         "games": out_games,
     }
+
+    # --- anytime TD block (parallel to the First TD slate) ---------------
+    # Same games, same top-5 players, same history-blended shares. The
+    # only new number is p: Poisson P(>= 1 TD) from the team's expected
+    # offensive TDs for the game times the player's share of them.
+    lam_league, lam_by_team = team_td_rates(stats, games_played)
+    at_games = []
+    for g in out_games:
+        at_players = []
+        for p in g["players"]:
+            team = g["away"] if p["s"] == "away" else g["home"]
+            at_players.append({
+                "n": p["n"], "s": p["s"], "pos": p["pos"],
+                "sh": p["sh"],
+                "p": anytime_prob(lam_by_team.get(team, lam_league),
+                                  p["sh"]),
+            })
+        at_games.append({
+            "away": g["away"], "home": g["home"],
+            "date": g["date"], "time": g["time"],
+            "players": at_players,
+        })
+    block["anytime"] = {
+        "week": week,
+        "season": season,
+        "as_of": today.isoformat(),
+        "note": (f"Week {week} Anytime TD -- P = 1-exp(-lam), lam = team "
+                 f"expected offensive TDs x player share of team TDs. "
+                 f"Team rate shrunk 5 games toward league average "
+                 f"(lam_league = {lam_league:.3f} off TDs/team-game). "
+                 f"Same top-5 players and shares as First TD."),
+        "games": at_games,
+    }
     return block, {
         "games_played": dict(games_played),
         "first_off_td": dict(first_off),
         "poff_games": (n_first_off, n_first_td_games),
+        "lam_league": round(lam_league, 4),
         "warnings": warnings,
         "unresolved": unresolved,
     }
@@ -569,11 +639,14 @@ def build(season, week, data_dir, today=None):
 def merge_into_data_json(data_path, block):
     """Merge a freshly built slate block into data.json's ``nfl`` block.
 
-    Only the slate fields (week, season, as_of, poff, note, games) are
-    replaced. Everything else in the file -- the basketball keys and,
-    crucially, ``nfl.track`` -- passes through untouched. Refuses a
-    block for an EARLIER week than the one already stored (rebuilding
-    the same week is allowed).
+    Only the slate fields (week, season, as_of, poff, note, games,
+    anytime) are replaced. Everything else in the file -- the
+    basketball keys and, crucially, ``nfl.track`` and ``nfl.atrack``
+    -- passes through untouched. A block that carries no ``anytime``
+    (e.g. one built before anytime existed) leaves the stored
+    anytime block in place, exactly like ``track``. Refuses a block
+    for an EARLIER week than the one already stored (rebuilding the
+    same week is allowed).
     """
     with open(data_path) as f:
         data = json.load(f)
@@ -586,6 +659,8 @@ def merge_into_data_json(data_path, block):
     merged.update(block)
     if "track" not in block:
         merged["track"] = old.get("track")
+    if "anytime" not in block:
+        merged["anytime"] = old.get("anytime")
     data["nfl"] = merged
     with open(data_path, "w") as f:
         json.dump(data, f, indent=1, ensure_ascii=False)
@@ -620,9 +695,10 @@ def refresh_slate(data, season, data_dir, today=None):
         game lacks them, and never dropped afterwards. The schedule
         is the source of truth, so a refresh sets them to the
         scheduled values (and records a change if they moved).
-      - Never touches the basketball keys, ``nfl.track``, poff, or
-        the team probabilities. ``nfl.as_of`` moves to today only
-        when something actually changed.
+      - Never touches the basketball keys, ``nfl.track``,
+        ``nfl.anytime``, poff, or the team probabilities.
+        ``nfl.as_of`` moves to today only when something actually
+        changed.
     """
     today = today or date.today()
     nfl = data.get("nfl") or {}
@@ -793,7 +869,9 @@ def main():
             f"week{args.week}_slate.json")
     with open(out, "w") as f:
         json.dump(block, f, indent=1, ensure_ascii=False)
-    print(f"wrote {out}: {len(block['games'])} games, poff={block['poff']}")
+    print(f"wrote {out}: {len(block['games'])} games, "
+          f"poff={block['poff']}, lam_league={meta['lam_league']} "
+          f"(anytime block: {len(block['anytime']['games'])} games)")
     print(f"first-off-TD games: {meta['poff_games'][0]}/"
           f"{meta['poff_games'][1]}")
     for w in meta["warnings"]:
