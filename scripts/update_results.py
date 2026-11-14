@@ -1278,6 +1278,12 @@ def build_props(all_starters, url_map, bref_cur, root,
             if rec.get("fg3") is not None:
                 fg3 = round(rec["fg3"], 2)
                 fg3g = rec.get("g") or 0
+        if fg3 is not None and fg3 <= 0:
+            # A player who made no threes in the sample has no threes
+            # market: P(over 0.5) would be exactly 0, a degenerate
+            # probability the validation gate rightly rejects (run #20:
+            # Isaiah Hartenstein). Points-only row instead.
+            fg3, fg3g = None, 0
         line_pts = ref_line(pts)
         entry = {"n": pname, "t": team, "pts": round(pts, 1),
                  "sd": round(sd, 1), "g": g,
