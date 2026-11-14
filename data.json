@@ -15151,6 +15151,1106 @@
      ]
     }
    ]
+  },
+  "anytime": {
+   "week": 10,
+   "season": 2026,
+   "as_of": "2026-11-13",
+   "note": "Poisson anytime TD: 1 - exp(-lam_team * share); lam_team = team expected offensive TDs (5-game prior to league avg 2.46, through Week 9)",
+   "games": [
+    {
+     "away": "WAS",
+     "home": "NYG",
+     "date": "2026-11-12",
+     "time": "8:15 PM",
+     "players": [
+      {
+       "n": "Rachaad White",
+       "s": "away",
+       "pos": "RB",
+       "sh": 17.2,
+       "p": 0.3212
+      },
+      {
+       "n": "Stefon Diggs",
+       "s": "away",
+       "pos": "WR",
+       "sh": 15.1,
+       "p": 0.2883
+      },
+      {
+       "n": "Jacory Croskey-Merritt",
+       "s": "away",
+       "pos": "RB",
+       "sh": 14.0,
+       "p": 0.2704
+      },
+      {
+       "n": "Jayden Daniels",
+       "s": "away",
+       "pos": "QB",
+       "sh": 8.9,
+       "p": 0.1816
+      },
+      {
+       "n": "Van Jefferson",
+       "s": "away",
+       "pos": "WR",
+       "sh": 8.1,
+       "p": 0.1668
+      },
+      {
+       "n": "Isaiah Likely",
+       "s": "home",
+       "pos": "TE",
+       "sh": 18.2,
+       "p": 0.3455
+      },
+      {
+       "n": "Tyrone Tracy Jr.",
+       "s": "home",
+       "pos": "RB",
+       "sh": 17.5,
+       "p": 0.3348
+      },
+      {
+       "n": "Cam Skattebo",
+       "s": "home",
+       "pos": "RB",
+       "sh": 16.2,
+       "p": 0.3143
+      },
+      {
+       "n": "Malik Nabers",
+       "s": "home",
+       "pos": "WR",
+       "sh": 9.6,
+       "p": 0.2004
+      },
+      {
+       "n": "Devin Singletary",
+       "s": "home",
+       "pos": "RB",
+       "sh": 8.0,
+       "p": 0.17
+      }
+     ]
+    },
+    {
+     "away": "NE",
+     "home": "DET",
+     "date": "2026-11-15",
+     "time": "9:30 AM",
+     "players": [
+      {
+       "n": "Romeo Doubs",
+       "s": "away",
+       "pos": "WR",
+       "sh": 15.4,
+       "p": 0.3364
+      },
+      {
+       "n": "Rhamondre Stevenson (Q)",
+       "s": "away",
+       "pos": "RB",
+       "sh": 12.1,
+       "p": 0.2754
+      },
+      {
+       "n": "DeMario Douglas",
+       "s": "away",
+       "pos": "WR",
+       "sh": 11.2,
+       "p": 0.2579
+      },
+      {
+       "n": "Eli Raridon",
+       "s": "away",
+       "pos": "TE",
+       "sh": 9.8,
+       "p": 0.2297
+      },
+      {
+       "n": "Drake Maye",
+       "s": "away",
+       "pos": "QB",
+       "sh": 7.4,
+       "p": 0.1788
+      },
+      {
+       "n": "Jahmyr Gibbs",
+       "s": "home",
+       "pos": "RB",
+       "sh": 41.4,
+       "p": 0.6949
+      },
+      {
+       "n": "Jameson Williams",
+       "s": "home",
+       "pos": "WR",
+       "sh": 13.5,
+       "p": 0.321
+      },
+      {
+       "n": "Amon-Ra St. Brown",
+       "s": "home",
+       "pos": "WR",
+       "sh": 13.4,
+       "p": 0.319
+      },
+      {
+       "n": "Sam LaPorta",
+       "s": "home",
+       "pos": "TE",
+       "sh": 8.5,
+       "p": 0.2163
+      },
+      {
+       "n": "Jared Goff",
+       "s": "home",
+       "pos": "QB",
+       "sh": 2.5,
+       "p": 0.0692
+      }
+     ]
+    },
+    {
+     "away": "KC",
+     "home": "ATL",
+     "date": "2026-11-15",
+     "time": "1:00 PM",
+     "players": [
+      {
+       "n": "Kenneth Walker III",
+       "s": "away",
+       "pos": "RB",
+       "sh": 46.3,
+       "p": 0.7253
+      },
+      {
+       "n": "Rashee Rice",
+       "s": "away",
+       "pos": "WR",
+       "sh": 9.8,
+       "p": 0.2393
+      },
+      {
+       "n": "Travis Kelce",
+       "s": "away",
+       "pos": "TE",
+       "sh": 6.7,
+       "p": 0.1705
+      },
+      {
+       "n": "Patrick Mahomes",
+       "s": "away",
+       "pos": "QB",
+       "sh": 6.4,
+       "p": 0.1636
+      },
+      {
+       "n": "Emmett Johnson",
+       "s": "away",
+       "pos": "RB",
+       "sh": 5.2,
+       "p": 0.1351
+      },
+      {
+       "n": "Bijan Robinson",
+       "s": "home",
+       "pos": "RB",
+       "sh": 29.0,
+       "p": 0.4876
+      },
+      {
+       "n": "Kyle Pitts",
+       "s": "home",
+       "pos": "TE",
+       "sh": 14.2,
+       "p": 0.2792
+      },
+      {
+       "n": "Brian Robinson",
+       "s": "home",
+       "pos": "RB",
+       "sh": 12.0,
+       "p": 0.2417
+      },
+      {
+       "n": "Charlie Woerner",
+       "s": "home",
+       "pos": "TE",
+       "sh": 7.4,
+       "p": 0.1569
+      },
+      {
+       "n": "Jahan Dotson",
+       "s": "home",
+       "pos": "WR",
+       "sh": 6.3,
+       "p": 0.1352
+      }
+     ]
+    },
+    {
+     "away": "HOU",
+     "home": "CLE",
+     "date": "2026-11-15",
+     "time": "1:00 PM",
+     "players": [
+      {
+       "n": "David Montgomery",
+       "s": "away",
+       "pos": "RB",
+       "sh": 15.3,
+       "p": 0.332
+      },
+      {
+       "n": "Nico Collins",
+       "s": "away",
+       "pos": "WR",
+       "sh": 14.7,
+       "p": 0.3213
+      },
+      {
+       "n": "Woody Marks",
+       "s": "away",
+       "pos": "RB",
+       "sh": 13.6,
+       "p": 0.3014
+      },
+      {
+       "n": "Foster Moreau",
+       "s": "away",
+       "pos": "TE",
+       "sh": 11.3,
+       "p": 0.2577
+      },
+      {
+       "n": "Xavier Hutchinson",
+       "s": "away",
+       "pos": "WR",
+       "sh": 9.9,
+       "p": 0.2298
+      },
+      {
+       "n": "Quinshon Judkins",
+       "s": "home",
+       "pos": "RB",
+       "sh": 21.3,
+       "p": 0.3397
+      },
+      {
+       "n": "Harold Fannin Jr.",
+       "s": "home",
+       "pos": "TE",
+       "sh": 15.0,
+       "p": 0.2534
+      },
+      {
+       "n": "Denzel Boston",
+       "s": "home",
+       "pos": "WR",
+       "sh": 12.2,
+       "p": 0.2116
+      },
+      {
+       "n": "KC Concepcion",
+       "s": "home",
+       "pos": "WR",
+       "sh": 9.3,
+       "p": 0.1657
+      },
+      {
+       "n": "Deshaun Watson",
+       "s": "home",
+       "pos": "QB",
+       "sh": 7.3,
+       "p": 0.1326
+      }
+     ]
+    },
+    {
+     "away": "MIN",
+     "home": "GB",
+     "date": "2026-11-15",
+     "time": "1:00 PM",
+     "players": [
+      {
+       "n": "Justin Jefferson",
+       "s": "away",
+       "pos": "WR",
+       "sh": 23.1,
+       "p": 0.3388
+      },
+      {
+       "n": "Aaron Jones",
+       "s": "away",
+       "pos": "RB",
+       "sh": 18.7,
+       "p": 0.2846
+      },
+      {
+       "n": "T.J. Hockenson",
+       "s": "away",
+       "pos": "TE",
+       "sh": 16.2,
+       "p": 0.2518
+      },
+      {
+       "n": "Jordan Mason",
+       "s": "away",
+       "pos": "RB",
+       "sh": 10.4,
+       "p": 0.1699
+      },
+      {
+       "n": "Jordan Addison",
+       "s": "away",
+       "pos": "WR",
+       "sh": 4.2,
+       "p": 0.0725
+      },
+      {
+       "n": "Christian Watson",
+       "s": "home",
+       "pos": "WR",
+       "sh": 22.5,
+       "p": 0.4507
+      },
+      {
+       "n": "Matthew Golden",
+       "s": "home",
+       "pos": "WR",
+       "sh": 19.4,
+       "p": 0.4034
+      },
+      {
+       "n": "MarShawn Lloyd",
+       "s": "home",
+       "pos": "RB",
+       "sh": 13.7,
+       "p": 0.3057
+      },
+      {
+       "n": "Josh Jacobs",
+       "s": "home",
+       "pos": "RB",
+       "sh": 12.8,
+       "p": 0.2888
+      },
+      {
+       "n": "Tucker Kraft",
+       "s": "home",
+       "pos": "TE",
+       "sh": 11.5,
+       "p": 0.2638
+      }
+     ]
+    },
+    {
+     "away": "MIA",
+     "home": "IND",
+     "date": "2026-11-15",
+     "time": "1:00 PM",
+     "players": [
+      {
+       "n": "Ollie Gordon II",
+       "s": "away",
+       "pos": "RB",
+       "sh": 31.8,
+       "p": 0.4612
+      },
+      {
+       "n": "Caleb Douglas",
+       "s": "away",
+       "pos": "WR",
+       "sh": 11.5,
+       "p": 0.2004
+      },
+      {
+       "n": "Malik Willis",
+       "s": "away",
+       "pos": "QB",
+       "sh": 11.2,
+       "p": 0.1957
+      },
+      {
+       "n": "Malik Washington",
+       "s": "away",
+       "pos": "WR",
+       "sh": 10.5,
+       "p": 0.1847
+      },
+      {
+       "n": "Kevin Coleman Jr.",
+       "s": "away",
+       "pos": "WR",
+       "sh": 7.5,
+       "p": 0.1357
+      },
+      {
+       "n": "Jonathan Taylor",
+       "s": "home",
+       "pos": "RB",
+       "sh": 43.1,
+       "p": 0.594
+      },
+      {
+       "n": "Tyler Warren",
+       "s": "home",
+       "pos": "TE",
+       "sh": 13.4,
+       "p": 0.2444
+      },
+      {
+       "n": "Seth McGowan",
+       "s": "home",
+       "pos": "RB",
+       "sh": 8.4,
+       "p": 0.1611
+      },
+      {
+       "n": "Mo Alie-Cox",
+       "s": "home",
+       "pos": "TE",
+       "sh": 7.2,
+       "p": 0.1398
+      },
+      {
+       "n": "Josh Downs",
+       "s": "home",
+       "pos": "WR",
+       "sh": 5.4,
+       "p": 0.1068
+      }
+     ]
+    },
+    {
+     "away": "CAR",
+     "home": "NO",
+     "date": "2026-11-15",
+     "time": "1:00 PM",
+     "players": [
+      {
+       "n": "Chuba Hubbard",
+       "s": "away",
+       "pos": "RB",
+       "sh": 34.3,
+       "p": 0.6058
+      },
+      {
+       "n": "Tommy Tremble",
+       "s": "away",
+       "pos": "TE",
+       "sh": 10.8,
+       "p": 0.254
+      },
+      {
+       "n": "Darren Waller",
+       "s": "away",
+       "pos": "TE",
+       "sh": 8.8,
+       "p": 0.2124
+      },
+      {
+       "n": "Tetairoa McMillan",
+       "s": "away",
+       "pos": "WR",
+       "sh": 8.7,
+       "p": 0.2103
+      },
+      {
+       "n": "Jalen Coker",
+       "s": "away",
+       "pos": "WR",
+       "sh": 8.5,
+       "p": 0.206
+      },
+      {
+       "n": "Juwan Johnson",
+       "s": "home",
+       "pos": "TE",
+       "sh": 14.4,
+       "p": 0.3083
+      },
+      {
+       "n": "Lamar Miller",
+       "s": "home",
+       "pos": "RB",
+       "sh": 13.8,
+       "p": 0.2976
+      },
+      {
+       "n": "Alvin Kamara",
+       "s": "home",
+       "pos": "RB",
+       "sh": 10.0,
+       "p": 0.2259
+      },
+      {
+       "n": "Tyler Shough",
+       "s": "home",
+       "pos": "QB",
+       "sh": 8.8,
+       "p": 0.2017
+      },
+      {
+       "n": "Devaughn Vele",
+       "s": "home",
+       "pos": "WR",
+       "sh": 8.3,
+       "p": 0.1914
+      }
+     ]
+    },
+    {
+     "away": "BUF",
+     "home": "NYJ",
+     "date": "2026-11-15",
+     "time": "1:00 PM",
+     "players": [
+      {
+       "n": "Josh Allen",
+       "s": "away",
+       "pos": "QB",
+       "sh": 25.6,
+       "p": 0.5564
+      },
+      {
+       "n": "James Cook",
+       "s": "away",
+       "pos": "RB",
+       "sh": 24.2,
+       "p": 0.5363
+      },
+      {
+       "n": "Keleki Latu",
+       "s": "away",
+       "pos": "TE",
+       "sh": 6.4,
+       "p": 0.1839
+      },
+      {
+       "n": "Dalton Kincaid",
+       "s": "away",
+       "pos": "TE",
+       "sh": 4.9,
+       "p": 0.1441
+      },
+      {
+       "n": "Khalil Shakir",
+       "s": "away",
+       "pos": "WR",
+       "sh": 4.5,
+       "p": 0.1332
+      },
+      {
+       "n": "Braelon Allen",
+       "s": "home",
+       "pos": "RB",
+       "sh": 16.9,
+       "p": 0.2977
+      },
+      {
+       "n": "Garrett Wilson",
+       "s": "home",
+       "pos": "WR",
+       "sh": 13.1,
+       "p": 0.2396
+      },
+      {
+       "n": "Kenyon Sadiq",
+       "s": "home",
+       "pos": "TE",
+       "sh": 12.5,
+       "p": 0.23
+      },
+      {
+       "n": "Breece Hall",
+       "s": "home",
+       "pos": "RB",
+       "sh": 8.7,
+       "p": 0.1664
+      },
+      {
+       "n": "Mason Taylor",
+       "s": "home",
+       "pos": "TE",
+       "sh": 7.4,
+       "p": 0.1434
+      }
+     ]
+    },
+    {
+     "away": "JAX",
+     "home": "TEN",
+     "date": "2026-11-15",
+     "time": "1:00 PM",
+     "players": [
+      {
+       "n": "Bhayshul Tuten",
+       "s": "away",
+       "pos": "RB",
+       "sh": 27.1,
+       "p": 0.5498
+      },
+      {
+       "n": "Parker Washington",
+       "s": "away",
+       "pos": "WR",
+       "sh": 18.7,
+       "p": 0.4234
+      },
+      {
+       "n": "Brian Thomas Jr.",
+       "s": "away",
+       "pos": "WR",
+       "sh": 12.2,
+       "p": 0.3018
+      },
+      {
+       "n": "Chris Rodriguez Jr.",
+       "s": "away",
+       "pos": "RB",
+       "sh": 11.1,
+       "p": 0.2788
+      },
+      {
+       "n": "Josh Cameron",
+       "s": "away",
+       "pos": "WR",
+       "sh": 8.8,
+       "p": 0.2283
+      },
+      {
+       "n": "Tony Pollard",
+       "s": "home",
+       "pos": "RB",
+       "sh": 37.1,
+       "p": 0.5276
+      },
+      {
+       "n": "Wan'Dale Robinson",
+       "s": "home",
+       "pos": "WR",
+       "sh": 16.1,
+       "p": 0.2778
+      },
+      {
+       "n": "Cam Ward",
+       "s": "home",
+       "pos": "QB",
+       "sh": 12.6,
+       "p": 0.2249
+      },
+      {
+       "n": "Elic Ayomanor",
+       "s": "home",
+       "pos": "WR",
+       "sh": 7.4,
+       "p": 0.1389
+      },
+      {
+       "n": "Carnell Tate",
+       "s": "home",
+       "pos": "WR",
+       "sh": 4.2,
+       "p": 0.0814
+      }
+     ]
+    },
+    {
+     "away": "LA",
+     "home": "ARI",
+     "date": "2026-11-15",
+     "time": "4:05 PM",
+     "players": [
+      {
+       "n": "Kyren Williams",
+       "s": "away",
+       "pos": "RB",
+       "sh": 27.5,
+       "p": 0.5377
+      },
+      {
+       "n": "Davante Adams",
+       "s": "away",
+       "pos": "WR",
+       "sh": 16.3,
+       "p": 0.367
+      },
+      {
+       "n": "Blake Corum",
+       "s": "away",
+       "pos": "RB",
+       "sh": 15.5,
+       "p": 0.3527
+      },
+      {
+       "n": "Puka Nacua",
+       "s": "away",
+       "pos": "WR",
+       "sh": 12.9,
+       "p": 0.3037
+      },
+      {
+       "n": "Davis Allen",
+       "s": "away",
+       "pos": "TE",
+       "sh": 7.8,
+       "p": 0.1966
+      },
+      {
+       "n": "Trey McBride",
+       "s": "home",
+       "pos": "TE",
+       "sh": 16.0,
+       "p": 0.2844
+      },
+      {
+       "n": "Jeremiyah Love",
+       "s": "home",
+       "pos": "RB",
+       "sh": 13.9,
+       "p": 0.2523
+      },
+      {
+       "n": "Tyler Allgeier",
+       "s": "home",
+       "pos": "RB",
+       "sh": 12.8,
+       "p": 0.2349
+      },
+      {
+       "n": "Teagan Quitoriano",
+       "s": "home",
+       "pos": "TE",
+       "sh": 10.7,
+       "p": 0.2005
+      },
+      {
+       "n": "Michael Wilson",
+       "s": "home",
+       "pos": "WR",
+       "sh": 9.9,
+       "p": 0.187
+      }
+     ]
+    },
+    {
+     "away": "SEA",
+     "home": "LV",
+     "date": "2026-11-15",
+     "time": "4:05 PM",
+     "players": [
+      {
+       "n": "Jaxon Smith-Njigba",
+       "s": "away",
+       "pos": "WR",
+       "sh": 26.6,
+       "p": 0.4786
+      },
+      {
+       "n": "Emanuel Wilson",
+       "s": "away",
+       "pos": "RB",
+       "sh": 18.8,
+       "p": 0.3689
+      },
+      {
+       "n": "AJ Barner",
+       "s": "away",
+       "pos": "TE",
+       "sh": 13.3,
+       "p": 0.2779
+      },
+      {
+       "n": "George Holani",
+       "s": "away",
+       "pos": "RB",
+       "sh": 6.5,
+       "p": 0.1471
+      },
+      {
+       "n": "Cooper Kupp",
+       "s": "away",
+       "pos": "WR",
+       "sh": 5.3,
+       "p": 0.1217
+      },
+      {
+       "n": "Ashton Jeanty",
+       "s": "home",
+       "pos": "RB",
+       "sh": 21.3,
+       "p": 0.4329
+      },
+      {
+       "n": "Brock Bowers",
+       "s": "home",
+       "pos": "TE",
+       "sh": 17.0,
+       "p": 0.3641
+      },
+      {
+       "n": "Tre Tucker",
+       "s": "home",
+       "pos": "WR",
+       "sh": 11.6,
+       "p": 0.2657
+      },
+      {
+       "n": "Mike Washington Jr.",
+       "s": "home",
+       "pos": "RB",
+       "sh": 7.8,
+       "p": 0.1875
+      },
+      {
+       "n": "Jack Bech",
+       "s": "home",
+       "pos": "WR",
+       "sh": 7.0,
+       "p": 0.1701
+      }
+     ]
+    },
+    {
+     "away": "SF",
+     "home": "DAL",
+     "date": "2026-11-15",
+     "time": "4:25 PM",
+     "players": [
+      {
+       "n": "Christian McCaffrey",
+       "s": "away",
+       "pos": "RB",
+       "sh": 36.3,
+       "p": 0.6842
+      },
+      {
+       "n": "George Kittle",
+       "s": "away",
+       "pos": "TE",
+       "sh": 14.7,
+       "p": 0.373
+      },
+      {
+       "n": "Deebo Samuel Sr.",
+       "s": "away",
+       "pos": "WR",
+       "sh": 13.1,
+       "p": 0.3403
+      },
+      {
+       "n": "Mike Evans",
+       "s": "away",
+       "pos": "WR",
+       "sh": 11.8,
+       "p": 0.3125
+      },
+      {
+       "n": "Kaelon Black",
+       "s": "away",
+       "pos": "RB",
+       "sh": 6.2,
+       "p": 0.1787
+      },
+      {
+       "n": "Javonte Williams",
+       "s": "home",
+       "pos": "RB",
+       "sh": 33.1,
+       "p": 0.6049
+      },
+      {
+       "n": "CeeDee Lamb",
+       "s": "home",
+       "pos": "WR",
+       "sh": 18.0,
+       "p": 0.3965
+      },
+      {
+       "n": "Jake Ferguson",
+       "s": "home",
+       "pos": "TE",
+       "sh": 7.2,
+       "p": 0.1829
+      },
+      {
+       "n": "Ryan Flournoy",
+       "s": "home",
+       "pos": "WR",
+       "sh": 5.7,
+       "p": 0.1478
+      },
+      {
+       "n": "George Pickens",
+       "s": "home",
+       "pos": "WR",
+       "sh": 4.9,
+       "p": 0.1284
+      }
+     ]
+    },
+    {
+     "away": "PIT",
+     "home": "CIN",
+     "date": "2026-11-15",
+     "time": "8:20 PM",
+     "players": [
+      {
+       "n": "Jaylen Warren",
+       "s": "away",
+       "pos": "RB",
+       "sh": 19.0,
+       "p": 0.3481
+      },
+      {
+       "n": "Pat Freiermuth",
+       "s": "away",
+       "pos": "TE",
+       "sh": 14.7,
+       "p": 0.2819
+      },
+      {
+       "n": "Roman Wilson",
+       "s": "away",
+       "pos": "WR",
+       "sh": 14.1,
+       "p": 0.2721
+      },
+      {
+       "n": "Darnell Washington",
+       "s": "away",
+       "pos": "TE",
+       "sh": 14.1,
+       "p": 0.2721
+      },
+      {
+       "n": "Rico Dowdle",
+       "s": "away",
+       "pos": "RB",
+       "sh": 13.1,
+       "p": 0.2555
+      },
+      {
+       "n": "Ja'Marr Chase",
+       "s": "home",
+       "pos": "WR",
+       "sh": 18.5,
+       "p": 0.4363
+      },
+      {
+       "n": "Mike Gesicki",
+       "s": "home",
+       "pos": "TE",
+       "sh": 17.7,
+       "p": 0.4221
+      },
+      {
+       "n": "Tee Higgins",
+       "s": "home",
+       "pos": "WR",
+       "sh": 10.9,
+       "p": 0.2866
+      },
+      {
+       "n": "Chase Brown",
+       "s": "home",
+       "pos": "RB",
+       "sh": 9.1,
+       "p": 0.2457
+      },
+      {
+       "n": "Samaje Perine",
+       "s": "home",
+       "pos": "RB",
+       "sh": 8.5,
+       "p": 0.2315
+      }
+     ]
+    },
+    {
+     "away": "LAC",
+     "home": "BAL",
+     "date": "2026-11-16",
+     "time": "8:15 PM",
+     "players": [
+      {
+       "n": "Omarion Hampton",
+       "s": "away",
+       "pos": "RB",
+       "sh": 21.2,
+       "p": 0.3159
+      },
+      {
+       "n": "Keaton Mitchell",
+       "s": "away",
+       "pos": "RB",
+       "sh": 11.3,
+       "p": 0.1832
+      },
+      {
+       "n": "Kimani Vidal",
+       "s": "away",
+       "pos": "RB",
+       "sh": 9.7,
+       "p": 0.1595
+      },
+      {
+       "n": "Oronde Gadsden II",
+       "s": "away",
+       "pos": "TE",
+       "sh": 7.1,
+       "p": 0.1194
+      },
+      {
+       "n": "Hayden Rucci",
+       "s": "away",
+       "pos": "TE",
+       "sh": 5.2,
+       "p": 0.0889
+      },
+      {
+       "n": "Derrick Henry",
+       "s": "home",
+       "pos": "RB",
+       "sh": 39.1,
+       "p": 0.6052
+      },
+      {
+       "n": "Zay Flowers",
+       "s": "home",
+       "pos": "WR",
+       "sh": 12.2,
+       "p": 0.2517
+      },
+      {
+       "n": "Josh Cuevas",
+       "s": "home",
+       "pos": "TE",
+       "sh": 6.9,
+       "p": 0.1513
+      },
+      {
+       "n": "Mark Andrews",
+       "s": "home",
+       "pos": "TE",
+       "sh": 4.6,
+       "p": 0.1036
+      },
+      {
+       "n": "Lamar Jackson",
+       "s": "home",
+       "pos": "QB",
+       "sh": 4.4,
+       "p": 0.0993
+      }
+     ]
+    }
+   ]
   }
  },
  "props": {
