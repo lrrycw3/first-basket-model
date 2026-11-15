@@ -12757,7 +12757,7 @@
  "nfl": {
   "week": 10,
   "season": 2026,
-  "as_of": "2026-11-14",
+  "as_of": "2026-11-15",
   "poff": 0.9778,
   "note": "Week 10 First TD — team first-TD rates from 2026 nflverse PBP (shrinkage r=(c+5)/(n+10)), log5 team prob plus fitted home-field shift (+0.467 logit), player shares 0.5*TD share + 0.5*red-zone-touch share, history blend K=20. Lines: ESPN/DraftKings. Poff (first TD offensive) = 0.9778.",
   "games": [
@@ -13095,7 +13095,7 @@
     "away": "HOU",
     "home": "CLE",
     "awayFirstTD": 57.3,
-    "line": "HOU -4.5, total 40.5",
+    "line": "HOU -4.5, total 41.5",
     "players": [
      {
       "n": "David Montgomery (Q)",
@@ -13315,7 +13315,7 @@
     "away": "MIA",
     "home": "IND",
     "awayFirstTD": 22.6,
-    "line": "IND -3.5, total 38.5",
+    "line": "IND -4.5, total 37.5",
     "players": [
      {
       "n": "Ollie Gordon II",
@@ -13425,7 +13425,7 @@
     "away": "CAR",
     "home": "NO",
     "awayFirstTD": 49.6,
-    "line": "NO -2.5, total 48.5",
+    "line": "NO -1.5, total 48.5",
     "players": [
      {
       "n": "Chuba Hubbard",
@@ -13645,7 +13645,7 @@
     "away": "JAX",
     "home": "TEN",
     "awayFirstTD": 55.7,
-    "line": "JAX -10.5, total 46.5",
+    "line": "JAX -10.5, total 45.5",
     "players": [
      {
       "n": "Bhayshul Tuten",
@@ -13755,7 +13755,7 @@
     "away": "LA",
     "home": "ARI",
     "awayFirstTD": 59.6,
-    "line": "LA -9.5, total 39.5",
+    "line": "LA -9.5, total 38.5",
     "players": [
      {
       "n": "Kyren Williams",
@@ -14108,16 +14108,6 @@
       "trials": 8
      },
      {
-      "n": "Darnell Washington",
-      "s": "away",
-      "pos": "TE",
-      "sh": 14.1,
-      "td": 3,
-      "g": 8,
-      "c": 1,
-      "trials": 8
-     },
-     {
       "n": "Roman Wilson",
       "s": "away",
       "pos": "WR",
@@ -14126,6 +14116,16 @@
       "g": 5,
       "c": 2,
       "trials": 5
+     },
+     {
+      "n": "Darnell Washington",
+      "s": "away",
+      "pos": "TE",
+      "sh": 14.1,
+      "td": 3,
+      "g": 8,
+      "c": 1,
+      "trials": 8
      },
      {
       "n": "Rico Dowdle",
