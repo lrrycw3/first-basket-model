@@ -13414,7 +13414,7 @@
  "nfl": {
   "week": 10,
   "season": 2026,
-  "as_of": "2026-11-15",
+  "as_of": "2026-11-16",
   "poff": 0.9778,
   "note": "Week 10 First TD — team first-TD rates from 2026 nflverse PBP (shrinkage r=(c+5)/(n+10)), log5 team prob plus fitted home-field shift (+0.467 logit), player shares 0.5*TD share + 0.5*red-zone-touch share, history blend K=20. Lines: ESPN/DraftKings. Poff (first TD offensive) = 0.9778.",
   "games": [
@@ -14852,7 +14852,7 @@
     "away": "LAC",
     "home": "BAL",
     "awayFirstTD": 25.8,
-    "line": "BAL -4.5, total 38.5",
+    "line": "BAL -4.5, total 39.5",
     "players": [
      {
       "n": "Omarion Hampton",
