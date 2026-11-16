@@ -146,6 +146,10 @@ PLAYER_ALIASES = {
     "Herb Jones": "Herbert Jones",
     "Alexandre Sarr": "Alex Sarr",
     "Cam Johnson": "Cameron Johnson",
+    # Nov 15 run #23: BM shortens Luguentz Dort to "Lu Dort". The fuzzy
+    # matcher cannot catch a 2-letter first name (prefix rule needs >= 3
+    # letters; difflib "lu dort" vs "luguentz dort" is 0.70 < 0.85).
+    "Lu Dort": "Luguentz Dort",
 }
 
 
@@ -234,6 +238,24 @@ def canonicalize_lineups(bm, universe):
                     fuzzy_n += 1
                 s["name"] = resolved
     return fuzzy_n
+
+
+def check_starter_team(name, side_team, bref_cur):
+    """Roster check (Nov 15 run #23): a BM starter listed under the wrong
+    team must fail loudly instead of blending into the wrong slate.
+    bref_cur is the current-season BRef table ({nk: rec with "team"}).
+    Returns (ok, actual_team): ok is False only when the current-season
+    table affirmatively says the player plays for another team. A player
+    missing from the table, or with no team on his record (mid-season
+    trade, TOT row), is unverifiable and passes — the check never fails
+    on what it cannot know. Last season's postasb team is deliberately
+    NOT consulted: an offseason trade would make it stale and a correct
+    listing would trip a false alarm."""
+    rec = bref_cur.get(nk(name))
+    actual = rec.get("team") if rec else None
+    if actual is None:
+        return True, None
+    return actual == side_team, actual
 
 
 # ---------------------------------------------------------------------------
@@ -1851,6 +1873,14 @@ def main():
         for side in ("away", "home"):
             fgm_map = {}
             for s in starters[side]:
+                side_team = away if side == "away" else home
+                ok, actual = check_starter_team(s["name"], side_team,
+                                                bref_cur)
+                if not ok:
+                    print(f"FATAL: {key} {side} {s['name']}: listed under "
+                          f"{side_team} but plays for {actual} "
+                          f"(roster check)", file=sys.stderr)
+                    return 2
                 try:
                     vals = blend_stats(s["name"], postasb_nk,
                                        bref_cur, bref_full)
