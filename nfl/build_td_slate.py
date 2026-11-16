@@ -45,11 +45,15 @@ Formulas (same shape as the basketball model):
         lam_league = league-average offensive TDs per team per game
         P(player scores >= 1 TD) = 1 - exp(-lam_team * adjSh/100)
         (Poisson; team_off_TDs counts rush+pass TDs, the same counter
-        as the shares. The daily refresh never touches this block.)
+        as the shares. The daily refresh mirrors First TD
+        drops/promotions into this block, so the two lists never drift.)
 
-Injuries: players listed Out in the week's injury report are excluded
-(the next player by adjSh moves up); Questionable/Doubtful get " (Q)"
-appended to the name, the same convention as the basketball page.
+Injuries: a player is excluded when his LATEST injury-report row says
+Out -- a comeback has to be confirmed by a later row, not assumed
+from his absence from the report (that is what catches IR players,
+who stop appearing in the weekly report entirely). Questionable/
+Doubtful get " (Q)" appended to the name, the same convention as the
+basketball page.
 
 Usage:  build_td_slate.py --week 9 --season 2026 [--data-dir DIR]
         [--out FILE] [--sunday-only]  (default: all games of the week
@@ -60,7 +64,8 @@ Usage:  build_td_slate.py --week 9 --season 2026 [--data-dir DIR]
         build_td_slate.py --refresh [--data-json data.json]
         (daily ~11am check: fresh injuries + lines for games that
         have not started; drops newly-Out players, marks new
-        Questionables, never rebuilds shares, never touches
+        Questionables, mirrors drops/promotions into the anytime
+        block, never rebuilds shares, never touches
         basketball keys or nfl.track)
 """
 import argparse
@@ -195,19 +200,44 @@ def load_pbp(data_dir, season):
 
 
 def load_injuries(data_dir, season, week, force=False):
+    """Weekly injury report -> (out, questionable) name-keyed sets.
+
+    Out is determined from each player's LATEST report row across all
+    weeks, not just the current week. A player whose latest row says
+    Out stays out until a later row shows him back (a blank status
+    with full/limited participation, or a Questionable/Doubtful
+    designation): his comeback has to be confirmed by the report, not
+    assumed from his absence from it. That is what catches IR
+    players: once on IR they stop appearing in the weekly report
+    entirely (Lamar Jackson: Out in Week 9 with the thumb, no Week 10
+    row at all), so a current-week-only read never sees them.
+    Questionable/Doubtful marks stay current-week only. Rows from
+    weeks after the requested week are ignored.
+    """
     path = download(f"{NFLVERSE}/injuries/injuries_{season}.csv",
                     os.path.join(data_dir, f"injuries_{season}.csv"),
                     force=force)
-    out, q = {}, {}
+    latest = {}  # nk(name) -> (week, report_status, full_name)
+    q = {}
     with open(path, newline="") as f:
         for r in csv.DictReader(f):
-            if int(r["season"]) != season or int(r["week"]) != week:
+            if int(r["season"]) != season:
                 continue
+            w = int(r["week"])
+            if w > week:
+                continue
+            name = (r.get("full_name") or "").strip()
+            if not name:
+                continue
+            key = nk(name)
             st = (r.get("report_status") or "").strip()
-            if st == "Out":
-                out[nk(r["full_name"])] = r["full_name"]
-            elif st in ("Questionable", "Doubtful"):
-                q[nk(r["full_name"])] = r["full_name"]
+            prev = latest.get(key)
+            if prev is None or w >= prev[0]:
+                latest[key] = (w, st, name)
+            if w == week and st in ("Questionable", "Doubtful"):
+                q[key] = name
+    out = {key: name for key, (w, st, name) in latest.items()
+           if st == "Out"}
     return out, q
 
 
@@ -695,8 +725,12 @@ def refresh_slate(data, season, data_dir, today=None):
         game lacks them, and never dropped afterwards. The schedule
         is the source of truth, so a refresh sets them to the
         scheduled values (and records a change if they moved).
-      - Never touches the basketball keys, ``nfl.track``,
-        ``nfl.anytime``, poff, or the team probabilities.
+      - Never touches the basketball keys, ``nfl.track``, poff, or the
+        team probabilities. The Anytime TD list mirrors the First TD
+        list: when a side's top 5 changes (or its anytime list was
+        left stale by an earlier refresh), that side's anytime
+        players are rebuilt from the fresh list (same shares, p from
+        the team's lam); the anytime block is otherwise untouched.
         ``nfl.as_of`` moves to today only when something actually
         changed.
     """
@@ -719,6 +753,14 @@ def refresh_slate(data, season, data_dir, today=None):
     by_team, by_short = load_players(data_dir)
     out_status, q_status = load_injuries(data_dir, season, week, force=True)
 
+    # lam for the anytime mirror (same inputs as the build).
+    games_played = Counter()
+    for g in games:
+        if g["game_id"] in completed_ids:
+            games_played[g["away_team"]] += 1
+            games_played[g["home_team"]] += 1
+    lam_league, lam_by_team = team_td_rates(stats, games_played)
+
     dates = set()
     for game in nfl["games"]:
         row = sched.get((game["away"], game["home"]))
@@ -734,6 +776,7 @@ def refresh_slate(data, season, data_dir, today=None):
         fetch_warning = None
 
     changes, warnings = [], []
+    at_changed = False
     if fetch_warning:
         warnings.append(fetch_warning)
     for game in nfl["games"]:
@@ -792,6 +835,36 @@ def refresh_slate(data, season, data_dir, today=None):
                                    if p.get("s") != side] + fresh
                 # keep away players before home players, as built
                 game["players"].sort(key=lambda p: 0 if p["s"] == "away" else 1)
+            # Anytime TD mirrors the First TD list: rebuild this side
+            # whenever its anytime names differ from the fresh First TD
+            # list. That covers a drop/promotion this run and an
+            # anytime list left stale by an earlier refresh (which
+            # never touched the block). Kept players keep their stored
+            # p unless the side's membership or Q marks changed.
+            at_game = next(
+                (g for g in (nfl.get("anytime") or {}).get("games", [])
+                 if g.get("away") == away and g.get("home") == home),
+                None)
+            if at_game is not None:
+                at_stored = [p for p in at_game.get("players", [])
+                             if p.get("s") == side]
+                if ([strip_q(p["n"]) for p in at_stored]
+                        != [strip_q(p["n"]) for p in fresh]
+                        or [p["n"] for p in at_stored]
+                        != [p["n"] for p in fresh]):
+                    lam = lam_by_team.get(team, lam_league)
+                    at_game["players"] = [
+                        p for p in at_game.get("players", [])
+                        if p.get("s") != side] + [
+                        {"n": p["n"], "s": p["s"], "pos": p["pos"],
+                         "sh": p["sh"],
+                         "p": anytime_prob(lam, p["sh"])}
+                        for p in fresh]
+                    at_game["players"].sort(
+                        key=lambda p: 0 if p["s"] == "away" else 1)
+                    at_changed = True
+                    changes.append(f"{label} {team} anytime: "
+                                   f"synced to First TD list")
         new_line = lines.get((away, home))
         if new_line and new_line != game.get("line"):
             changes.append(f"{label}: line {game.get('line')} -> {new_line}")
@@ -800,6 +873,8 @@ def refresh_slate(data, season, data_dir, today=None):
             warnings.append(f"{label}: still no line available")
     if changes:
         nfl["as_of"] = today.isoformat()
+    if at_changed and nfl.get("anytime"):
+        nfl["anytime"]["as_of"] = today.isoformat()
     return bool(changes), {"week": week, "changes": changes,
                            "warnings": warnings}
 
