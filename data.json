@@ -4,9 +4,9 @@
   "built_from": "first-basket-model artifact 2026-11-05 (frozen Nov 5 slate + track)",
   "built_at": "2026-11-05T21:00:00-05:00",
   "note": "Initial data.json. postasb/fblog/slate/track carried over from the page. fblog.g starts empty for all teams (fallback = team games handles existing history); the pipeline writes explicit g entries for slate starters nightly, 0 for first-timers. Pipeline refreshes slate/track/fblog nightly.",
-  "g_increment_date": "2026-11-13",
-  "updated": "2026-11-15T21:46:28-05:00",
-  "as_of": "2026-11-13"
+  "g_increment_date": "2026-11-16",
+  "updated": "2026-11-16T18:18:38-05:00",
+  "as_of": "2026-11-16"
  },
  "postasb": {
   "_cols": [
@@ -19,7 +19,7 @@
   ],
   "_src": "NBA.com 2025-26 post-All-Star per game",
   "players": {
-   "Luka Dončić": [
+   "Luka Don\u010di\u0107": [
     "LAL",
     22,
     11.6,
@@ -99,7 +99,7 @@
     5.7,
     5.4
    ],
-   "Nikola Jokić": [
+   "Nikola Joki\u0107": [
     "DEN",
     26,
     9.7,
@@ -667,7 +667,7 @@
     9.5,
     1.8
    ],
-   "Kristaps Porziņģis": [
+   "Kristaps Porzi\u0146\u0123is": [
     "GSW",
     15,
     5.1,
@@ -2075,7 +2075,7 @@
     2.6,
     1.4
    ],
-   "Nikola Vučević": [
+   "Nikola Vu\u010devi\u0107": [
     "BOS",
     13,
     3.5,
@@ -2243,7 +2243,7 @@
     7.7,
     1.3
    ],
-   "Dennis Schröder": [
+   "Dennis Schr\u00f6der": [
     "CLE",
     26,
     2.8,
@@ -2467,7 +2467,7 @@
     5.0,
     1.6
    ],
-   "Karlo Matković": [
+   "Karlo Matkovi\u0107": [
     "NOP",
     19,
     2.8,
@@ -2539,7 +2539,7 @@
     4.4,
     2.8
    ],
-   "Yanic Konan Niederhäuser": [
+   "Yanic Konan Niederh\u00e4user": [
     "LAC",
     7,
     2.3,
@@ -2563,7 +2563,7 @@
     8.0,
     0.8
    ],
-   "Moussa Diabaté": [
+   "Moussa Diabat\u00e9": [
     "CHA",
     23,
     3.0,
@@ -2619,7 +2619,7 @@
     8.5,
     0.7
    ],
-   "Kasparas Jakučionis": [
+   "Kasparas Jaku\u010dionis": [
     "MIA",
     24,
     2.1,
@@ -2627,7 +2627,7 @@
     2.8,
     2.8
    ],
-   "Bogdan Bogdanović": [
+   "Bogdan Bogdanovi\u0107": [
     "LAC",
     6,
     2.3,
@@ -2699,7 +2699,7 @@
     1.6,
     1.1
    ],
-   "Egor Dëmin": [
+   "Egor D\u00ebmin": [
     "BKN",
     6,
     2.3,
@@ -2859,7 +2859,7 @@
     2.1,
     0.9
    ],
-   "Vít Krejčí": [
+   "V\u00edt Krej\u010d\u00ed": [
     "POR",
     13,
     2.1,
@@ -2995,7 +2995,7 @@
     3.1,
     1.2
    ],
-   "Nikola Topić": [
+   "Nikola Topi\u0107": [
     "OKC",
     9,
     2.3,
@@ -3323,7 +3323,7 @@
     2.9,
     0.9
    ],
-   "Tidjane Salaün": [
+   "Tidjane Sala\u00fcn": [
     "CHA",
     5,
     1.4,
@@ -3347,7 +3347,7 @@
     0.8,
     1.3
    ],
-   "Hugo González": [
+   "Hugo Gonz\u00e1lez": [
     "BOS",
     25,
     1.7,
@@ -3427,7 +3427,7 @@
     0.7,
     0.9
    ],
-   "Pacôme Dadiet": [
+   "Pac\u00f4me Dadiet": [
     "NYK",
     9,
     1.4,
@@ -3899,7 +3899,7 @@
     1.0,
     0.0
    ],
-   "Nikola Jović": [
+   "Nikola Jovi\u0107": [
     "MIA",
     3,
     0.7,
@@ -4075,7 +4075,7 @@
     1.3,
     0.2
    ],
-   "Chris Mañon": [
+   "Chris Ma\u00f1on": [
     "LAL",
     4,
     0.5,
@@ -5775,6 +5775,103 @@
     "d": "2026-11-14",
     "t": "NOP",
     "fg": "Jeremiah Fears"
+   },
+   {
+    "d": "2026-11-15",
+    "t": "OKC",
+    "fg": "Ajay Mitchell"
+   },
+   {
+    "d": "2026-11-15",
+    "t": "SAC",
+    "fg": "Dylan Cardwell",
+    "w": 0.5
+   },
+   {
+    "d": "2026-11-15",
+    "t": "ATL",
+    "fg": "CJ McCollum",
+    "w": 0.5
+   },
+   {
+    "d": "2026-11-15",
+    "t": "MIL",
+    "fg": "Kyle Kuzma"
+   },
+   {
+    "d": "2026-11-15",
+    "t": "HOU",
+    "fg": "Amen Thompson",
+    "w": 0.5
+   },
+   {
+    "d": "2026-11-15",
+    "t": "WAS",
+    "fg": "Alex Sarr"
+   },
+   {
+    "d": "2026-11-15",
+    "t": "BOS",
+    "fg": "Paul George"
+   },
+   {
+    "d": "2026-11-15",
+    "t": "DAL",
+    "fg": "Zaccharie Risacher",
+    "w": 0.5
+   },
+   {
+    "d": "2026-11-15",
+    "t": "NYK",
+    "fg": "Jalen Brunson",
+    "w": 0.5
+   },
+   {
+    "d": "2026-11-15",
+    "t": "TOR",
+    "fg": "Scottie Barnes"
+   },
+   {
+    "d": "2026-11-15",
+    "t": "SAS",
+    "fg": "Victor Wembanyama",
+    "w": 0.5
+   },
+   {
+    "d": "2026-11-15",
+    "t": "UTA",
+    "fg": "Mo Bamba"
+   },
+   {
+    "d": "2026-11-15",
+    "t": "CHA",
+    "fg": "Naz Reid"
+   },
+   {
+    "d": "2026-11-15",
+    "t": "LAC",
+    "fg": "Darius Garland"
+   },
+   {
+    "d": "2026-11-15",
+    "t": "LAL",
+    "fg": "Luka Doncic"
+   },
+   {
+    "d": "2026-11-15",
+    "t": "PHX",
+    "fg": "Miles Bridges",
+    "w": 0.5
+   },
+   {
+    "d": "2026-11-15",
+    "t": "IND",
+    "fg": "Quenton Jackson"
+   },
+   {
+    "d": "2026-11-15",
+    "t": "PHI",
+    "fg": "Tyrese Maxey"
    }
   ],
   "g": {
@@ -5787,22 +5884,23 @@
    },
    "BKN": {
     "Nolan Traore": 6,
-    "Danny Wolf": 6,
-    "Michael Porter Jr.": 7,
-    "Julius Randle": 7,
-    "Day'Ron Sharpe": 7,
+    "Danny Wolf": 7,
+    "Michael Porter Jr.": 8,
+    "Julius Randle": 8,
+    "Day'Ron Sharpe": 8,
     "Terance Mann": 6,
-    "Egor Dëmin": 6
+    "Egor D\u00ebmin": 7
    },
    "BOS": {
-    "Derrick White": 8,
+    "Derrick White": 9,
     "Hugo Gonzalez": 5,
-    "Jayson Tatum": 8,
-    "Paul George": 7,
+    "Jayson Tatum": 9,
+    "Paul George": 8,
     "Neemias Queta": 8,
-    "Jordan Walsh": 7,
+    "Jordan Walsh": 8,
     "Mike Conley": 6,
-    "Baylor Scheierman": 7
+    "Baylor Scheierman": 7,
+    "Mitchell Robinson": 10
    },
    "CHA": {
     "Coby White": 9,
@@ -5813,19 +5911,20 @@
     "Grayson Allen": 10
    },
    "CHI": {
-    "Josh Giddey": 7,
-    "Isaac Okoro": 7,
-    "Matas Buzelis": 7,
+    "Josh Giddey": 8,
+    "Isaac Okoro": 8,
+    "Matas Buzelis": 8,
     "Caleb Wilson": 7,
-    "Jalen Smith": 7
+    "Jalen Smith": 8,
+    "Norman Powell": 11
    },
    "CLE": {
-    "James Harden": 11,
-    "Donovan Mitchell": 11,
-    "Peyton Watson": 11,
+    "James Harden": 12,
+    "Donovan Mitchell": 12,
+    "Peyton Watson": 12,
     "Evan Mobley": 11,
-    "Jarrett Allen": 10,
-    "Meleek Thomas": 10
+    "Jarrett Allen": 11,
+    "Meleek Thomas": 11
    },
    "DAL": {
     "Kyrie Irving": 10,
@@ -5836,11 +5935,11 @@
     "Caleb Martin": 10
    },
    "DEN": {
-    "Jamal Murray": 8,
-    "Christian Braun": 8,
-    "Cameron Johnson": 8,
-    "Aaron Gordon": 8,
-    "Nikola Jokic": 8
+    "Jamal Murray": 9,
+    "Christian Braun": 9,
+    "Cameron Johnson": 9,
+    "Aaron Gordon": 9,
+    "Nikola Jokic": 9
    },
    "DET": {
     "Cade Cunningham": 9,
@@ -5852,18 +5951,19 @@
    },
    "GSW": {
     "Stephen Curry": 9,
-    "Brandin Podziemski": 10,
+    "Brandin Podziemski": 11,
     "Gui Santos": 10,
-    "Yaxel Lendeborg": 10,
-    "Draymond Green": 10,
-    "De'Anthony Melton": 11
+    "Yaxel Lendeborg": 11,
+    "Draymond Green": 11,
+    "De'Anthony Melton": 12,
+    "Will Richard": 12
    },
    "HOU": {
-    "Fred VanVleet": 9,
-    "Amen Thompson": 9,
-    "Kevin Durant": 9,
-    "Jabari Smith Jr.": 9,
-    "Alperen Sengun": 9
+    "Fred VanVleet": 10,
+    "Amen Thompson": 10,
+    "Kevin Durant": 10,
+    "Jabari Smith Jr.": 10,
+    "Alperen Sengun": 10
    },
    "IND": {
     "Andrew Nembhard": 9,
@@ -5890,18 +5990,20 @@
    },
    "MEM": {
     "Ty Jerome": 6,
-    "Jaylen Wells": 6,
-    "Cedric Coward": 6,
-    "Cameron Boozer": 6,
-    "Zach Edey": 6
+    "Jaylen Wells": 7,
+    "Cedric Coward": 7,
+    "Cameron Boozer": 7,
+    "Zach Edey": 7,
+    "Cam Spencer": 10
    },
    "MIA": {
-    "Davion Mitchell": 10,
-    "Klay Thompson": 10,
+    "Davion Mitchell": 11,
+    "Klay Thompson": 11,
     "Andrew Wiggins": 9,
-    "Giannis Antetokounmpo": 10,
-    "Bam Adebayo": 10,
-    "Pelle Larsson": 9
+    "Giannis Antetokounmpo": 11,
+    "Bam Adebayo": 11,
+    "Pelle Larsson": 9,
+    "Myron Gardner": 13
    },
    "MIL": {
     "Tyler Herro": 10,
@@ -5912,19 +6014,21 @@
     "Kel'el Ware": 9
    },
    "MIN": {
-    "LaMelo Ball": 11,
-    "Ayo Dosunmu": 11,
-    "Jaden McDaniels": 11,
-    "Jonathan Kuminga": 11,
-    "Rudy Gobert": 11
+    "LaMelo Ball": 12,
+    "Ayo Dosunmu": 12,
+    "Jaden McDaniels": 12,
+    "Jonathan Kuminga": 12,
+    "Rudy Gobert": 12
    },
    "NOP": {
-    "Jeremiah Fears": 9,
+    "Jeremiah Fears": 10,
     "Dejounte Murray": 9,
-    "Herbert Jones": 8,
+    "Herbert Jones": 9,
     "Trey Murphy": 8,
-    "Zion Williamson": 9,
-    "Karlo Matković": 9
+    "Zion Williamson": 10,
+    "Karlo Matkovi\u0107": 9,
+    "Saddiq Bey": 13,
+    "Yves Missi": 13
    },
    "NYK": {
     "Jalen Brunson": 9,
@@ -5946,34 +6050,35 @@
    "ORL": {
     "Jase Richardson": 7,
     "Jamal Cain": 7,
-    "Anthony Black": 8,
-    "Franz Wagner": 8,
-    "Wendell Carter Jr.": 8,
-    "Desmond Bane": 8
+    "Anthony Black": 9,
+    "Franz Wagner": 9,
+    "Wendell Carter Jr.": 9,
+    "Desmond Bane": 9,
+    "Tristan da Silva": 10
    },
    "PHI": {
-    "Tyrese Maxey": 10,
-    "VJ Edgecombe": 10,
-    "Jaylen Brown": 10,
+    "Tyrese Maxey": 11,
+    "VJ Edgecombe": 11,
+    "Jaylen Brown": 11,
     "LeBron James": 9,
-    "Joel Embiid": 10,
-    "Dean Wade": 10
+    "Joel Embiid": 11,
+    "Dean Wade": 11
    },
    "PHX": {
-    "Jalen Green": 7,
-    "Devin Booker": 7,
-    "Dillon Brooks": 7,
-    "Miles Bridges": 7,
-    "Oso Ighodaro": 7
+    "Jalen Green": 8,
+    "Devin Booker": 8,
+    "Dillon Brooks": 8,
+    "Miles Bridges": 8,
+    "Oso Ighodaro": 8
    },
    "POR": {
-    "Damian Lillard": 8,
+    "Damian Lillard": 9,
     "Scoot Henderson": 7,
-    "Toumani Camara": 9,
-    "Deni Avdija": 9,
-    "Donovan Clingan": 9,
+    "Toumani Camara": 10,
+    "Deni Avdija": 10,
+    "Donovan Clingan": 10,
     "Jrue Holiday": 6,
-    "Sidy Cissoko": 9
+    "Sidy Cissoko": 10
    },
    "SAC": {
     "Darius Acuff Jr.": 8,
@@ -6009,160 +6114,471 @@
     "Josh Green": 8
    },
    "WAS": {
-    "Trae Young": 10,
-    "Kyshawn George": 10,
-    "AJ Dybantsa": 10,
-    "Anthony Davis": 10,
-    "Alex Sarr": 10
+    "Trae Young": 11,
+    "Kyshawn George": 11,
+    "AJ Dybantsa": 11,
+    "Anthony Davis": 11,
+    "Alex Sarr": 11
    }
   }
  },
  "slate": {
-  "date": "2026-11-13",
-  "note": "3 games · post-All-Star '25-26 + '26-27 blend, first-basket history, Covers lines, tip records",
+  "date": "2026-11-16",
+  "note": "8 games \u00b7 post-All-Star '25-26 + '26-27 blend, first-basket history, Covers lines, tip records",
   "games": [
    {
-    "away": "GSW",
-    "home": "SAS",
-    "awayTip": 7.6,
-    "awayRate": 42.2,
-    "homeRate": 47.8,
-    "tipNote": "Draymond Green vs Victor Wembanyama",
-    "line": "SAS -13.5, total 217.5",
+    "away": "CHI",
+    "home": "CLE",
+    "awayTip": 19.5,
+    "awayRate": 43.2,
+    "homeRate": 46.8,
+    "tipNote": "Jalen Smith vs Jarrett Allen",
+    "line": "CLE -9.5, total 241.5",
+    "time": "19:00",
     "players": [
      {
-      "n": "De'Anthony Melton",
+      "n": "Josh Giddey",
       "s": "away",
-      "sh": 17.1
+      "sh": 19.2
      },
      {
-      "n": "Brandin Podziemski",
+      "n": "Norman Powell",
       "s": "away",
-      "sh": 23.3
+      "sh": 23.8
      },
      {
-      "n": "Gui Santos",
+      "n": "Isaac Okoro",
       "s": "away",
-      "sh": 17.7
+      "sh": 13.2
      },
      {
-      "n": "Yaxel Lendeborg",
+      "n": "Matas Buzelis",
       "s": "away",
-      "sh": 26.9
+      "sh": 22.1
      },
      {
-      "n": "Draymond Green",
+      "n": "Jalen Smith",
       "s": "away",
-      "sh": 11.0
+      "sh": 17.8
      },
      {
-      "n": "De'Aaron Fox",
-      "s": "home",
-      "sh": 18.3
-     },
-     {
-      "n": "Stephon Castle",
-      "s": "home",
-      "sh": 17.3
-     },
-     {
-      "n": "Dylan Harper",
+      "n": "James Harden",
       "s": "home",
       "sh": 18.8
      },
      {
-      "n": "Devin Vassell",
+      "n": "Donovan Mitchell",
       "s": "home",
-      "sh": 14.6
+      "sh": 24.8
      },
      {
-      "n": "Victor Wembanyama",
+      "n": "Meleek Thomas",
       "s": "home",
-      "sh": 27.0
+      "sh": 17.8
+     },
+     {
+      "n": "Peyton Watson",
+      "s": "home",
+      "sh": 15.3
+     },
+     {
+      "n": "Jarrett Allen",
+      "s": "home",
+      "sh": 19.3
      }
-    ],
-    "time": "9:30 PM"
+    ]
    },
    {
-    "away": "OKC",
-    "home": "LAC",
-    "awayTip": 46.8,
-    "awayRate": 46.5,
-    "homeRate": 43.5,
-    "tipNote": "Aday Mara vs Brook Lopez",
-    "line": "OKC -7.5, total 222.5",
+    "away": "GSW",
+    "home": "NOP",
+    "awayTip": 46.9,
+    "awayRate": 45.5,
+    "homeRate": 44.5,
+    "tipNote": "Draymond Green vs Yves Missi",
+    "line": "GSW -2.5, total 223.5",
+    "time": "20:00",
     "players": [
      {
-      "n": "Shai Gilgeous-Alexander",
+      "n": "De'Anthony Melton",
       "s": "away",
-      "sh": 31.7
+      "sh": 18.7
      },
      {
-      "n": "Ajay Mitchell (Q)",
+      "n": "Brandin Podziemski",
       "s": "away",
-      "sh": 20.5
+      "sh": 25.1
      },
      {
-      "n": "Jared McCain",
+      "n": "Will Richard",
       "s": "away",
-      "sh": 16.2
+      "sh": 11.9
      },
      {
-      "n": "Isaiah Hartenstein",
+      "n": "Yaxel Lendeborg",
       "s": "away",
-      "sh": 12.9
+      "sh": 28.1
      },
      {
-      "n": "Aday Mara",
+      "n": "Draymond Green",
       "s": "away",
-      "sh": 14.7
+      "sh": 12.1
      },
      {
-      "n": "Darius Garland",
+      "n": "Jeremiah Fears",
       "s": "home",
-      "sh": 27.1
+      "sh": 22.2
      },
      {
-      "n": "Kris Dunn",
+      "n": "Herbert Jones",
       "s": "home",
       "sh": 12.7
      },
      {
-      "n": "Derrick Jones Jr.",
+      "n": "Saddiq Bey",
       "s": "home",
-      "sh": 17.3
+      "sh": 22.8
      },
      {
-      "n": "Rui Hachimura",
+      "n": "Zion Williamson",
       "s": "home",
-      "sh": 19.3
+      "sh": 26.5
      },
      {
-      "n": "Brook Lopez",
+      "n": "Yves Missi",
       "s": "home",
-      "sh": 19.6
+      "sh": 11.8
      }
-    ],
-    "time": "10:30 PM"
+    ]
+   },
+   {
+    "away": "HOU",
+    "home": "MIA",
+    "awayTip": 26.9,
+    "awayRate": 45.5,
+    "homeRate": 44.5,
+    "tipNote": "Alperen Sengun vs Bam Adebayo",
+    "line": "HOU -2.5, total 232.0",
+    "time": "19:30",
+    "players": [
+     {
+      "n": "Fred VanVleet",
+      "s": "away",
+      "sh": 14.7
+     },
+     {
+      "n": "Amen Thompson (Q)",
+      "s": "away",
+      "sh": 19.5
+     },
+     {
+      "n": "Kevin Durant",
+      "s": "away",
+      "sh": 21.9
+     },
+     {
+      "n": "Jabari Smith Jr.",
+      "s": "away",
+      "sh": 17.2
+     },
+     {
+      "n": "Alperen Sengun",
+      "s": "away",
+      "sh": 22.7
+     },
+     {
+      "n": "Davion Mitchell",
+      "s": "home",
+      "sh": 17.9
+     },
+     {
+      "n": "Klay Thompson",
+      "s": "home",
+      "sh": 17.6
+     },
+     {
+      "n": "Myron Gardner",
+      "s": "home",
+      "sh": 4.8
+     },
+     {
+      "n": "Giannis Antetokounmpo",
+      "s": "home",
+      "sh": 31.9
+     },
+     {
+      "n": "Bam Adebayo",
+      "s": "home",
+      "sh": 23.8
+     }
+    ]
+   },
+   {
+    "away": "MEM",
+    "home": "WAS",
+    "awayTip": 54.9,
+    "awayRate": 45.9,
+    "homeRate": 44.1,
+    "tipNote": "Zach Edey vs Alex Sarr",
+    "line": "MEM -4.5, total 232.5",
+    "time": "19:00",
+    "players": [
+     {
+      "n": "Cam Spencer",
+      "s": "away",
+      "sh": 15.6
+     },
+     {
+      "n": "Jaylen Wells",
+      "s": "away",
+      "sh": 18.9
+     },
+     {
+      "n": "Cedric Coward",
+      "s": "away",
+      "sh": 20.9
+     },
+     {
+      "n": "Cameron Boozer",
+      "s": "away",
+      "sh": 21.5
+     },
+     {
+      "n": "Zach Edey",
+      "s": "away",
+      "sh": 19.1
+     },
+     {
+      "n": "Trae Young",
+      "s": "home",
+      "sh": 16.6
+     },
+     {
+      "n": "Kyshawn George",
+      "s": "home",
+      "sh": 18.2
+     },
+     {
+      "n": "AJ Dybantsa",
+      "s": "home",
+      "sh": 18.1
+     },
+     {
+      "n": "Anthony Davis",
+      "s": "home",
+      "sh": 25.9
+     },
+     {
+      "n": "Alex Sarr",
+      "s": "home",
+      "sh": 17.2
+     }
+    ]
+   },
+   {
+    "away": "ORL",
+    "home": "BOS",
+    "awayTip": 44.4,
+    "awayRate": 42.8,
+    "homeRate": 47.2,
+    "tipNote": "Wendell Carter Jr. vs Mitchell Robinson",
+    "line": "BOS -10.5, total 213.5",
+    "time": "19:00",
+    "players": [
+     {
+      "n": "Anthony Black",
+      "s": "away",
+      "sh": 16.3
+     },
+     {
+      "n": "Desmond Bane",
+      "s": "away",
+      "sh": 21.7
+     },
+     {
+      "n": "Tristan da Silva",
+      "s": "away",
+      "sh": 17.1
+     },
+     {
+      "n": "Franz Wagner",
+      "s": "away",
+      "sh": 24.6
+     },
+     {
+      "n": "Wendell Carter Jr.",
+      "s": "away",
+      "sh": 16.4
+     },
+     {
+      "n": "Derrick White",
+      "s": "home",
+      "sh": 19.9
+     },
+     {
+      "n": "Jordan Walsh",
+      "s": "home",
+      "sh": 9.3
+     },
+     {
+      "n": "Jayson Tatum",
+      "s": "home",
+      "sh": 27.9
+     },
+     {
+      "n": "Paul George",
+      "s": "home",
+      "sh": 26.6
+     },
+     {
+      "n": "Mitchell Robinson",
+      "s": "home",
+      "sh": 12.3
+     }
+    ]
+   },
+   {
+    "away": "PHI",
+    "home": "BKN",
+    "awayTip": 56.4,
+    "awayRate": 46.3,
+    "homeRate": 43.7,
+    "tipNote": "Joel Embiid vs Day'Ron Sharpe",
+    "line": "PHI -6.5, total 226.5",
+    "time": "19:30",
+    "players": [
+     {
+      "n": "Tyrese Maxey",
+      "s": "away",
+      "sh": 24.9
+     },
+     {
+      "n": "VJ Edgecombe",
+      "s": "away",
+      "sh": 18.4
+     },
+     {
+      "n": "Jaylen Brown",
+      "s": "away",
+      "sh": 23.7
+     },
+     {
+      "n": "Dean Wade",
+      "s": "away",
+      "sh": 7.6
+     },
+     {
+      "n": "Joel Embiid (Q)",
+      "s": "away",
+      "sh": 21.4
+     },
+     {
+      "n": "Egor D\u00ebmin",
+      "s": "home",
+      "sh": 13.5
+     },
+     {
+      "n": "Danny Wolf",
+      "s": "home",
+      "sh": 14.8
+     },
+     {
+      "n": "Michael Porter Jr.",
+      "s": "home",
+      "sh": 27.3
+     },
+     {
+      "n": "Julius Randle",
+      "s": "home",
+      "sh": 24.3
+     },
+     {
+      "n": "Day'Ron Sharpe",
+      "s": "home",
+      "sh": 16.1
+     }
+    ]
+   },
+   {
+    "away": "PHX",
+    "home": "DEN",
+    "awayTip": 40.9,
+    "awayRate": 43.0,
+    "homeRate": 47.0,
+    "tipNote": "Oso Ighodaro vs Nikola Joki\u0107",
+    "line": "DEN -10.5, total 230.5",
+    "time": "21:00",
+    "players": [
+     {
+      "n": "Jalen Green",
+      "s": "away",
+      "sh": 20.0
+     },
+     {
+      "n": "Devin Booker",
+      "s": "away",
+      "sh": 26.0
+     },
+     {
+      "n": "Dillon Brooks",
+      "s": "away",
+      "sh": 19.0
+     },
+     {
+      "n": "Miles Bridges",
+      "s": "away",
+      "sh": 18.3
+     },
+     {
+      "n": "Oso Ighodaro",
+      "s": "away",
+      "sh": 12.7
+     },
+     {
+      "n": "Jamal Murray",
+      "s": "home",
+      "sh": 24.0
+     },
+     {
+      "n": "Christian Braun",
+      "s": "home",
+      "sh": 16.5
+     },
+     {
+      "n": "Cameron Johnson",
+      "s": "home",
+      "sh": 15.0
+     },
+     {
+      "n": "Aaron Gordon",
+      "s": "home",
+      "sh": 14.2
+     },
+     {
+      "n": "Nikola Joki\u0107",
+      "s": "home",
+      "sh": 26.4
+     }
+    ]
    },
    {
     "away": "POR",
-    "home": "SAC",
-    "awayTip": 61.5,
-    "awayRate": 47.3,
-    "homeRate": 42.7,
-    "tipNote": "Donovan Clingan vs Domantas Sabonis",
-    "line": "POR -11.5, total 229.5",
+    "home": "MIN",
+    "awayTip": 52.0,
+    "awayRate": 44.5,
+    "homeRate": 45.5,
+    "tipNote": "Donovan Clingan vs Rudy Gobert",
+    "line": "MIN -2.5, total 227.5",
+    "time": "20:00",
     "players": [
      {
       "n": "Damian Lillard",
       "s": "away",
-      "sh": 22.5
+      "sh": 22.4
      },
      {
       "n": "Sidy Cissoko",
       "s": "away",
-      "sh": 8.7
+      "sh": 8.6
      },
      {
       "n": "Toumani Camara",
@@ -6172,7 +6588,7 @@
      {
       "n": "Deni Avdija",
       "s": "away",
-      "sh": 26.3
+      "sh": 26.6
      },
      {
       "n": "Donovan Clingan",
@@ -6180,284 +6596,283 @@
       "sh": 19.0
      },
      {
-      "n": "Darius Acuff Jr.",
+      "n": "LaMelo Ball",
       "s": "home",
-      "sh": 27.4
+      "sh": 22.7
      },
      {
-      "n": "Zach LaVine",
+      "n": "Ayo Dosunmu",
       "s": "home",
-      "sh": 21.8
+      "sh": 21.5
      },
      {
-      "n": "De'Andre Hunter",
+      "n": "Jaden McDaniels",
       "s": "home",
-      "sh": 11.5
+      "sh": 21.5
      },
      {
-      "n": "Keegan Murray",
+      "n": "Jonathan Kuminga",
       "s": "home",
-      "sh": 15.9
+      "sh": 16.2
      },
      {
-      "n": "Domantas Sabonis",
+      "n": "Rudy Gobert",
       "s": "home",
-      "sh": 19.4
+      "sh": 14.0
      }
-    ],
-    "time": "10:00 PM"
+    ]
    }
   ],
   "dd": [
    {
-    "n": "Victor Wembanyama",
-    "t": "SAS",
-    "pts": 27.9,
-    "reb": 12.7,
-    "ast": 4.2,
+    "n": "Nikola Joki\u0107",
+    "t": "DEN",
+    "pts": 25.1,
+    "reb": 12.1,
+    "ast": 11.4,
     "matchup_n": 4,
-    "matchup_reb": 13.5,
-    "matchup_ast": 5.2
+    "matchup_reb": 11.8,
+    "matchup_ast": 13.0
    },
    {
-    "n": "Domantas Sabonis",
-    "t": "SAC",
-    "pts": 15.0,
-    "reb": 12.5,
-    "ast": 5.2,
-    "matchup_n": 2,
-    "matchup_reb": 13.5,
-    "matchup_ast": 6.0
+    "n": "Giannis Antetokounmpo",
+    "t": "MIA",
+    "pts": 28.1,
+    "reb": 10.7,
+    "ast": 4.8,
+    "matchup_n": 1,
+    "matchup_reb": 8.0,
+    "matchup_ast": 3.0
+   },
+   {
+    "n": "Anthony Davis",
+    "t": "WAS",
+    "pts": 23.0,
+    "reb": 10.6,
+    "ast": 2.5,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
     "n": "Donovan Clingan",
     "t": "POR",
     "pts": 12.2,
-    "reb": 11.6,
-    "ast": 2.1,
-    "matchup_n": 5,
+    "reb": 11.0,
+    "ast": 2.3,
+    "matchup_n": 4,
+    "matchup_reb": 10.8,
+    "matchup_ast": 2.8
+   },
+   {
+    "n": "Bam Adebayo",
+    "t": "MIA",
+    "pts": 21.5,
+    "reb": 11.3,
+    "ast": 3.3,
+    "matchup_n": 2,
+    "matchup_reb": 16.0,
+    "matchup_ast": 2.5
+   },
+   {
+    "n": "Cameron Boozer",
+    "t": "MEM",
+    "pts": 15.5,
+    "reb": 9.7,
+    "ast": 5.2,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
+   },
+   {
+    "n": "Alperen Sengun",
+    "t": "HOU",
+    "pts": 21.1,
+    "reb": 8.8,
+    "ast": 5.7,
+    "matchup_n": 2,
+    "matchup_reb": 9.0,
+    "matchup_ast": 3.0
+   },
+   {
+    "n": "Josh Giddey",
+    "t": "CHI",
+    "pts": 12.6,
+    "reb": 7.3,
+    "ast": 9.9,
+    "matchup_n": 4,
+    "matchup_reb": 8.0,
+    "matchup_ast": 10.8
+   },
+   {
+    "n": "Jayson Tatum",
+    "t": "BOS",
+    "pts": 24.0,
+    "reb": 7.6,
+    "ast": 6.3,
+    "matchup_n": 1,
+    "matchup_reb": 4.0,
+    "matchup_ast": 7.0
+   },
+   {
+    "n": "Rudy Gobert",
+    "t": "MIN",
+    "pts": 9.2,
+    "reb": 11.9,
+    "ast": 1.6,
+    "matchup_n": 4,
     "matchup_reb": 12.0,
-    "matchup_ast": 2.2
+    "matchup_ast": 1.5
+   },
+   {
+    "n": "Joel Embiid (Q)",
+    "t": "PHI",
+    "pts": 23.4,
+    "reb": 8.0,
+    "ast": 3.9,
+    "matchup_n": 1,
+    "matchup_reb": 6.0,
+    "matchup_ast": 4.0
+   },
+   {
+    "n": "Zach Edey",
+    "t": "MEM",
+    "pts": 11.2,
+    "reb": 9.7,
+    "ast": 1.0,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
+   },
+   {
+    "n": "Jarrett Allen",
+    "t": "CLE",
+    "pts": 15.4,
+    "reb": 8.1,
+    "ast": 2.1,
+    "matchup_n": 3,
+    "matchup_reb": 7.0,
+    "matchup_ast": 3.3
+   },
+   {
+    "n": "Wendell Carter Jr.",
+    "t": "ORL",
+    "pts": 12.8,
+    "reb": 7.6,
+    "ast": 1.3,
+    "matchup_n": 4,
+    "matchup_reb": 6.8,
+    "matchup_ast": 1.0
+   },
+   {
+    "n": "Amen Thompson (Q)",
+    "t": "HOU",
+    "pts": 17.7,
+    "reb": 9.5,
+    "ast": 4.2,
+    "matchup_n": 2,
+    "matchup_reb": 14.5,
+    "matchup_ast": 4.0
    },
    {
     "n": "Deni Avdija",
     "t": "POR",
-    "pts": 22.4,
-    "reb": 6.4,
-    "ast": 7.4,
-    "matchup_n": 5,
-    "matchup_reb": 6.6,
-    "matchup_ast": 8.0
+    "pts": 22.8,
+    "reb": 6.3,
+    "ast": 5.3,
+    "matchup_n": 3,
+    "matchup_reb": 6.7,
+    "matchup_ast": 3.0
    },
    {
     "n": "Yaxel Lendeborg",
     "t": "GSW",
-    "pts": 21.7,
-    "reb": 7.4,
-    "ast": 3.7,
-    "matchup_n": 0,
-    "matchup_reb": null,
-    "matchup_ast": null
-   },
-   {
-    "n": "Darius Acuff Jr.",
-    "t": "SAC",
-    "pts": 26.2,
-    "reb": 3.5,
-    "ast": 6.8,
+    "pts": 20.2,
+    "reb": 7.3,
+    "ast": 3.6,
     "matchup_n": 1,
-    "matchup_reb": 2.0,
+    "matchup_reb": 7.0,
     "matchup_ast": 4.0
    },
    {
-    "n": "Stephon Castle",
-    "t": "SAS",
-    "pts": 15.6,
-    "reb": 6.6,
-    "ast": 7.2,
-    "matchup_n": 4,
-    "matchup_reb": 7.8,
-    "matchup_ast": 7.8
+    "n": "Trae Young",
+    "t": "WAS",
+    "pts": 16.7,
+    "reb": 3.0,
+    "ast": 7.4,
+    "matchup_n": 0,
+    "matchup_reb": null,
+    "matchup_ast": null
    },
    {
-    "n": "Isaiah Hartenstein",
-    "t": "OKC",
-    "pts": 7.3,
-    "reb": 9.2,
-    "ast": 2.9,
-    "matchup_n": 3,
-    "matchup_reb": 8.7,
-    "matchup_ast": 1.7
+    "n": "Michael Porter Jr.",
+    "t": "BKN",
+    "pts": 21.8,
+    "reb": 8.2,
+    "ast": 1.9,
+    "matchup_n": 2,
+    "matchup_reb": 11.0,
+    "matchup_ast": 1.5
    },
    {
-    "n": "Darius Garland",
-    "t": "LAC",
-    "pts": 20.1,
-    "reb": 2.4,
-    "ast": 7.3,
-    "matchup_n": 1,
-    "matchup_reb": 4.0,
-    "matchup_ast": 11.0
+    "n": "James Harden",
+    "t": "CLE",
+    "pts": 18.9,
+    "reb": 5.1,
+    "ast": 6.9,
+    "matchup_n": 2,
+    "matchup_reb": 6.0,
+    "matchup_ast": 7.5
    },
    {
-    "n": "Shai Gilgeous-Alexander",
-    "t": "OKC",
-    "pts": 29.5,
-    "reb": 4.3,
+    "n": "Davion Mitchell",
+    "t": "MIA",
+    "pts": 13.1,
+    "reb": 2.5,
     "ast": 7.1,
+    "matchup_n": 2,
+    "matchup_reb": 2.0,
+    "matchup_ast": 7.0
+   },
+   {
+    "n": "Jaylen Brown",
+    "t": "PHI",
+    "pts": 24.0,
+    "reb": 6.9,
+    "ast": 5.7,
+    "matchup_n": 4,
+    "matchup_reb": 7.2,
+    "matchup_ast": 7.2
+   },
+   {
+    "n": "Alex Sarr",
+    "t": "WAS",
+    "pts": 13.1,
+    "reb": 7.8,
+    "ast": 1.9,
+    "matchup_n": 2,
+    "matchup_reb": 10.0,
+    "matchup_ast": 1.5
+   },
+   {
+    "n": "Jamal Murray",
+    "t": "DEN",
+    "pts": 25.3,
+    "reb": 4.6,
+    "ast": 5.7,
     "matchup_n": 4,
     "matchup_reb": 4.5,
-    "matchup_ast": 8.5
+    "matchup_ast": 5.0
    },
    {
-    "n": "De'Aaron Fox",
-    "t": "SAS",
-    "pts": 15.8,
-    "reb": 3.6,
-    "ast": 6.4,
-    "matchup_n": 4,
-    "matchup_reb": 3.2,
-    "matchup_ast": 6.8
-   },
-   {
-    "n": "Brandin Podziemski",
-    "t": "GSW",
-    "pts": 17.4,
-    "reb": 5.4,
-    "ast": 3.9,
-    "matchup_n": 4,
-    "matchup_reb": 5.0,
-    "matchup_ast": 3.5
-   },
-   {
-    "n": "Aday Mara",
-    "t": "OKC",
-    "pts": 8.5,
-    "reb": 5.8,
-    "ast": 1.3,
-    "matchup_n": 1,
-    "matchup_reb": 3.0,
-    "matchup_ast": 1.0
-   },
-   {
-    "n": "Draymond Green",
-    "t": "GSW",
-    "pts": 6.0,
-    "reb": 5.0,
-    "ast": 6.8,
-    "matchup_n": 0,
-    "matchup_reb": null,
-    "matchup_ast": null
-   },
-   {
-    "n": "Brook Lopez",
-    "t": "LAC",
-    "pts": 12.2,
-    "reb": 5.3,
-    "ast": 1.5,
-    "matchup_n": 0,
-    "matchup_reb": null,
-    "matchup_ast": null
-   },
-   {
-    "n": "Dylan Harper",
-    "t": "SAS",
-    "pts": 15.4,
-    "reb": 4.3,
-    "ast": 4.5,
-    "matchup_n": 0,
-    "matchup_reb": null,
-    "matchup_ast": null
-   },
-   {
-    "n": "Gui Santos",
-    "t": "GSW",
-    "pts": 11.7,
-    "reb": 5.0,
-    "ast": 3.0,
-    "matchup_n": 0,
-    "matchup_reb": null,
-    "matchup_ast": null
-   },
-   {
-    "n": "Keegan Murray",
-    "t": "SAC",
-    "pts": 12.3,
-    "reb": 4.6,
-    "ast": 1.7,
-    "matchup_n": 0,
-    "matchup_reb": null,
-    "matchup_ast": null
-   },
-   {
-    "n": "Damian Lillard",
-    "t": "POR",
-    "pts": 19.8,
-    "reb": 3.2,
-    "ast": 4.2,
-    "matchup_n": 0,
-    "matchup_reb": null,
-    "matchup_ast": null
-   },
-   {
-    "n": "Rui Hachimura",
-    "t": "LAC",
-    "pts": 12.4,
-    "reb": 4.5,
-    "ast": 1.1,
-    "matchup_n": 0,
-    "matchup_reb": null,
-    "matchup_ast": null
-   },
-   {
-    "n": "Derrick Jones Jr.",
-    "t": "LAC",
-    "pts": 10.5,
-    "reb": 4.5,
-    "ast": 1.5,
-    "matchup_n": 0,
-    "matchup_reb": null,
-    "matchup_ast": null
-   },
-   {
-    "n": "Toumani Camara",
-    "t": "POR",
-    "pts": 13.7,
-    "reb": 4.2,
-    "ast": 1.9,
-    "matchup_n": 0,
-    "matchup_reb": null,
-    "matchup_ast": null
-   },
-   {
-    "n": "Devin Vassell",
-    "t": "SAS",
-    "pts": 12.9,
+    "n": "LaMelo Ball",
+    "t": "MIN",
+    "pts": 19.7,
     "reb": 4.1,
-    "ast": 2.9,
-    "matchup_n": 0,
-    "matchup_reb": null,
-    "matchup_ast": null
-   },
-   {
-    "n": "De'Anthony Melton",
-    "t": "GSW",
-    "pts": 11.8,
-    "reb": 4.0,
-    "ast": 2.6,
-    "matchup_n": 0,
-    "matchup_reb": null,
-    "matchup_ast": null
-   },
-   {
-    "n": "Kris Dunn",
-    "t": "LAC",
-    "pts": 6.9,
-    "reb": 4.0,
-    "ast": 4.1,
-    "matchup_n": 0,
-    "matchup_reb": null,
-    "matchup_ast": null
+    "ast": 6.3,
+    "matchup_n": 2,
+    "matchup_reb": 4.0,
+    "matchup_ast": 6.0
    }
   ]
  },
@@ -9537,7 +9952,7 @@
         0.0692
        ],
        [
-        "Karlo Matković",
+        "Karlo Matkovi\u0107",
         "NOP",
         0.0588
        ],
@@ -10716,12 +11131,12 @@
         0.0661
        ],
        [
-        "Karlo Matković",
+        "Karlo Matkovi\u0107",
         "NOP",
         0.0651
        ],
        [
-        "Egor Dëmin",
+        "Egor D\u00ebmin",
         "BKN",
         0.0563
        ],
@@ -10866,7 +11281,7 @@
         0.1385
        ],
        [
-        "Nikola Jokić",
+        "Nikola Joki\u0107",
         "DEN",
         0.1306
        ],
@@ -10981,7 +11396,7 @@
       "pa": 0.5723,
       "p": [
        [
-        "Luka Dončić",
+        "Luka Don\u010di\u0107",
         "LAL",
         0.214
        ],
@@ -11279,7 +11694,7 @@
     ],
     "dd": [
      {
-      "n": "Nikola Jokić",
+      "n": "Nikola Joki\u0107",
       "t": "DEN",
       "p": 0.925,
       "pts": 25.0,
@@ -11377,7 +11792,7 @@
       }
      },
      {
-      "n": "Luka Dončić",
+      "n": "Luka Don\u010di\u0107",
       "t": "LAL",
       "p": 0.455,
       "pts": 36.5,
@@ -11658,7 +12073,7 @@
         0.0987
        ],
        [
-        "Moussa Diabaté",
+        "Moussa Diabat\u00e9",
         "CHA",
         0.0855
        ],
@@ -12002,7 +12417,7 @@
       }
      },
      {
-      "n": "Moussa Diabaté",
+      "n": "Moussa Diabat\u00e9",
       "t": "CHA",
       "p": 0.1413,
       "pts": 7.8,
@@ -13408,6 +13823,1336 @@
       }
      }
     ]
+   },
+   {
+    "d": "2026-11-16",
+    "games": [
+     {
+      "g": "CHI@CLE",
+      "pa": 0.3858,
+      "p": [
+       [
+        "Jarrett Allen",
+        "CLE",
+        0.1814
+       ],
+       [
+        "Donovan Mitchell",
+        "CLE",
+        0.1379
+       ],
+       [
+        "James Harden",
+        "CLE",
+        0.1141
+       ],
+       [
+        "Josh Giddey",
+        "CHI",
+        0.1049
+       ],
+       [
+        "Peyton Watson",
+        "CLE",
+        0.1002
+       ],
+       [
+        "Meleek Thomas",
+        "CLE",
+        0.0934
+       ],
+       [
+        "Jalen Smith",
+        "CHI",
+        0.0795
+       ],
+       [
+        "Matas Buzelis",
+        "CHI",
+        0.0632
+       ],
+       [
+        "Norman Powell",
+        "CHI",
+        0.0612
+       ],
+       [
+        "Isaac Okoro",
+        "CHI",
+        0.052
+       ]
+      ],
+      "act": null
+     },
+     {
+      "g": "GSW@NOP",
+      "pa": 0.4982,
+      "p": [
+       [
+        "Zion Williamson",
+        "NOP",
+        0.1436
+       ],
+       [
+        "Brandin Podziemski",
+        "GSW",
+        0.1415
+       ],
+       [
+        "Jeremiah Fears",
+        "NOP",
+        0.1287
+       ],
+       [
+        "Yaxel Lendeborg",
+        "GSW",
+        0.0933
+       ],
+       [
+        "De'Anthony Melton",
+        "GSW",
+        0.0762
+       ],
+       [
+        "Saddiq Bey",
+        "NOP",
+        0.0715
+       ],
+       [
+        "Herbert Jones",
+        "NOP",
+        0.0634
+       ],
+       [
+        "Will Richard",
+        "GSW",
+        0.0543
+       ],
+       [
+        "Yves Missi",
+        "NOP",
+        0.0527
+       ],
+       [
+        "Draymond Green",
+        "GSW",
+        0.0402
+       ]
+      ],
+      "act": null
+     },
+     {
+      "g": "HOU@MIA",
+      "pa": 0.4401,
+      "p": [
+       [
+        "Giannis Antetokounmpo",
+        "MIA",
+        0.1564
+       ],
+       [
+        "Bam Adebayo",
+        "MIA",
+        0.1542
+       ],
+       [
+        "Davion Mitchell",
+        "MIA",
+        0.1041
+       ],
+       [
+        "Alperen Sengun",
+        "HOU",
+        0.0993
+       ],
+       [
+        "Kevin Durant",
+        "HOU",
+        0.0968
+       ],
+       [
+        "Fred VanVleet",
+        "HOU",
+        0.0901
+       ],
+       [
+        "Amen Thompson",
+        "HOU",
+        0.082
+       ],
+       [
+        "Jabari Smith Jr.",
+        "HOU",
+        0.0674
+       ],
+       [
+        "Klay Thompson",
+        "MIA",
+        0.0657
+       ],
+       [
+        "Myron Gardner",
+        "MIA",
+        0.0343
+       ]
+      ],
+      "act": null
+     },
+     {
+      "g": "MEM@WAS",
+      "pa": 0.5271,
+      "p": [
+       [
+        "Cameron Boozer",
+        "MEM",
+        0.1683
+       ],
+       [
+        "Anthony Davis",
+        "WAS",
+        0.1289
+       ],
+       [
+        "Alex Sarr",
+        "WAS",
+        0.1252
+       ],
+       [
+        "Zach Edey",
+        "MEM",
+        0.1079
+       ],
+       [
+        "Jaylen Wells",
+        "MEM",
+        0.0969
+       ],
+       [
+        "Cedric Coward",
+        "MEM",
+        0.0847
+       ],
+       [
+        "Kyshawn George",
+        "WAS",
+        0.0731
+       ],
+       [
+        "AJ Dybantsa",
+        "WAS",
+        0.0728
+       ],
+       [
+        "Trae Young",
+        "WAS",
+        0.0681
+       ],
+       [
+        "Cam Spencer",
+        "MEM",
+        0.0567
+       ]
+      ],
+      "act": null
+     },
+     {
+      "g": "ORL@BOS",
+      "pa": 0.4523,
+      "p": [
+       [
+        "Jayson Tatum",
+        "BOS",
+        0.1678
+       ],
+       [
+        "Franz Wagner",
+        "ORL",
+        0.1602
+       ],
+       [
+        "Paul George",
+        "BOS",
+        0.1485
+       ],
+       [
+        "Derrick White",
+        "BOS",
+        0.1072
+       ],
+       [
+        "Wendell Carter Jr.",
+        "ORL",
+        0.1014
+       ],
+       [
+        "Desmond Bane",
+        "ORL",
+        0.0863
+       ],
+       [
+        "Tristan da Silva",
+        "ORL",
+        0.0533
+       ],
+       [
+        "Anthony Black",
+        "ORL",
+        0.0527
+       ],
+       [
+        "Mitchell Robinson",
+        "BOS",
+        0.0465
+       ],
+       [
+        "Jordan Walsh",
+        "BOS",
+        0.0377
+       ]
+      ],
+      "act": null
+     },
+     {
+      "g": "PHI@BKN",
+      "pa": 0.5372,
+      "p": [
+       [
+        "Tyrese Maxey",
+        "PHI",
+        0.1877
+       ],
+       [
+        "Michael Porter Jr.",
+        "BKN",
+        0.1279
+       ],
+       [
+        "Jaylen Brown",
+        "PHI",
+        0.1207
+       ],
+       [
+        "Julius Randle",
+        "BKN",
+        0.109
+       ],
+       [
+        "VJ Edgecombe",
+        "PHI",
+        0.1017
+       ],
+       [
+        "Joel Embiid",
+        "PHI",
+        0.0766
+       ],
+       [
+        "Day'Ron Sharpe",
+        "BKN",
+        0.0723
+       ],
+       [
+        "Egor D\u00ebmin",
+        "BKN",
+        0.0659
+       ],
+       [
+        "Danny Wolf",
+        "BKN",
+        0.0527
+       ],
+       [
+        "Dean Wade",
+        "PHI",
+        0.0451
+       ]
+      ],
+      "act": null
+     },
+     {
+      "g": "PHX@DEN",
+      "pa": 0.445,
+      "p": [
+       [
+        "Nikola Joki\u0107",
+        "DEN",
+        0.1641
+       ],
+       [
+        "Devin Booker",
+        "PHX",
+        0.1516
+       ],
+       [
+        "Jamal Murray",
+        "DEN",
+        0.1348
+       ],
+       [
+        "Christian Braun",
+        "DEN",
+        0.1051
+       ],
+       [
+        "Jalen Green",
+        "PHX",
+        0.0989
+       ],
+       [
+        "Aaron Gordon",
+        "DEN",
+        0.0959
+       ],
+       [
+        "Miles Bridges",
+        "PHX",
+        0.085
+       ],
+       [
+        "Cameron Johnson",
+        "DEN",
+        0.0793
+       ],
+       [
+        "Dillon Brooks",
+        "PHX",
+        0.0626
+       ],
+       [
+        "Oso Ighodaro",
+        "PHX",
+        0.0583
+       ]
+      ],
+      "act": null
+     },
+     {
+      "g": "POR@MIN",
+      "pa": 0.4986,
+      "p": [
+       [
+        "Deni Avdija",
+        "POR",
+        0.1259
+       ],
+       [
+        "Damian Lillard",
+        "POR",
+        0.1243
+       ],
+       [
+        "LaMelo Ball",
+        "MIN",
+        0.1219
+       ],
+       [
+        "Jaden McDaniels",
+        "MIN",
+        0.1181
+       ],
+       [
+        "Toumani Camara",
+        "POR",
+        0.0928
+       ],
+       [
+        "Ayo Dosunmu",
+        "MIN",
+        0.0857
+       ],
+       [
+        "Rudy Gobert",
+        "MIN",
+        0.0695
+       ],
+       [
+        "Jonathan Kuminga",
+        "MIN",
+        0.0686
+       ],
+       [
+        "Donovan Clingan",
+        "POR",
+        0.0653
+       ],
+       [
+        "Sidy Cissoko",
+        "POR",
+        0.0468
+       ]
+      ],
+      "act": null
+     }
+    ],
+    "dd": [
+     {
+      "n": "Nikola Joki\u0107",
+      "t": "DEN",
+      "p": 0.9137,
+      "pts": 25.1,
+      "reb": 12.1,
+      "ast": 11.4,
+      "act": null
+     },
+     {
+      "n": "Giannis Antetokounmpo",
+      "t": "MIA",
+      "p": 0.617,
+      "pts": 28.1,
+      "reb": 10.7,
+      "ast": 4.8,
+      "act": null
+     },
+     {
+      "n": "Anthony Davis",
+      "t": "WAS",
+      "p": 0.581,
+      "pts": 23.0,
+      "reb": 10.6,
+      "ast": 2.5,
+      "act": null
+     },
+     {
+      "n": "Donovan Clingan",
+      "t": "POR",
+      "p": 0.4557,
+      "pts": 12.2,
+      "reb": 11.0,
+      "ast": 2.3,
+      "act": null
+     },
+     {
+      "n": "Bam Adebayo",
+      "t": "MIA",
+      "p": 0.6454,
+      "pts": 21.5,
+      "reb": 11.3,
+      "ast": 3.3,
+      "act": null
+     },
+     {
+      "n": "Cameron Boozer",
+      "t": "MEM",
+      "p": 0.4371,
+      "pts": 15.5,
+      "reb": 9.7,
+      "ast": 5.2,
+      "act": null
+     },
+     {
+      "n": "Alperen Sengun",
+      "t": "HOU",
+      "p": 0.3975,
+      "pts": 21.1,
+      "reb": 8.8,
+      "ast": 5.7,
+      "act": null
+     },
+     {
+      "n": "Josh Giddey",
+      "t": "CHI",
+      "p": 0.4753,
+      "pts": 12.6,
+      "reb": 7.3,
+      "ast": 9.9,
+      "act": null
+     },
+     {
+      "n": "Jayson Tatum",
+      "t": "BOS",
+      "p": 0.3023,
+      "pts": 24.0,
+      "reb": 7.6,
+      "ast": 6.3,
+      "act": null
+     },
+     {
+      "n": "Rudy Gobert",
+      "t": "MIN",
+      "p": 0.3548,
+      "pts": 9.2,
+      "reb": 11.9,
+      "ast": 1.6,
+      "act": null
+     },
+     {
+      "n": "Joel Embiid",
+      "t": "PHI",
+      "p": 0.2734,
+      "pts": 23.4,
+      "reb": 8.0,
+      "ast": 3.9,
+      "act": null
+     },
+     {
+      "n": "Zach Edey",
+      "t": "MEM",
+      "p": 0.3174,
+      "pts": 11.2,
+      "reb": 9.7,
+      "ast": 1.0,
+      "act": null
+     },
+     {
+      "n": "Jarrett Allen",
+      "t": "CLE",
+      "p": 0.2441,
+      "pts": 15.4,
+      "reb": 8.1,
+      "ast": 2.1,
+      "act": null
+     },
+     {
+      "n": "Wendell Carter Jr.",
+      "t": "ORL",
+      "p": 0.1699,
+      "pts": 12.8,
+      "reb": 7.6,
+      "ast": 1.3,
+      "act": null
+     },
+     {
+      "n": "Amen Thompson",
+      "t": "HOU",
+      "p": 0.4269,
+      "pts": 17.7,
+      "reb": 9.5,
+      "ast": 4.2,
+      "act": null
+     },
+     {
+      "n": "Deni Avdija",
+      "t": "POR",
+      "p": 0.1376,
+      "pts": 22.8,
+      "reb": 6.3,
+      "ast": 5.3,
+      "act": null
+     },
+     {
+      "n": "Yaxel Lendeborg",
+      "t": "GSW",
+      "p": 0.1879,
+      "pts": 20.2,
+      "reb": 7.3,
+      "ast": 3.6,
+      "act": null
+     },
+     {
+      "n": "Trae Young",
+      "t": "WAS",
+      "p": 0.1832,
+      "pts": 16.7,
+      "reb": 3.0,
+      "ast": 7.4,
+      "act": null
+     },
+     {
+      "n": "Michael Porter Jr.",
+      "t": "BKN",
+      "p": 0.2886,
+      "pts": 21.8,
+      "reb": 8.2,
+      "ast": 1.9,
+      "act": null
+     },
+     {
+      "n": "James Harden",
+      "t": "CLE",
+      "p": 0.1713,
+      "pts": 18.9,
+      "reb": 5.1,
+      "ast": 6.9,
+      "act": null
+     },
+     {
+      "n": "Davion Mitchell",
+      "t": "MIA",
+      "p": 0.1327,
+      "pts": 13.1,
+      "reb": 2.5,
+      "ast": 7.1,
+      "act": null
+     },
+     {
+      "n": "Jaylen Brown",
+      "t": "PHI",
+      "p": 0.2042,
+      "pts": 24.0,
+      "reb": 6.9,
+      "ast": 5.7,
+      "act": null
+     },
+     {
+      "n": "Alex Sarr",
+      "t": "WAS",
+      "p": 0.1909,
+      "pts": 13.1,
+      "reb": 7.8,
+      "ast": 1.9,
+      "act": null
+     },
+     {
+      "n": "Jamal Murray",
+      "t": "DEN",
+      "p": 0.0797,
+      "pts": 25.3,
+      "reb": 4.6,
+      "ast": 5.7,
+      "act": null
+     },
+     {
+      "n": "LaMelo Ball",
+      "t": "MIN",
+      "p": 0.1047,
+      "pts": 19.7,
+      "reb": 4.1,
+      "ast": 6.3,
+      "act": null
+     }
+    ],
+    "props": [
+     {
+      "n": "Giannis Antetokounmpo",
+      "t": "MIA",
+      "mkt": "pts",
+      "line": 28.5,
+      "p": 0.5257,
+      "act": null
+     },
+     {
+      "n": "Giannis Antetokounmpo",
+      "t": "MIA",
+      "mkt": "fg3",
+      "line": 0.5,
+      "p": 0.4596,
+      "act": null
+     },
+     {
+      "n": "Tyrese Maxey",
+      "t": "PHI",
+      "mkt": "pts",
+      "line": 26.5,
+      "p": 0.5171,
+      "act": null
+     },
+     {
+      "n": "Tyrese Maxey",
+      "t": "PHI",
+      "mkt": "fg3",
+      "line": 2.5,
+      "p": 0.4923,
+      "act": null
+     },
+     {
+      "n": "Devin Booker",
+      "t": "PHX",
+      "mkt": "pts",
+      "line": 24.5,
+      "p": 0.5131,
+      "act": null
+     },
+     {
+      "n": "Devin Booker",
+      "t": "PHX",
+      "mkt": "fg3",
+      "line": 2.5,
+      "p": 0.3233,
+      "act": null
+     },
+     {
+      "n": "Jamal Murray",
+      "t": "DEN",
+      "mkt": "pts",
+      "line": 25.5,
+      "p": 0.5139,
+      "act": null
+     },
+     {
+      "n": "Jamal Murray",
+      "t": "DEN",
+      "mkt": "fg3",
+      "line": 3.5,
+      "p": 0.4925,
+      "act": null
+     },
+     {
+      "n": "Nikola Joki\u0107",
+      "t": "DEN",
+      "mkt": "pts",
+      "line": 23.5,
+      "p": 0.514,
+      "act": null
+     },
+     {
+      "n": "Nikola Joki\u0107",
+      "t": "DEN",
+      "mkt": "fg3",
+      "line": 1.5,
+      "p": 0.2642,
+      "act": null
+     },
+     {
+      "n": "Jayson Tatum",
+      "t": "BOS",
+      "mkt": "pts",
+      "line": 26.5,
+      "p": 0.5124,
+      "act": null
+     },
+     {
+      "n": "Jayson Tatum",
+      "t": "BOS",
+      "mkt": "fg3",
+      "line": 2.5,
+      "p": 0.4774,
+      "act": null
+     },
+     {
+      "n": "Donovan Mitchell",
+      "t": "CLE",
+      "mkt": "pts",
+      "line": 23.5,
+      "p": 0.471,
+      "act": null
+     },
+     {
+      "n": "Donovan Mitchell",
+      "t": "CLE",
+      "mkt": "fg3",
+      "line": 2.5,
+      "p": 0.5415,
+      "act": null
+     },
+     {
+      "n": "Jaylen Brown",
+      "t": "PHI",
+      "mkt": "pts",
+      "line": 21.5,
+      "p": 0.5287,
+      "act": null
+     },
+     {
+      "n": "Jaylen Brown",
+      "t": "PHI",
+      "mkt": "fg3",
+      "line": 1.5,
+      "p": 0.5508,
+      "act": null
+     },
+     {
+      "n": "Kevin Durant",
+      "t": "HOU",
+      "mkt": "pts",
+      "line": 21.5,
+      "p": 0.482,
+      "act": null
+     },
+     {
+      "n": "Kevin Durant",
+      "t": "HOU",
+      "mkt": "fg3",
+      "line": 1.5,
+      "p": 0.418,
+      "act": null
+     },
+     {
+      "n": "Joel Embiid",
+      "t": "PHI",
+      "mkt": "pts",
+      "line": 17.5,
+      "p": 0.5241,
+      "act": null
+     },
+     {
+      "n": "Joel Embiid",
+      "t": "PHI",
+      "mkt": "fg3",
+      "line": 0.5,
+      "p": 0.3049,
+      "act": null
+     },
+     {
+      "n": "Anthony Davis",
+      "t": "WAS",
+      "mkt": "pts",
+      "line": 24.5,
+      "p": 0.5071,
+      "act": null
+     },
+     {
+      "n": "Anthony Davis",
+      "t": "WAS",
+      "mkt": "fg3",
+      "line": 0.5,
+      "p": 0.5276,
+      "act": null
+     },
+     {
+      "n": "Deni Avdija",
+      "t": "POR",
+      "mkt": "pts",
+      "line": 23.5,
+      "p": 0.5337,
+      "act": null
+     },
+     {
+      "n": "Deni Avdija",
+      "t": "POR",
+      "mkt": "fg3",
+      "line": 2.5,
+      "p": 0.3233,
+      "act": null
+     },
+     {
+      "n": "Michael Porter Jr.",
+      "t": "BKN",
+      "mkt": "pts",
+      "line": 21.5,
+      "p": 0.5031,
+      "act": null
+     },
+     {
+      "n": "Michael Porter Jr.",
+      "t": "BKN",
+      "mkt": "fg3",
+      "line": 3.5,
+      "p": 0.4731,
+      "act": null
+     },
+     {
+      "n": "Bam Adebayo",
+      "t": "MIA",
+      "mkt": "pts",
+      "line": 19.5,
+      "p": 0.4984,
+      "act": null
+     },
+     {
+      "n": "Bam Adebayo",
+      "t": "MIA",
+      "mkt": "fg3",
+      "line": 0.5,
+      "p": 0.4996,
+      "act": null
+     },
+     {
+      "n": "Franz Wagner",
+      "t": "ORL",
+      "mkt": "pts",
+      "line": 24.5,
+      "p": 0.4959,
+      "act": null
+     },
+     {
+      "n": "Franz Wagner",
+      "t": "ORL",
+      "mkt": "fg3",
+      "line": 1.5,
+      "p": 0.4139,
+      "act": null
+     },
+     {
+      "n": "Alperen Sengun",
+      "t": "HOU",
+      "mkt": "pts",
+      "line": 22.5,
+      "p": 0.5124,
+      "act": null
+     },
+     {
+      "n": "Alperen Sengun",
+      "t": "HOU",
+      "mkt": "fg3",
+      "line": 1.5,
+      "p": 0.2642,
+      "act": null
+     },
+     {
+      "n": "Zion Williamson",
+      "t": "NOP",
+      "mkt": "pts",
+      "line": 21.5,
+      "p": 0.5379,
+      "act": null
+     },
+     {
+      "n": "Zion Williamson",
+      "t": "NOP",
+      "mkt": "fg3",
+      "line": 0.5,
+      "p": 0.3697,
+      "act": null
+     },
+     {
+      "n": "Damian Lillard",
+      "t": "POR",
+      "mkt": "pts",
+      "line": 20.5,
+      "p": 0.5059,
+      "act": null
+     },
+     {
+      "n": "Damian Lillard",
+      "t": "POR",
+      "mkt": "fg3",
+      "line": 3.5,
+      "p": 0.3714,
+      "act": null
+     },
+     {
+      "n": "Paul George",
+      "t": "BOS",
+      "mkt": "pts",
+      "line": 20.5,
+      "p": 0.5054,
+      "act": null
+     },
+     {
+      "n": "Paul George",
+      "t": "BOS",
+      "mkt": "fg3",
+      "line": 3.5,
+      "p": 0.4535,
+      "act": null
+     },
+     {
+      "n": "Yaxel Lendeborg",
+      "t": "GSW",
+      "mkt": "pts",
+      "line": 20.5,
+      "p": 0.4888,
+      "act": null
+     },
+     {
+      "n": "Yaxel Lendeborg",
+      "t": "GSW",
+      "mkt": "fg3",
+      "line": 2.5,
+      "p": 0.3855,
+      "act": null
+     },
+     {
+      "n": "Desmond Bane",
+      "t": "ORL",
+      "mkt": "pts",
+      "line": 18.5,
+      "p": 0.4855,
+      "act": null
+     },
+     {
+      "n": "Desmond Bane",
+      "t": "ORL",
+      "mkt": "fg3",
+      "line": 4.5,
+      "p": 0.3889,
+      "act": null
+     },
+     {
+      "n": "Norman Powell",
+      "t": "CHI",
+      "mkt": "pts",
+      "line": 21.5,
+      "p": 0.4764,
+      "act": null
+     },
+     {
+      "n": "Norman Powell",
+      "t": "CHI",
+      "mkt": "fg3",
+      "line": 2.5,
+      "p": 0.4303,
+      "act": null
+     },
+     {
+      "n": "LaMelo Ball",
+      "t": "MIN",
+      "mkt": "pts",
+      "line": 18.5,
+      "p": 0.5064,
+      "act": null
+     },
+     {
+      "n": "LaMelo Ball",
+      "t": "MIN",
+      "mkt": "fg3",
+      "line": 3.5,
+      "p": 0.488,
+      "act": null
+     },
+     {
+      "n": "Julius Randle",
+      "t": "BKN",
+      "mkt": "pts",
+      "line": 19.5,
+      "p": 0.528,
+      "act": null
+     },
+     {
+      "n": "Julius Randle",
+      "t": "BKN",
+      "mkt": "fg3",
+      "line": 1.5,
+      "p": 0.4422,
+      "act": null
+     },
+     {
+      "n": "James Harden",
+      "t": "CLE",
+      "mkt": "pts",
+      "line": 16.5,
+      "p": 0.5267,
+      "act": null
+     },
+     {
+      "n": "James Harden",
+      "t": "CLE",
+      "mkt": "fg3",
+      "line": 2.5,
+      "p": 0.4854,
+      "act": null
+     },
+     {
+      "n": "Saddiq Bey",
+      "t": "NOP",
+      "mkt": "pts",
+      "line": 16.5,
+      "p": 0.5,
+      "act": null
+     },
+     {
+      "n": "Saddiq Bey",
+      "t": "NOP",
+      "mkt": "fg3",
+      "line": 2.5,
+      "p": 0.3619,
+      "act": null
+     },
+     {
+      "n": "Amen Thompson",
+      "t": "HOU",
+      "mkt": "pts",
+      "line": 15.5,
+      "p": 0.5219,
+      "act": null
+     },
+     {
+      "n": "Amen Thompson",
+      "t": "HOU",
+      "mkt": "fg3",
+      "line": 0.5,
+      "p": 0.3003,
+      "act": null
+     },
+     {
+      "n": "Brandin Podziemski",
+      "t": "GSW",
+      "mkt": "pts",
+      "line": 16.5,
+      "p": 0.4969,
+      "act": null
+     },
+     {
+      "n": "Brandin Podziemski",
+      "t": "GSW",
+      "mkt": "fg3",
+      "line": 2.5,
+      "p": 0.5349,
+      "act": null
+     },
+     {
+      "n": "Trae Young",
+      "t": "WAS",
+      "mkt": "pts",
+      "line": 18.5,
+      "p": 0.4904,
+      "act": null
+     },
+     {
+      "n": "Trae Young",
+      "t": "WAS",
+      "mkt": "fg3",
+      "line": 2.5,
+      "p": 0.3233,
+      "act": null
+     },
+     {
+      "n": "Matas Buzelis",
+      "t": "CHI",
+      "mkt": "pts",
+      "line": 13.5,
+      "p": 0.5132,
+      "act": null
+     },
+     {
+      "n": "Matas Buzelis",
+      "t": "CHI",
+      "mkt": "fg3",
+      "line": 1.5,
+      "p": 0.5221,
+      "act": null
+     },
+     {
+      "n": "Ayo Dosunmu",
+      "t": "MIN",
+      "mkt": "pts",
+      "line": 18.5,
+      "p": 0.5025,
+      "act": null
+     },
+     {
+      "n": "Ayo Dosunmu",
+      "t": "MIN",
+      "mkt": "fg3",
+      "line": 1.5,
+      "p": 0.5279,
+      "act": null
+     },
+     {
+      "n": "Jabari Smith Jr.",
+      "t": "HOU",
+      "mkt": "pts",
+      "line": 15.5,
+      "p": 0.4961,
+      "act": null
+     },
+     {
+      "n": "Jabari Smith Jr.",
+      "t": "HOU",
+      "mkt": "fg3",
+      "line": 2.5,
+      "p": 0.4377,
+      "act": null
+     },
+     {
+      "n": "Jalen Green",
+      "t": "PHX",
+      "mkt": "pts",
+      "line": 11.5,
+      "p": 0.5058,
+      "act": null
+     },
+     {
+      "n": "Jalen Green",
+      "t": "PHX",
+      "mkt": "fg3",
+      "line": 0.5,
+      "p": 0.6002,
+      "act": null
+     },
+     {
+      "n": "Jeremiah Fears",
+      "t": "NOP",
+      "mkt": "pts",
+      "line": 15.5,
+      "p": 0.4857,
+      "act": null
+     },
+     {
+      "n": "Jeremiah Fears",
+      "t": "NOP",
+      "mkt": "fg3",
+      "line": 1.5,
+      "p": 0.2905,
+      "act": null
+     },
+     {
+      "n": "VJ Edgecombe",
+      "t": "PHI",
+      "mkt": "pts",
+      "line": 12.5,
+      "p": 0.5259,
+      "act": null
+     },
+     {
+      "n": "VJ Edgecombe",
+      "t": "PHI",
+      "mkt": "fg3",
+      "line": 1.5,
+      "p": 0.455,
+      "act": null
+     },
+     {
+      "n": "Kyshawn George",
+      "t": "WAS",
+      "mkt": "pts",
+      "line": 17.5,
+      "p": 0.508,
+      "act": null
+     },
+     {
+      "n": "Kyshawn George",
+      "t": "WAS",
+      "mkt": "fg3",
+      "line": 2.5,
+      "p": 0.4191,
+      "act": null
+     },
+     {
+      "n": "Jaden McDaniels",
+      "t": "MIN",
+      "mkt": "pts",
+      "line": 17.5,
+      "p": 0.4396,
+      "act": null
+     },
+     {
+      "n": "Jaden McDaniels",
+      "t": "MIN",
+      "mkt": "fg3",
+      "line": 1.5,
+      "p": 0.4028,
+      "act": null
+     },
+     {
+      "n": "Dillon Brooks",
+      "t": "PHX",
+      "mkt": "pts",
+      "line": 13.5,
+      "p": 0.515,
+      "act": null
+     },
+     {
+      "n": "Dillon Brooks",
+      "t": "PHX",
+      "mkt": "fg3",
+      "line": 1.5,
+      "p": 0.547,
+      "act": null
+     },
+     {
+      "n": "Cameron Boozer",
+      "t": "MEM",
+      "mkt": "pts",
+      "line": 15.5,
+      "p": 0.5025,
+      "act": null
+     },
+     {
+      "n": "Cameron Boozer",
+      "t": "MEM",
+      "mkt": "fg3",
+      "line": 1.5,
+      "p": 0.48,
+      "act": null
+     },
+     {
+      "n": "Jarrett Allen",
+      "t": "CLE",
+      "mkt": "pts",
+      "line": 12.5,
+      "p": 0.5028,
+      "act": null
+     },
+     {
+      "n": "Jarrett Allen",
+      "t": "CLE",
+      "mkt": "fg3",
+      "line": 0.5,
+      "p": 0.2387,
+      "act": null
+     }
+    ]
    }
   ]
  },
@@ -13416,7 +15161,7 @@
   "season": 2026,
   "as_of": "2026-11-16",
   "poff": 0.9778,
-  "note": "Week 10 First TD — team first-TD rates from 2026 nflverse PBP (shrinkage r=(c+5)/(n+10)), log5 team prob plus fitted home-field shift (+0.467 logit), player shares 0.5*TD share + 0.5*red-zone-touch share, history blend K=20. Lines: ESPN/DraftKings. Poff (first TD offensive) = 0.9778.",
+  "note": "Week 10 First TD \u2014 team first-TD rates from 2026 nflverse PBP (shrinkage r=(c+5)/(n+10)), log5 team prob plus fitted home-field shift (+0.467 logit), player shares 0.5*TD share + 0.5*red-zone-touch share, history blend K=20. Lines: ESPN/DraftKings. Poff (first TD offensive) = 0.9778.",
   "games": [
    {
     "away": "WAS",
@@ -15195,7 +16940,7 @@
          0.0257
         ],
         [
-         "Audric Estimé",
+         "Audric Estim\u00e9",
          "CLE",
          0.0169
         ]
@@ -16911,398 +18656,528 @@
   }
  },
  "props": {
-  "as_of": "2026-11-13",
+  "as_of": "2026-11-16",
   "note": "Points: Normal(mean, sd) from season game logs. Threes: Poisson(mean 3PM). Reference line = nearest .5 to the mean (the model's median line, NOT a book line). Book lines are entered by hand on the page; the pipeline never copies a book line.",
   "players": [
    {
-    "n": "Shai Gilgeous-Alexander",
-    "t": "OKC",
-    "pts": 29.7,
-    "sd": 7.6,
-    "g": 12,
-    "fg3": 2.25,
-    "fg3g": 12,
-    "line_pts": 29.5,
-    "p_pts": 0.5088,
-    "line_fg3": 2.5,
-    "p_fg3": 0.3907
+    "n": "Giannis Antetokounmpo",
+    "t": "MIA",
+    "pts": 28.9,
+    "sd": 6.6,
+    "g": 13,
+    "fg3": 0.62,
+    "fg3g": 13,
+    "line_pts": 28.5,
+    "p_pts": 0.5257,
+    "line_fg3": 0.5,
+    "p_fg3": 0.4596
    },
    {
-    "n": "Victor Wembanyama",
-    "t": "SAS",
-    "pts": 30.2,
-    "sd": 11.7,
-    "g": 12,
-    "fg3": 1.92,
-    "fg3g": 12,
-    "line_pts": 30.5,
-    "p_pts": 0.4915,
-    "line_fg3": 1.5,
-    "p_fg3": 0.571
-   },
-   {
-    "n": "Darius Acuff Jr.",
-    "t": "SAC",
-    "pts": 26.2,
-    "sd": 7.7,
-    "g": 11,
-    "fg3": 3.09,
-    "fg3g": 11,
+    "n": "Tyrese Maxey",
+    "t": "PHI",
+    "pts": 26.7,
+    "sd": 5.0,
+    "g": 14,
+    "fg3": 2.64,
+    "fg3g": 14,
     "line_pts": 26.5,
-    "p_pts": 0.4836,
-    "line_fg3": 3.5,
-    "p_fg3": 0.3731
+    "p_pts": 0.5171,
+    "line_fg3": 2.5,
+    "p_fg3": 0.4923
    },
    {
-    "n": "Deni Avdija",
-    "t": "POR",
-    "pts": 23.0,
-    "sd": 3.9,
+    "n": "Devin Booker",
+    "t": "PHX",
+    "pts": 24.8,
+    "sd": 10.1,
+    "g": 12,
+    "fg3": 2.0,
+    "fg3g": 12,
+    "line_pts": 24.5,
+    "p_pts": 0.5131,
+    "line_fg3": 2.5,
+    "p_fg3": 0.3233
+   },
+   {
+    "n": "Jamal Murray",
+    "t": "DEN",
+    "pts": 25.9,
+    "sd": 11.7,
     "g": 11,
-    "fg3": 1.91,
+    "fg3": 3.64,
+    "fg3g": 11,
+    "line_pts": 25.5,
+    "p_pts": 0.5139,
+    "line_fg3": 3.5,
+    "p_fg3": 0.4925
+   },
+   {
+    "n": "Nikola Joki\u0107",
+    "t": "DEN",
+    "pts": 23.7,
+    "sd": 6.5,
+    "g": 11,
+    "fg3": 1.0,
     "fg3g": 11,
     "line_pts": 23.5,
-    "p_pts": 0.4496,
-    "line_fg3": 1.5,
-    "p_fg3": 0.5688
-   },
-   {
-    "n": "Yaxel Lendeborg",
-    "t": "GSW",
-    "pts": 21.7,
-    "sd": 8.4,
-    "g": 12,
-    "fg3": 2.42,
-    "fg3g": 12,
-    "line_pts": 21.5,
-    "p_pts": 0.5079,
-    "line_fg3": 2.5,
-    "p_fg3": 0.4346
-   },
-   {
-    "n": "Zach LaVine",
-    "t": "SAC",
-    "pts": 20.5,
-    "sd": 7.7,
-    "g": 0,
-    "fg3": 2.8,
-    "fg3g": 11,
-    "line_pts": 20.5,
-    "p_pts": 0.5006,
-    "line_fg3": 2.5,
-    "p_fg3": 0.5305
-   },
-   {
-    "n": "Darius Garland",
-    "t": "LAC",
-    "pts": 20.4,
-    "sd": 6.2,
-    "g": 10,
-    "fg3": 2.4,
-    "fg3g": 10,
-    "line_pts": 20.5,
-    "p_pts": 0.4936,
-    "line_fg3": 2.5,
-    "p_fg3": 0.4303
-   },
-   {
-    "n": "Damian Lillard",
-    "t": "POR",
-    "pts": 19.8,
-    "sd": 7.5,
-    "g": 0,
-    "fg3": 2.8,
-    "fg3g": 11,
-    "line_pts": 19.5,
-    "p_pts": 0.5159,
-    "line_fg3": 2.5,
-    "p_fg3": 0.5305
-   },
-   {
-    "n": "Brandin Podziemski",
-    "t": "GSW",
-    "pts": 17.3,
-    "sd": 5.4,
-    "g": 10,
-    "fg3": 2.9,
-    "fg3g": 10,
-    "line_pts": 17.5,
-    "p_pts": 0.4853,
-    "line_fg3": 2.5,
-    "p_fg3": 0.554
-   },
-   {
-    "n": "De'Aaron Fox",
-    "t": "SAS",
-    "pts": 14.2,
-    "sd": 4.4,
-    "g": 12,
-    "fg3": 1.08,
-    "fg3g": 12,
-    "line_pts": 14.5,
-    "p_pts": 0.4699,
-    "line_fg3": 1.5,
-    "p_fg3": 0.2949
-   },
-   {
-    "n": "Stephon Castle",
-    "t": "SAS",
-    "pts": 14.0,
-    "sd": 6.5,
-    "g": 12,
-    "fg3": 1.92,
-    "fg3g": 12,
-    "line_pts": 14.5,
-    "p_pts": 0.4695,
-    "line_fg3": 1.5,
-    "p_fg3": 0.571
-   },
-   {
-    "n": "Dylan Harper",
-    "t": "SAS",
-    "pts": 15.4,
-    "sd": 6.3,
-    "g": 0,
-    "fg3": 1.2,
-    "fg3g": 12,
-    "line_pts": 15.5,
-    "p_pts": 0.493,
-    "line_fg3": 1.5,
-    "p_fg3": 0.3374
-   },
-   {
-    "n": "Domantas Sabonis",
-    "t": "SAC",
-    "pts": 13.8,
-    "sd": 7.3,
-    "g": 10,
-    "fg3": 0.2,
-    "fg3g": 10,
-    "line_pts": 13.5,
-    "p_pts": 0.5165,
-    "line_fg3": 0.5,
-    "p_fg3": 0.1813
-   },
-   {
-    "n": "Ajay Mitchell",
-    "t": "OKC",
-    "pts": 14.8,
-    "sd": 6.1,
-    "g": 0,
-    "fg3": 0.8,
-    "fg3g": 11,
-    "line_pts": 14.5,
-    "p_pts": 0.5202,
-    "line_fg3": 0.5,
-    "p_fg3": 0.5507
-   },
-   {
-    "n": "Toumani Camara",
-    "t": "POR",
-    "pts": 13.7,
-    "sd": 5.8,
-    "g": 0,
-    "fg3": 2.9,
-    "fg3g": 11,
-    "line_pts": 13.5,
-    "p_pts": 0.5121,
-    "line_fg3": 2.5,
-    "p_fg3": 0.554
-   },
-   {
-    "n": "Devin Vassell",
-    "t": "SAS",
-    "pts": 12.9,
-    "sd": 5.6,
-    "g": 0,
-    "fg3": 1.6,
-    "fg3g": 10,
-    "line_pts": 12.5,
-    "p_pts": 0.5298,
-    "line_fg3": 1.5,
-    "p_fg3": 0.4751
-   },
-   {
-    "n": "Rui Hachimura",
-    "t": "LAC",
-    "pts": 12.4,
-    "sd": 5.5,
-    "g": 0,
-    "fg3": 2.3,
-    "fg3g": 8,
-    "line_pts": 12.5,
-    "p_pts": 0.489,
-    "line_fg3": 2.5,
-    "p_fg3": 0.404
-   },
-   {
-    "n": "Keegan Murray",
-    "t": "SAC",
-    "pts": 12.3,
-    "sd": 5.4,
-    "g": 0,
-    "fg3": 0.5,
-    "fg3g": 4,
-    "line_pts": 12.5,
-    "p_pts": 0.4834,
-    "line_fg3": 0.5,
-    "p_fg3": 0.3935
-   },
-   {
-    "n": "Donovan Clingan",
-    "t": "POR",
-    "pts": 10.8,
-    "sd": 6.2,
-    "g": 11,
-    "fg3": 1.09,
-    "fg3g": 11,
-    "line_pts": 10.5,
-    "p_pts": 0.5206,
-    "line_fg3": 1.5,
-    "p_fg3": 0.2976
-   },
-   {
-    "n": "Brook Lopez",
-    "t": "LAC",
-    "pts": 12.2,
-    "sd": 5.4,
-    "g": 0,
-    "fg3": 1.3,
-    "fg3g": 10,
-    "line_pts": 12.5,
-    "p_pts": 0.4749,
-    "line_fg3": 1.5,
-    "p_fg3": 0.3732
-   },
-   {
-    "n": "De'Anthony Melton",
-    "t": "GSW",
-    "pts": 11.8,
-    "sd": 5.3,
-    "g": 0,
-    "fg3": 2.3,
-    "fg3g": 12,
-    "line_pts": 11.5,
-    "p_pts": 0.5201,
-    "line_fg3": 2.5,
-    "p_fg3": 0.404
-   },
-   {
-    "n": "Gui Santos",
-    "t": "GSW",
-    "pts": 11.7,
-    "sd": 5.3,
-    "g": 0,
-    "fg3": 0.4,
-    "fg3g": 9,
-    "line_pts": 11.5,
-    "p_pts": 0.5161,
-    "line_fg3": 0.5,
-    "p_fg3": 0.3297
-   },
-   {
-    "n": "Jared McCain",
-    "t": "OKC",
-    "pts": 11.5,
-    "sd": 5.2,
-    "g": 0,
-    "fg3": 1.9,
-    "fg3g": 12,
-    "line_pts": 11.5,
-    "p_pts": 0.5025,
-    "line_fg3": 1.5,
-    "p_fg3": 0.5663
-   },
-   {
-    "n": "Derrick Jones Jr.",
-    "t": "LAC",
-    "pts": 10.5,
-    "sd": 5.0,
-    "g": 0,
-    "fg3": 1.9,
-    "fg3g": 9,
-    "line_pts": 10.5,
-    "p_pts": 0.503,
-    "line_fg3": 1.5,
-    "p_fg3": 0.5663
-   },
-   {
-    "n": "De'Andre Hunter",
-    "t": "SAC",
-    "pts": 9.8,
-    "sd": 4.7,
-    "g": 0,
-    "fg3": 2.1,
-    "fg3g": 10,
-    "line_pts": 9.5,
-    "p_pts": 0.5269,
-    "line_fg3": 2.5,
-    "p_fg3": 0.3504
-   },
-   {
-    "n": "Aday Mara",
-    "t": "OKC",
-    "pts": 8.5,
-    "sd": 4.3,
-    "g": 12,
-    "fg3": 0.08,
-    "fg3g": 12,
-    "line_pts": 8.5,
-    "p_pts": 0.5,
-    "line_fg3": 0.5,
-    "p_fg3": 0.08
-   },
-   {
-    "n": "Isaiah Hartenstein",
-    "t": "OKC",
-    "pts": 8.0,
-    "sd": 5.6,
-    "g": 12,
-    "fg3": null,
-    "fg3g": 0,
-    "line_pts": 8.5,
-    "p_pts": 0.4644,
-    "line_fg3": null,
-    "p_fg3": null
-   },
-   {
-    "n": "Kris Dunn",
-    "t": "LAC",
-    "pts": 6.9,
-    "sd": 3.9,
-    "g": 0,
-    "fg3": 1.0,
-    "fg3g": 10,
-    "line_pts": 6.5,
-    "p_pts": 0.5444,
+    "p_pts": 0.514,
     "line_fg3": 1.5,
     "p_fg3": 0.2642
    },
    {
-    "n": "Draymond Green",
-    "t": "GSW",
-    "pts": 6.0,
-    "sd": 3.7,
-    "g": 0,
-    "fg3": 0.3,
-    "fg3g": 10,
-    "line_pts": 6.5,
-    "p_pts": 0.4482,
-    "line_fg3": 0.5,
-    "p_fg3": 0.2592
+    "n": "Jayson Tatum",
+    "t": "BOS",
+    "pts": 26.8,
+    "sd": 8.0,
+    "g": 12,
+    "fg3": 2.58,
+    "fg3g": 12,
+    "line_pts": 26.5,
+    "p_pts": 0.5124,
+    "line_fg3": 2.5,
+    "p_fg3": 0.4774
    },
    {
-    "n": "Sidy Cissoko",
-    "t": "POR",
-    "pts": 4.9,
-    "sd": 3.4,
-    "g": 0,
-    "fg3": 1.4,
-    "fg3g": 11,
-    "line_pts": 4.5,
-    "p_pts": 0.5468,
+    "n": "Donovan Mitchell",
+    "t": "CLE",
+    "pts": 23.0,
+    "sd": 6.9,
+    "g": 13,
+    "fg3": 2.85,
+    "fg3g": 13,
+    "line_pts": 23.5,
+    "p_pts": 0.471,
+    "line_fg3": 2.5,
+    "p_fg3": 0.5415
+   },
+   {
+    "n": "Jaylen Brown",
+    "t": "PHI",
+    "pts": 21.9,
+    "sd": 5.9,
+    "g": 13,
+    "fg3": 1.85,
+    "fg3g": 13,
+    "line_pts": 21.5,
+    "p_pts": 0.5287,
     "line_fg3": 1.5,
-    "p_fg3": 0.4082
+    "p_fg3": 0.5508
+   },
+   {
+    "n": "Kevin Durant",
+    "t": "HOU",
+    "pts": 21.3,
+    "sd": 4.7,
+    "g": 14,
+    "fg3": 1.43,
+    "fg3g": 14,
+    "line_pts": 21.5,
+    "p_pts": 0.482,
+    "line_fg3": 1.5,
+    "p_fg3": 0.418
+   },
+   {
+    "n": "Joel Embiid",
+    "t": "PHI",
+    "pts": 17.9,
+    "sd": 6.8,
+    "g": 11,
+    "fg3": 0.36,
+    "fg3g": 11,
+    "line_pts": 17.5,
+    "p_pts": 0.5241,
+    "line_fg3": 0.5,
+    "p_fg3": 0.3049
+   },
+   {
+    "n": "Anthony Davis",
+    "t": "WAS",
+    "pts": 24.7,
+    "sd": 9.4,
+    "g": 12,
+    "fg3": 0.75,
+    "fg3g": 12,
+    "line_pts": 24.5,
+    "p_pts": 0.5071,
+    "line_fg3": 0.5,
+    "p_fg3": 0.5276
+   },
+   {
+    "n": "Deni Avdija",
+    "t": "POR",
+    "pts": 23.9,
+    "sd": 4.9,
+    "g": 12,
+    "fg3": 2.0,
+    "fg3g": 12,
+    "line_pts": 23.5,
+    "p_pts": 0.5337,
+    "line_fg3": 2.5,
+    "p_fg3": 0.3233
+   },
+   {
+    "n": "Michael Porter Jr.",
+    "t": "BKN",
+    "pts": 21.5,
+    "sd": 5.9,
+    "g": 11,
+    "fg3": 3.55,
+    "fg3g": 11,
+    "line_pts": 21.5,
+    "p_pts": 0.5031,
+    "line_fg3": 3.5,
+    "p_fg3": 0.4731
+   },
+   {
+    "n": "Bam Adebayo",
+    "t": "MIA",
+    "pts": 19.5,
+    "sd": 9.6,
+    "g": 13,
+    "fg3": 0.69,
+    "fg3g": 13,
+    "line_pts": 19.5,
+    "p_pts": 0.4984,
+    "line_fg3": 0.5,
+    "p_fg3": 0.4996
+   },
+   {
+    "n": "Franz Wagner",
+    "t": "ORL",
+    "pts": 24.4,
+    "sd": 8.2,
+    "g": 12,
+    "fg3": 1.42,
+    "fg3g": 12,
+    "line_pts": 24.5,
+    "p_pts": 0.4959,
+    "line_fg3": 1.5,
+    "p_fg3": 0.4139
+   },
+   {
+    "n": "Alperen Sengun",
+    "t": "HOU",
+    "pts": 22.8,
+    "sd": 8.0,
+    "g": 12,
+    "fg3": 1.0,
+    "fg3g": 12,
+    "line_pts": 22.5,
+    "p_pts": 0.5124,
+    "line_fg3": 1.5,
+    "p_fg3": 0.2642
+   },
+   {
+    "n": "Zion Williamson",
+    "t": "NOP",
+    "pts": 21.9,
+    "sd": 4.4,
+    "g": 13,
+    "fg3": 0.46,
+    "fg3g": 13,
+    "line_pts": 21.5,
+    "p_pts": 0.5379,
+    "line_fg3": 0.5,
+    "p_fg3": 0.3697
+   },
+   {
+    "n": "Damian Lillard",
+    "t": "POR",
+    "pts": 20.6,
+    "sd": 5.6,
+    "g": 12,
+    "fg3": 3.08,
+    "fg3g": 12,
+    "line_pts": 20.5,
+    "p_pts": 0.5059,
+    "line_fg3": 3.5,
+    "p_fg3": 0.3714
+   },
+   {
+    "n": "Paul George",
+    "t": "BOS",
+    "pts": 20.6,
+    "sd": 10.1,
+    "g": 11,
+    "fg3": 3.45,
+    "fg3g": 11,
+    "line_pts": 20.5,
+    "p_pts": 0.5054,
+    "line_fg3": 3.5,
+    "p_fg3": 0.4535
+   },
+   {
+    "n": "Yaxel Lendeborg",
+    "t": "GSW",
+    "pts": 20.2,
+    "sd": 9.6,
+    "g": 13,
+    "fg3": 2.23,
+    "fg3g": 13,
+    "line_pts": 20.5,
+    "p_pts": 0.4888,
+    "line_fg3": 2.5,
+    "p_fg3": 0.3855
+   },
+   {
+    "n": "Desmond Bane",
+    "t": "ORL",
+    "pts": 18.3,
+    "sd": 6.2,
+    "g": 11,
+    "fg3": 4.09,
+    "fg3g": 11,
+    "line_pts": 18.5,
+    "p_pts": 0.4855,
+    "line_fg3": 4.5,
+    "p_fg3": 0.3889
+   },
+   {
+    "n": "Norman Powell",
+    "t": "CHI",
+    "pts": 21.1,
+    "sd": 6.8,
+    "g": 10,
+    "fg3": 2.4,
+    "fg3g": 10,
+    "line_pts": 21.5,
+    "p_pts": 0.4764,
+    "line_fg3": 2.5,
+    "p_fg3": 0.4303
+   },
+   {
+    "n": "LaMelo Ball",
+    "t": "MIN",
+    "pts": 18.6,
+    "sd": 7.2,
+    "g": 13,
+    "fg3": 3.62,
+    "fg3g": 13,
+    "line_pts": 18.5,
+    "p_pts": 0.5064,
+    "line_fg3": 3.5,
+    "p_fg3": 0.488
+   },
+   {
+    "n": "Julius Randle",
+    "t": "BKN",
+    "pts": 19.9,
+    "sd": 5.9,
+    "g": 12,
+    "fg3": 1.5,
+    "fg3g": 12,
+    "line_pts": 19.5,
+    "p_pts": 0.528,
+    "line_fg3": 1.5,
+    "p_fg3": 0.4422
+   },
+   {
+    "n": "James Harden",
+    "t": "CLE",
+    "pts": 16.9,
+    "sd": 6.3,
+    "g": 13,
+    "fg3": 2.62,
+    "fg3g": 13,
+    "line_pts": 16.5,
+    "p_pts": 0.5267,
+    "line_fg3": 2.5,
+    "p_fg3": 0.4854
+   },
+   {
+    "n": "Saddiq Bey",
+    "t": "NOP",
+    "pts": 16.5,
+    "sd": 6.1,
+    "g": 14,
+    "fg3": 2.14,
+    "fg3g": 14,
+    "line_pts": 16.5,
+    "p_pts": 0.5,
+    "line_fg3": 2.5,
+    "p_fg3": 0.3619
+   },
+   {
+    "n": "Amen Thompson",
+    "t": "HOU",
+    "pts": 15.8,
+    "sd": 5.2,
+    "g": 14,
+    "fg3": 0.36,
+    "fg3g": 14,
+    "line_pts": 15.5,
+    "p_pts": 0.5219,
+    "line_fg3": 0.5,
+    "p_fg3": 0.3003
+   },
+   {
+    "n": "Brandin Podziemski",
+    "t": "GSW",
+    "pts": 16.5,
+    "sd": 5.9,
+    "g": 11,
+    "fg3": 2.82,
+    "fg3g": 11,
+    "line_pts": 16.5,
+    "p_pts": 0.4969,
+    "line_fg3": 2.5,
+    "p_fg3": 0.5349
+   },
+   {
+    "n": "Trae Young",
+    "t": "WAS",
+    "pts": 18.3,
+    "sd": 8.9,
+    "g": 14,
+    "fg3": 2.0,
+    "fg3g": 14,
+    "line_pts": 18.5,
+    "p_pts": 0.4904,
+    "line_fg3": 2.5,
+    "p_fg3": 0.3233
+   },
+   {
+    "n": "Matas Buzelis",
+    "t": "CHI",
+    "pts": 13.7,
+    "sd": 5.0,
+    "g": 12,
+    "fg3": 1.75,
+    "fg3g": 12,
+    "line_pts": 13.5,
+    "p_pts": 0.5132,
+    "line_fg3": 1.5,
+    "p_fg3": 0.5221
+   },
+   {
+    "n": "Ayo Dosunmu",
+    "t": "MIN",
+    "pts": 18.5,
+    "sd": 6.1,
+    "g": 13,
+    "fg3": 1.77,
+    "fg3g": 13,
+    "line_pts": 18.5,
+    "p_pts": 0.5025,
+    "line_fg3": 1.5,
+    "p_fg3": 0.5279
+   },
+   {
+    "n": "Jabari Smith Jr.",
+    "t": "HOU",
+    "pts": 15.4,
+    "sd": 7.3,
+    "g": 14,
+    "fg3": 2.43,
+    "fg3g": 14,
+    "line_pts": 15.5,
+    "p_pts": 0.4961,
+    "line_fg3": 2.5,
+    "p_fg3": 0.4377
+   },
+   {
+    "n": "Jalen Green",
+    "t": "PHX",
+    "pts": 11.6,
+    "sd": 5.8,
+    "g": 12,
+    "fg3": 0.92,
+    "fg3g": 12,
+    "line_pts": 11.5,
+    "p_pts": 0.5058,
+    "line_fg3": 0.5,
+    "p_fg3": 0.6002
+   },
+   {
+    "n": "Jeremiah Fears",
+    "t": "NOP",
+    "pts": 15.3,
+    "sd": 6.0,
+    "g": 14,
+    "fg3": 1.07,
+    "fg3g": 14,
+    "line_pts": 15.5,
+    "p_pts": 0.4857,
+    "line_fg3": 1.5,
+    "p_fg3": 0.2905
+   },
+   {
+    "n": "VJ Edgecombe",
+    "t": "PHI",
+    "pts": 12.8,
+    "sd": 4.1,
+    "g": 13,
+    "fg3": 1.54,
+    "fg3g": 13,
+    "line_pts": 12.5,
+    "p_pts": 0.5259,
+    "line_fg3": 1.5,
+    "p_fg3": 0.455
+   },
+   {
+    "n": "Kyshawn George",
+    "t": "WAS",
+    "pts": 17.6,
+    "sd": 7.1,
+    "g": 14,
+    "fg3": 2.36,
+    "fg3g": 14,
+    "line_pts": 17.5,
+    "p_pts": 0.508,
+    "line_fg3": 2.5,
+    "p_fg3": 0.4191
+   },
+   {
+    "n": "Jaden McDaniels",
+    "t": "MIN",
+    "pts": 17.0,
+    "sd": 3.3,
+    "g": 13,
+    "fg3": 1.38,
+    "fg3g": 13,
+    "line_pts": 17.5,
+    "p_pts": 0.4396,
+    "line_fg3": 1.5,
+    "p_fg3": 0.4028
+   },
+   {
+    "n": "Dillon Brooks",
+    "t": "PHX",
+    "pts": 13.8,
+    "sd": 6.6,
+    "g": 12,
+    "fg3": 1.83,
+    "fg3g": 12,
+    "line_pts": 13.5,
+    "p_pts": 0.515,
+    "line_fg3": 1.5,
+    "p_fg3": 0.547
+   },
+   {
+    "n": "Cameron Boozer",
+    "t": "MEM",
+    "pts": 15.5,
+    "sd": 6.2,
+    "g": 13,
+    "fg3": 1.62,
+    "fg3g": 13,
+    "line_pts": 15.5,
+    "p_pts": 0.5025,
+    "line_fg3": 1.5,
+    "p_fg3": 0.48
+   },
+   {
+    "n": "Jarrett Allen",
+    "t": "CLE",
+    "pts": 12.5,
+    "sd": 6.6,
+    "g": 11,
+    "fg3": 0.27,
+    "fg3g": 11,
+    "line_pts": 12.5,
+    "p_pts": 0.5028,
+    "line_fg3": 0.5,
+    "p_fg3": 0.2387
    }
   ]
  }
