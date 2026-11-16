@@ -1594,7 +1594,7 @@ def validate_slate(games_out, track_games, dd_out, all_starters, line_for_cal,
     pass). Checks: >= 1 game; exactly 5 starters per side per game;
     shares sum 94-98 per side; 0 < awayTip < 100; rates 25-60; every game
     has a line and a total in range; dd list non-empty and the expected
-    length; track prob sums 0.85-1.05 with all probs in (0,1). When
+    length; track prob sums 0.80-1.05 with all probs in (0,1). When
     props_out is given: props list non-empty and the expected length
     (top PROPS_TOP starters), every points mean/SD and reference-line
     probability in range, threes means in range where present."""
@@ -1624,7 +1624,10 @@ def validate_slate(games_out, track_games, dd_out, all_starters, line_for_cal,
             problems.append(f"{key} total {cal[1]} out of range")
     for tg in track_games:
         s = sum(p[2] for p in tg["p"])
-        if not (0.85 <= s <= 1.05):
+        # Floor loosened 0.85 -> 0.80 at the user's call (Nov 15): the Nov 14
+        # CHI@MIN sum 0.8499 tripped on real cold-streak data, not a broken
+        # source, so the floor was catching signal, not error.
+        if not (0.80 <= s <= 1.05):
             problems.append(f"track {tg['g']} prob sum {s:.4f}")
         if not all(0 < p[2] < 1 for p in tg["p"]):
             problems.append(f"track {tg['g']} has out-of-range prob")
