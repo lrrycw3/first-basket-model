@@ -19,7 +19,7 @@
   ],
   "_src": "NBA.com 2025-26 post-All-Star per game",
   "players": {
-   "Luka Don\u010di\u0107": [
+   "Luka Dončić": [
     "LAL",
     22,
     11.6,
@@ -99,7 +99,7 @@
     5.7,
     5.4
    ],
-   "Nikola Joki\u0107": [
+   "Nikola Jokić": [
     "DEN",
     26,
     9.7,
@@ -667,7 +667,7 @@
     9.5,
     1.8
    ],
-   "Kristaps Porzi\u0146\u0123is": [
+   "Kristaps Porziņģis": [
     "GSW",
     15,
     5.1,
@@ -2075,7 +2075,7 @@
     2.6,
     1.4
    ],
-   "Nikola Vu\u010devi\u0107": [
+   "Nikola Vučević": [
     "BOS",
     13,
     3.5,
@@ -2243,7 +2243,7 @@
     7.7,
     1.3
    ],
-   "Dennis Schr\u00f6der": [
+   "Dennis Schröder": [
     "CLE",
     26,
     2.8,
@@ -2467,7 +2467,7 @@
     5.0,
     1.6
    ],
-   "Karlo Matkovi\u0107": [
+   "Karlo Matković": [
     "NOP",
     19,
     2.8,
@@ -2539,7 +2539,7 @@
     4.4,
     2.8
    ],
-   "Yanic Konan Niederh\u00e4user": [
+   "Yanic Konan Niederhäuser": [
     "LAC",
     7,
     2.3,
@@ -2563,7 +2563,7 @@
     8.0,
     0.8
    ],
-   "Moussa Diabat\u00e9": [
+   "Moussa Diabaté": [
     "CHA",
     23,
     3.0,
@@ -2619,7 +2619,7 @@
     8.5,
     0.7
    ],
-   "Kasparas Jaku\u010dionis": [
+   "Kasparas Jakučionis": [
     "MIA",
     24,
     2.1,
@@ -2627,7 +2627,7 @@
     2.8,
     2.8
    ],
-   "Bogdan Bogdanovi\u0107": [
+   "Bogdan Bogdanović": [
     "LAC",
     6,
     2.3,
@@ -2699,7 +2699,7 @@
     1.6,
     1.1
    ],
-   "Egor D\u00ebmin": [
+   "Egor Dëmin": [
     "BKN",
     6,
     2.3,
@@ -2859,7 +2859,7 @@
     2.1,
     0.9
    ],
-   "V\u00edt Krej\u010d\u00ed": [
+   "Vít Krejčí": [
     "POR",
     13,
     2.1,
@@ -2995,7 +2995,7 @@
     3.1,
     1.2
    ],
-   "Nikola Topi\u0107": [
+   "Nikola Topić": [
     "OKC",
     9,
     2.3,
@@ -3323,7 +3323,7 @@
     2.9,
     0.9
    ],
-   "Tidjane Sala\u00fcn": [
+   "Tidjane Salaün": [
     "CHA",
     5,
     1.4,
@@ -3347,7 +3347,7 @@
     0.8,
     1.3
    ],
-   "Hugo Gonz\u00e1lez": [
+   "Hugo González": [
     "BOS",
     25,
     1.7,
@@ -3427,7 +3427,7 @@
     0.7,
     0.9
    ],
-   "Pac\u00f4me Dadiet": [
+   "Pacôme Dadiet": [
     "NYK",
     9,
     1.4,
@@ -3899,7 +3899,7 @@
     1.0,
     0.0
    ],
-   "Nikola Jovi\u0107": [
+   "Nikola Jović": [
     "MIA",
     3,
     0.7,
@@ -4075,7 +4075,7 @@
     1.3,
     0.2
    ],
-   "Chris Ma\u00f1on": [
+   "Chris Mañon": [
     "LAL",
     4,
     0.5,
@@ -5792,7 +5792,7 @@
     "Julius Randle": 7,
     "Day'Ron Sharpe": 7,
     "Terance Mann": 6,
-    "Egor D\u00ebmin": 6
+    "Egor Dëmin": 6
    },
    "BOS": {
     "Derrick White": 8,
@@ -5924,7 +5924,7 @@
     "Herbert Jones": 8,
     "Trey Murphy": 8,
     "Zion Williamson": 9,
-    "Karlo Matkovi\u0107": 9
+    "Karlo Matković": 9
    },
    "NYK": {
     "Jalen Brunson": 9,
@@ -6019,7 +6019,7 @@
  },
  "slate": {
   "date": "2026-11-13",
-  "note": "3 games \u00b7 post-All-Star '25-26 + '26-27 blend, first-basket history, Covers lines, tip records",
+  "note": "3 games · post-All-Star '25-26 + '26-27 blend, first-basket history, Covers lines, tip records",
   "games": [
    {
     "away": "GSW",
@@ -9537,7 +9537,7 @@
         0.0692
        ],
        [
-        "Karlo Matkovi\u0107",
+        "Karlo Matković",
         "NOP",
         0.0588
        ],
@@ -10716,12 +10716,12 @@
         0.0661
        ],
        [
-        "Karlo Matkovi\u0107",
+        "Karlo Matković",
         "NOP",
         0.0651
        ],
        [
-        "Egor D\u00ebmin",
+        "Egor Dëmin",
         "BKN",
         0.0563
        ],
@@ -10866,7 +10866,7 @@
         0.1385
        ],
        [
-        "Nikola Joki\u0107",
+        "Nikola Jokić",
         "DEN",
         0.1306
        ],
@@ -10981,7 +10981,7 @@
       "pa": 0.5723,
       "p": [
        [
-        "Luka Don\u010di\u0107",
+        "Luka Dončić",
         "LAL",
         0.214
        ],
@@ -11279,7 +11279,7 @@
     ],
     "dd": [
      {
-      "n": "Nikola Joki\u0107",
+      "n": "Nikola Jokić",
       "t": "DEN",
       "p": 0.925,
       "pts": 25.0,
@@ -11377,7 +11377,7 @@
       }
      },
      {
-      "n": "Luka Don\u010di\u0107",
+      "n": "Luka Dončić",
       "t": "LAL",
       "p": 0.455,
       "pts": 36.5,
@@ -11658,7 +11658,7 @@
         0.0987
        ],
        [
-        "Moussa Diabat\u00e9",
+        "Moussa Diabaté",
         "CHA",
         0.0855
        ],
@@ -12002,7 +12002,7 @@
       }
      },
      {
-      "n": "Moussa Diabat\u00e9",
+      "n": "Moussa Diabaté",
       "t": "CHA",
       "p": 0.1413,
       "pts": 7.8,
@@ -13416,7 +13416,7 @@
   "season": 2026,
   "as_of": "2026-11-15",
   "poff": 0.9778,
-  "note": "Week 10 First TD \u2014 team first-TD rates from 2026 nflverse PBP (shrinkage r=(c+5)/(n+10)), log5 team prob plus fitted home-field shift (+0.467 logit), player shares 0.5*TD share + 0.5*red-zone-touch share, history blend K=20. Lines: ESPN/DraftKings. Poff (first TD offensive) = 0.9778.",
+  "note": "Week 10 First TD — team first-TD rates from 2026 nflverse PBP (shrinkage r=(c+5)/(n+10)), log5 team prob plus fitted home-field shift (+0.467 logit), player shares 0.5*TD share + 0.5*red-zone-touch share, history blend K=20. Lines: ESPN/DraftKings. Poff (first TD offensive) = 0.9778.",
   "games": [
    {
     "away": "WAS",
@@ -14765,16 +14765,6 @@
       "trials": 8
      },
      {
-      "n": "Roman Wilson",
-      "s": "away",
-      "pos": "WR",
-      "sh": 14.1,
-      "td": 2,
-      "g": 5,
-      "c": 2,
-      "trials": 5
-     },
-     {
       "n": "Darnell Washington",
       "s": "away",
       "pos": "TE",
@@ -14793,6 +14783,16 @@
       "g": 5,
       "c": 1,
       "trials": 5
+     },
+     {
+      "n": "Germie Bernard",
+      "s": "away",
+      "pos": "WR",
+      "sh": 6.6,
+      "td": 1,
+      "g": 7,
+      "c": 0,
+      "trials": 7
      },
      {
       "n": "Ja'Marr Chase",
@@ -14945,14 +14945,14 @@
       "trials": 9
      },
      {
-      "n": "Lamar Jackson",
+      "n": "Ja'Kobi Lane",
       "s": "home",
-      "pos": "QB",
-      "sh": 4.4,
-      "td": 1,
-      "g": 5,
+      "pos": "WR",
+      "sh": 3.1,
+      "td": 0,
+      "g": 4,
       "c": 0,
-      "trials": 5
+      "trials": 4
      }
     ],
     "date": "2026-11-16",
@@ -15195,7 +15195,7 @@
          0.0257
         ],
         [
-         "Audric Estim\u00e9",
+         "Audric Estimé",
          "CLE",
          0.0169
         ]
@@ -15812,7 +15812,7 @@
   "anytime": {
    "week": 10,
    "season": 2026,
-   "as_of": "2026-11-13",
+   "as_of": "2026-11-15",
    "note": "Poisson anytime TD: 1 - exp(-lam_team * share); lam_team = team expected offensive TDs (5-game prior to league avg 2.46, through Week 9)",
    "games": [
     {
@@ -16762,35 +16762,35 @@
        "s": "away",
        "pos": "RB",
        "sh": 19.0,
-       "p": 0.3481
+       "p": 0.3491
       },
       {
        "n": "Pat Freiermuth",
        "s": "away",
        "pos": "TE",
        "sh": 14.7,
-       "p": 0.2819
-      },
-      {
-       "n": "Roman Wilson",
-       "s": "away",
-       "pos": "WR",
-       "sh": 14.1,
-       "p": 0.2721
+       "p": 0.2827
       },
       {
        "n": "Darnell Washington",
        "s": "away",
        "pos": "TE",
        "sh": 14.1,
-       "p": 0.2721
+       "p": 0.2729
       },
       {
        "n": "Rico Dowdle",
        "s": "away",
        "pos": "RB",
        "sh": 13.1,
-       "p": 0.2555
+       "p": 0.2563
+      },
+      {
+       "n": "Germie Bernard",
+       "s": "away",
+       "pos": "WR",
+       "sh": 6.6,
+       "p": 0.1386
       },
       {
        "n": "Ja'Marr Chase",
@@ -16875,35 +16875,35 @@
        "s": "home",
        "pos": "RB",
        "sh": 39.1,
-       "p": 0.6052
+       "p": 0.6064
       },
       {
        "n": "Zay Flowers",
        "s": "home",
        "pos": "WR",
        "sh": 12.2,
-       "p": 0.2517
+       "p": 0.2524
       },
       {
        "n": "Josh Cuevas",
        "s": "home",
        "pos": "TE",
        "sh": 6.9,
-       "p": 0.1513
+       "p": 0.1517
       },
       {
        "n": "Mark Andrews",
        "s": "home",
        "pos": "TE",
        "sh": 4.6,
-       "p": 0.1036
+       "p": 0.1039
       },
       {
-       "n": "Lamar Jackson",
+       "n": "Ja'Kobi Lane",
        "s": "home",
-       "pos": "QB",
-       "sh": 4.4,
-       "p": 0.0993
+       "pos": "WR",
+       "sh": 3.1,
+       "p": 0.0713
       }
      ]
     }
