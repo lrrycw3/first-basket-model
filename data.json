@@ -15169,7 +15169,7 @@
     "date": "2026-11-19",
     "time": "8:15 PM",
     "awayFirstTD": 45.9,
-    "line": "HOU -11.5, total 44.5",
+    "line": "HOU -12.5, total 44.5",
     "players": [
      {
       "n": "Jonathan Taylor",
@@ -15499,18 +15499,8 @@
     "date": "2026-11-22",
     "time": "1:00 PM",
     "awayFirstTD": 21.0,
-    "line": "CHI -11.5, total 49.5",
+    "line": "CHI -11.5, total 48.5",
     "players": [
-     {
-      "n": "Juwan Johnson",
-      "s": "away",
-      "pos": "TE",
-      "sh": 13.1,
-      "td": 4,
-      "g": 9,
-      "c": 1,
-      "trials": 9
-     },
      {
       "n": "Lamar Miller",
       "s": "away",
@@ -15520,6 +15510,16 @@
       "g": 6,
       "c": 1,
       "trials": 6
+     },
+     {
+      "n": "Juwan Johnson",
+      "s": "away",
+      "pos": "TE",
+      "sh": 13.1,
+      "td": 4,
+      "g": 9,
+      "c": 1,
+      "trials": 9
      },
      {
       "n": "Alvin Kamara",
@@ -15719,7 +15719,7 @@
     "date": "2026-11-22",
     "time": "1:00 PM",
     "awayFirstTD": 43.6,
-    "line": "DET -6.5, total 46.5",
+    "line": "DET -6.5, total 45.5",
     "players": [
      {
       "n": "Bucky Irving",
@@ -16049,7 +16049,7 @@
     "date": "2026-11-22",
     "time": "4:05 PM",
     "awayFirstTD": 41.7,
-    "line": "LAC -3, total 40.5",
+    "line": "LAC -3.5, total 40.5",
     "players": [
      {
       "n": "Braelon Allen",
@@ -16522,21 +16522,21 @@
       "trials": 9
      },
      {
-      "n": "Samaje Perine",
-      "s": "away",
-      "pos": "RB",
-      "sh": 9.3,
-      "td": 3,
-      "g": 9,
-      "c": 0,
-      "trials": 9
-     },
-     {
       "n": "Tee Higgins",
       "s": "away",
       "pos": "WR",
       "sh": 9.3,
       "td": 6,
+      "g": 9,
+      "c": 0,
+      "trials": 9
+     },
+     {
+      "n": "Samaje Perine",
+      "s": "away",
+      "pos": "RB",
+      "sh": 9.3,
+      "td": 3,
       "g": 9,
       "c": 0,
       "trials": 9
@@ -18537,16 +18537,16 @@
      "time": "1:00 PM",
      "players": [
       {
-       "n": "Juwan Johnson",
+       "n": "Lamar Miller",
        "s": "away",
-       "pos": "TE",
+       "pos": "RB",
        "sh": 13.1,
        "p": 0.282
       },
       {
-       "n": "Lamar Miller",
+       "n": "Juwan Johnson",
        "s": "away",
-       "pos": "RB",
+       "pos": "TE",
        "sh": 13.1,
        "p": 0.282
       },
@@ -19260,16 +19260,16 @@
        "p": 0.2955
       },
       {
-       "n": "Samaje Perine",
+       "n": "Tee Higgins",
        "s": "away",
-       "pos": "RB",
+       "pos": "WR",
        "sh": 9.3,
        "p": 0.2604
       },
       {
-       "n": "Tee Higgins",
+       "n": "Samaje Perine",
        "s": "away",
-       "pos": "WR",
+       "pos": "RB",
        "sh": 9.3,
        "p": 0.2604
       },
