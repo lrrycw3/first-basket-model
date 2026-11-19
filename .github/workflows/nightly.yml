@@ -33,7 +33,7 @@ jobs:
       - name: Install Playwright
         timeout-minutes: 10
         run: |
-          pip install requests beautifulsoup4 playwright
+          pip install requests beautifulsoup4 playwright numpy
           # No --with-deps: GitHub's ubuntu runner already carries the
           # browser libraries, and --with-deps stalled for an hour on
           # the Ubuntu font-mirror downloads in the lottery Action's
