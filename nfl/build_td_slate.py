@@ -29,10 +29,19 @@ Formulas (same shape as the basketball model):
     This is P(away scores first | the first TD is offensive).
     Then the fitted home-field shift is applied:
         P_home = logistic(logit(P_home_log5) + HOME_LOGIT)
-  - Player model share:  modelShare = 0.5*tdShare + 0.5*rzShare
+  - Player model share:  modelShare = 0.5*tdShare + 0.5*usageShare
         tdShare = player offensive TDs / team offensive TDs
+        usageShare = 0.5*rzShare + 0.5*early4Share
         rzShare = player red-zone touches / team red-zone touches
         (red-zone touch = rush attempt or pass target with yardline<=20)
+        early4Share = player touches on his team's first 4 drives /
+        team touches on first 4 drives, shrunk toward his rzShare
+        with a 20-touch pseudo-count (EARLY_K): scripted early-drive
+        usage is the missing middle link (only 25.9% of first TDs come
+        on the opening possession; 67.2% by drive 4), and a player
+        whose usage concentrates on the first 4 drives carries more
+        first-TD equity than his full-game numbers suggest. Drive-1
+        touches are stored per player ("d1") as a diagnostic.
   - History blend (same K=20 as basketball):
         adjSh = 100*(20*modelShare/100 + c) / (20 + trials)
         c = games this season the player scored the game's first
@@ -89,6 +98,10 @@ UA = {"User-Agent": "Mozilla/5.0 (Odds Finder slate builder)"}
 K_BLEND = 20          # history-blend constant, same as basketball K
 SHRINK_WINS = 5       # team-rate shrinkage wins
 SHRINK_GAMES = 10     # team-rate shrinkage games
+EARLY_K = 20          # pseudo-count (touches) shrinking a player's
+# first-4-drive share toward his red-zone share. Neutral default: with
+# ~100 team early-drive touches in a season the prior is worth ~1/6 of
+# the estimate. Fit later from the accumulated track (harness #6).
 # Home-field logit shift, fitted Nov 7 (leave-one-out logistic fit on the
 # 122 completed games: a = 0.467, SE 0.191; slope b = 0.72, SE 0.40, not
 # distinguishable from 1, so the log5 slope is kept and only the
@@ -386,12 +399,20 @@ def first_td_facts(pbp_rows, completed_ids):
     return facts
 
 
+def positions_by_team(by_team):
+    """{(team, nk(short)): position} from load_players' by_team — the
+    map compute_player_stats needs for the QB goal-line split
+    (improvement #5). by_team keys are (nk(short), team)."""
+    return {(team, short): pos
+            for (short, team), (_name, pos, _first) in by_team.items()}
+
+
 def strip_q(name):
     """Remove a trailing " (Q)" injury marker from a stored name."""
     return re.sub(r"\s*\(Q\)$", "", str(name)).strip()
 
 
-def compute_player_stats(pbp, completed_ids, facts):
+def compute_player_stats(pbp, completed_ids, facts, positions=None):
     """Per-player counters from PBP (completed games only).
 
     Returns a dict with the counters build() and --refresh share:
@@ -409,6 +430,19 @@ def compute_player_stats(pbp, completed_ids, facts):
     measured gain. The proxy already counts pass attempts (passer),
     so QBs are covered. Revisit only with a GP source that counts
     snaps, not stat lines.
+
+    Red-zone split (improvement #5): a red-zone touch is worth its
+    measured TD-conversion rate, not one flat count — on 2026 PBP
+    (137 completed games) a touch at 11-20 converts at 9.1%, at 6-10
+    at 19.8%, at 1-5 at 40.4%. rz_value sums those values per player
+    (team_rz_value per team); rank_team_players builds rz_share from
+    the value-weighted totals. A QB rushing inside the 5 converts at
+    49.3% vs 39.6% for non-QBs, so QB goal-line rushes carry their own
+    value (0.493) — positions maps (team, nk(short)) -> pos and is
+    optional (None = no QB split; the old flat counters are always
+    kept). Goal-to-go touches are counted (gtg_touches) but NOT given
+    a separate weight: goal-to-go mixes the 1-5 and 6-10 distances
+    (35.6% blended) and would double-count the distance gradient.
     """
     off_tds = Counter()       # (team, short) -> offensive TDs
     rz_touches = Counter()    # (team, short) -> red-zone touches
@@ -416,6 +450,40 @@ def compute_player_stats(pbp, completed_ids, facts):
     team_rz = Counter()
     played = defaultdict(set)  # (team, short) -> game_ids played
     first_td_count = Counter()  # (team, short) -> games scoring first off TD
+    # Value-weighted red-zone counters (improvement #5).
+    rz_value = Counter()      # (team, short) -> sum of zone values
+    team_rz_value = Counter()
+    rz10_touches = Counter()  # (team, short) -> touches at 6-10
+    rz5_touches = Counter()   # (team, short) -> touches at 1-5
+    gtg_touches = Counter()   # (team, short) -> goal-to-go touches
+    qb_gl_rush = Counter()    # (team, short) -> QB rushes inside the 5
+    # Early-drive usage (improvement #1): touches on a team's FIRST drive
+    # and first FOUR drives of each game. drive is the game-level drive
+    # number; a team's drives are the drives with posteam == team, so a
+    # team's first drive is its minimum drive number in the game.
+    d1_touches = Counter()    # (team, short) -> touches on drive 1
+    d4_touches = Counter()    # (team, short) -> touches on drives 1-4
+    team_d1 = Counter()
+    team_d4 = Counter()
+    drives_by_game_team = defaultdict(set)  # (gid, team) -> drive numbers
+    for r in pbp:
+        gid = r["game_id"]
+        if gid not in completed_ids:
+            continue
+        team = r.get("posteam")
+        if not team:
+            continue
+        try:
+            dnum = int(float(r.get("drive"))) if r.get("drive") else None
+        except ValueError:
+            dnum = None
+        if dnum is not None:
+            drives_by_game_team[(gid, team)].add(dnum)
+    first_drive, first4_drives = {}, {}
+    for (gid, team), ds in drives_by_game_team.items():
+        ordered = sorted(ds)
+        first_drive[(gid, team)] = ordered[0]
+        first4_drives[(gid, team)] = set(ordered[:4])
     for r in pbp:
         gid = r["game_id"]
         if gid not in completed_ids:
@@ -435,6 +503,27 @@ def compute_player_stats(pbp, completed_ids, facts):
             played[(team, receiver)].add(gid)
         if pt == "pass" and passer:
             played[(team, passer)].add(gid)
+        # Early-drive touches: a rush attempt or a target on the team's
+        # first drive / first four drives. Kneel-downs excluded, like
+        # the red-zone touch definition below.
+        if r.get("qb_kneel") not in ("1", "1.0"):
+            try:
+                dnum = int(float(r.get("drive"))) if r.get("drive") else None
+            except ValueError:
+                dnum = None
+            if dnum is not None:
+                touch = None
+                if pt == "run" and rusher:
+                    touch = rusher
+                elif pt == "pass" and receiver:
+                    touch = receiver
+                if touch:
+                    if dnum == first_drive.get((gid, team)):
+                        d1_touches[(team, touch)] += 1
+                        team_d1[team] += 1
+                    if dnum in first4_drives.get((gid, team), set()):
+                        d4_touches[(team, touch)] += 1
+                        team_d4[team] += 1
         # offensive TDs
         if r.get("rush_touchdown") in ("1", "1.0") and rusher:
             off_tds[(team, rusher)] += 1
@@ -454,9 +543,15 @@ def compute_player_stats(pbp, completed_ids, facts):
             if pt == "run" and rusher:
                 rz_touches[(team, rusher)] += 1
                 team_rz[team] += 1
+                _add_rz_value(rz_value, team_rz_value, rz10_touches,
+                              rz5_touches, gtg_touches, qb_gl_rush,
+                              team, rusher, pt, yl, r, positions)
             elif pt == "pass" and receiver:
                 rz_touches[(team, receiver)] += 1
                 team_rz[team] += 1
+                _add_rz_value(rz_value, team_rz_value, rz10_touches,
+                              rz5_touches, gtg_touches, qb_gl_rush,
+                              team, receiver, pt, yl, r, positions)
     for gid, f in facts.items():
         if f["first_off_scorer"] and f["first_off_team"]:
             first_td_count[(f["first_off_team"],
@@ -465,7 +560,45 @@ def compute_player_stats(pbp, completed_ids, facts):
         "off_tds": off_tds, "rz_touches": rz_touches,
         "team_off_tds": team_off_tds, "team_rz": team_rz,
         "played": played, "first_td_count": first_td_count,
+        "d1_touches": d1_touches, "d4_touches": d4_touches,
+        "team_d1": team_d1, "team_d4": team_d4,
+        "rz_value": rz_value, "team_rz_value": team_rz_value,
+        "rz10_touches": rz10_touches, "rz5_touches": rz5_touches,
+        "gtg_touches": gtg_touches, "qb_gl_rush": qb_gl_rush,
     }
+
+
+# Measured 2026 TD-conversion rates per red-zone distance (137
+# completed games, nflverse PBP; improvement #5). A touch inside the 5
+# is worth ~4.4x a touch at 11-20; the flat red-zone count treated
+# them as equal.
+RZ_VALUE = {20: 0.091, 10: 0.198, 5: 0.404}
+QB_GL_VALUE = 0.493  # QB rush inside the 5 (vs 0.396 non-QB)
+
+
+def _add_rz_value(rz_value, team_rz_value, rz10_touches, rz5_touches,
+                  gtg_touches, qb_gl_rush, team, short, pt, yl, row,
+                  positions):
+    """Value-weight one red-zone touch (improvement #5). zone is the
+    distance bucket (20 = 11-20, 10 = 6-10, 5 = 1-5); a QB rushing
+    inside the 5 carries QB_GL_VALUE instead of RZ_VALUE[5]."""
+    if yl <= 5:
+        zone = 5
+        rz5_touches[(team, short)] += 1
+    elif yl <= 10:
+        zone = 10
+        rz10_touches[(team, short)] += 1
+    else:
+        zone = 20
+    if row.get("goal_to_go") in ("1", "1.0"):
+        gtg_touches[(team, short)] += 1
+    value = RZ_VALUE[zone]
+    if (zone == 5 and pt == "run" and positions is not None
+            and positions.get((team, nk(short))) == "QB"):
+        value = QB_GL_VALUE
+        qb_gl_rush[(team, short)] += 1
+    rz_value[(team, short)] += value
+    team_rz_value[team] += value
 
 
 def rank_team_players(team, side, stats, by_team, by_short,
@@ -473,12 +606,13 @@ def rank_team_players(team, side, stats, by_team, by_short,
     """Rank one team's skill players by blended first-TD share.
 
     Same formula as the slate build: modelShare = 0.5*TD share +
-    0.5*red-zone-touch share, history blend K=20. Returns
-    (players, warnings, unresolved): the top 5 after dropping Out
-    players, with " (Q)" appended for Questionable/Doubtful. This is
-    the single implementation used by both build() and --refresh, so
-    a refresh can promote the next man up with exactly the ranking
-    the build would have produced.
+    0.5*usage share, where usage is 0.5*red-zone share (VALUE-weighted
+    by distance, improvement #5) + 0.5*early-drive share; history
+    blend K=20. Returns (players, warnings, unresolved): the top 5
+    after dropping Out players, with " (Q)" appended for
+    Questionable/Doubtful. This is the single implementation used by
+    both build() and --refresh, so a refresh can promote the next man
+    up with exactly the ranking the build would have produced.
     """
     off_tds = stats["off_tds"]
     rz_touches = stats["rz_touches"]
@@ -486,9 +620,23 @@ def rank_team_players(team, side, stats, by_team, by_short,
     team_rz = stats["team_rz"]
     played = stats["played"]
     first_td_count = stats["first_td_count"]
+    d1_touches = stats.get("d1_touches") or Counter()
+    d4_touches = stats.get("d4_touches") or Counter()
+    team_d1 = stats.get("team_d1") or Counter()
+    team_d4 = stats.get("team_d4") or Counter()
+    # Value-weighted red-zone counters (improvement #5); fall back to
+    # the flat counts when a stats dict predates them (old tests).
+    rz_value = stats.get("rz_value") or Counter()
+    team_rz_value = stats.get("team_rz_value") or Counter()
+    rz10_touches = stats.get("rz10_touches") or Counter()
+    rz5_touches = stats.get("rz5_touches") or Counter()
+    gtg_touches = stats.get("gtg_touches") or Counter()
+    qb_gl_rush = stats.get("qb_gl_rush") or Counter()
     cands, warnings, unresolved = [], [], []
     keys = {k for k in off_tds if k[0] == team} | \
-           {k for k in rz_touches if k[0] == team}
+           {k for k in rz_touches if k[0] == team} | \
+           {k for k in rz_value if k[0] == team} | \
+           {k for k in d4_touches if k[0] == team}
     for (t, short) in keys:
         hit = resolve_player(by_team, by_short, team, short)
         if hit is None:
@@ -501,8 +649,27 @@ def rank_team_players(team, side, stats, by_team, by_short,
         tds = off_tds.get((team, short), 0)
         rz = rz_touches.get((team, short), 0)
         td_share = tds / team_off_tds[team] if team_off_tds[team] else 0
-        rz_share = rz / team_rz[team] if team_rz[team] else 0
-        model_share = 0.5 * td_share + 0.5 * rz_share
+        # Red-zone share is VALUE-weighted (improvement #5): a touch
+        # inside the 5 is worth ~4.4x a touch at 11-20 (measured
+        # conversion rates), so rz_share is the player's share of his
+        # team's red-zone VALUE, not of the flat touch count.
+        if team_rz_value.get(team):
+            rz_share = (rz_value.get((team, short), 0.0)
+                        / team_rz_value[team])
+        else:
+            rz_share = rz / team_rz[team] if team_rz[team] else 0
+        # Early-drive share (improvement #1): the player's share of his
+        # team's first-4-drive touches, shrunk toward his red-zone
+        # share with an EARLY_K-touch pseudo-count (a player with few
+        # early touches is not assumed to have none). usageShare blends
+        # red-zone and early-drive usage 50/50; the top-level 0.5/0.5
+        # split with tdShare is unchanged.
+        d4 = d4_touches.get((team, short), 0)
+        team_d4_n = team_d4.get(team, 0)
+        early4_share = ((d4 + EARLY_K * rz_share) / (team_d4_n + EARLY_K)
+                        if team_d4_n else rz_share)
+        usage_share = 0.5 * rz_share + 0.5 * early4_share
+        model_share = 0.5 * td_share + 0.5 * usage_share
         trials = len(played.get((team, short), set()))
         c = first_td_count.get((team, short), 0)
         adj = 100 * (K_BLEND * model_share + c) / (K_BLEND + trials) \
@@ -512,6 +679,12 @@ def rank_team_players(team, side, stats, by_team, by_short,
             "sh": round(adj, 1), "td": int(tds),
             "g": int(trials), "c": int(c),
             "trials": int(trials),
+            "d1": int(d1_touches.get((team, short), 0)),
+            "d4": int(d4),
+            "rz10": int(rz10_touches.get((team, short), 0)),
+            "rz5": int(rz5_touches.get((team, short), 0)),
+            "gtg": int(gtg_touches.get((team, short), 0)),
+            "qb_gl": int(qb_gl_rush.get((team, short), 0)),
         })
     cands.sort(key=lambda c: -c["sh"])
     players, kept = [], 0
@@ -562,9 +735,10 @@ def build(season, week, data_dir, today=None):
         return ((first_off[team] + SHRINK_WINS)
                 / (games_played[team] + SHRINK_GAMES))
 
-    stats = compute_player_stats(pbp, completed_ids, facts)
-
     by_team, by_short = load_players(data_dir)
+    stats = compute_player_stats(pbp, completed_ids, facts,
+                                 positions_by_team(by_team))
+
     out_status, q_status = load_injuries(data_dir, season, week)
     unresolved = []  # (team, short) that could not be resolved to a player
 
@@ -615,10 +789,21 @@ def build(season, week, data_dir, today=None):
         "season": season,
         "as_of": today.isoformat(),
         "poff": poff,
+        # Explicit D/ST bucket (improvement #5): the share of first TDs
+        # that are NOT offensive. The value is the FITTED poff from
+        # 2026 PBP (poff ~0.98, so dst_share ~0.02) — NOT the ~5%
+        # league-average figure in the research notes: on 137 completed
+        # 2026 games only 1 first TD was a return (0 defensive), so
+        # overriding the fit with 5% would invent non-offensive TDs
+        # the data does not show. Named explicitly so the page can
+        # display it without recomputing.
+        "dst_share": round(1 - poff, 4),
         "note": (f"Week {week} First TD — team first-TD rates from 2026 "
                  f"nflverse PBP (shrinkage r=(c+5)/(n+10)), log5 team prob "
                  f"plus fitted home-field shift (+{HOME_LOGIT} logit), "
-                 f"player shares 0.5*TD share + 0.5*red-zone-touch share, "
+                 f"player shares 0.5*TD share + 0.5*usage share "
+                 f"(usage = 0.5*red-zone share + 0.5*first-4-drive share, "
+                 f"shrunk toward red-zone share, K={EARLY_K} touches), "
                  f"history blend K=20. Lines: ESPN/DraftKings. "
                  f"Poff (first TD offensive) = {poff}."),
         "games": out_games,
@@ -749,8 +934,9 @@ def refresh_slate(data, season, data_dir, today=None):
     completed_ids = {g["game_id"] for g in games
                      if g.get("away_score") not in ("", None)}
     facts = first_td_facts(pbp, completed_ids)
-    stats = compute_player_stats(pbp, completed_ids, facts)
     by_team, by_short = load_players(data_dir)
+    stats = compute_player_stats(pbp, completed_ids, facts,
+                                 positions_by_team(by_team))
     out_status, q_status = load_injuries(data_dir, season, week, force=True)
 
     # lam for the anytime mirror (same inputs as the build).
