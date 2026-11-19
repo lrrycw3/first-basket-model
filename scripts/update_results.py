@@ -1599,8 +1599,9 @@ def dd_prob(pts, reb, ast):
 # synthetic data; Monte Carlo, seed 42): Normal pts marginal,
 # negative-binomial reb/ast marginals, pooled correlation matrix R.
 # data/dd_copula.json is written by `fit_dd.py --write-params` once the
-# Mac fetch (dd-fit/fetch_logs.py) has produced real logs. Until that
-# file exists, p_cop is None everywhere and the run is unaffected.
+# BRef fetch (dd-fit/fetch_logs.py) has produced real logs — the fetch
+# runs from this VM, no Mac run needed. Until that file exists, p_cop is
+# None everywhere and the run is unaffected.
 # Landing the file ALSO needs numpy on the nightly runner (pip install
 # numpy in workflows/nightly.yml) — without it the import below fails
 # softly (WARNING, p_cop None) and the run continues.
