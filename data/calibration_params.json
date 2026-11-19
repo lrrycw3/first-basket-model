@@ -1,0 +1,8 @@
+{
+ "K": 50,
+ "K_mom": 88.02529939794047,
+ "platt": null,
+ "fitted_on_games": 44,
+ "fitted_at": "2026-11-13",
+ "held_out_note": "K / Platt applied only when the time-split held-out log-loss improved; otherwise defaults (K=20, no Platt)."
+}

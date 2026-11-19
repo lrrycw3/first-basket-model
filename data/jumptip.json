@@ -1,0 +1,424 @@
+{
+ "games": {
+  "ATL": 9,
+  "HOU": 8,
+  "GSW": 10,
+  "DEN": 8,
+  "WAS": 9,
+  "CHA": 8,
+  "DET": 8,
+  "NOP": 10,
+  "MIN": 10,
+  "LAL": 16,
+  "LAC": 5,
+  "OKC": 10,
+  "DAL": 12,
+  "ORL": 11,
+  "TOR": 12,
+  "SAS": 9,
+  "CLE": 11,
+  "MEM": 8,
+  "POR": 11,
+  "SAC": 10,
+  "BKN": 9,
+  "NYK": 7,
+  "PHI": 9,
+  "MIL": 10,
+  "BOS": 8,
+  "PHX": 7,
+  "IND": 7,
+  "MIA": 8,
+  "UTA": 2
+ },
+ "jumps": {
+  "ATL": {
+   "onyeka okongwu": 9
+  },
+  "HOU": {
+   "alperen sengun": 7,
+   "clint capela": 1
+  },
+  "GSW": {
+   "draymond green": 8,
+   "al horford": 1,
+   "charles bassey": 1
+  },
+  "DEN": {
+   "nikola jokic": 8
+  },
+  "WAS": {
+   "anthony davis": 8,
+   "alex sarr": 1
+  },
+  "CHA": {
+   "moussa diabate": 6,
+   "ryan kalkbrenner": 2
+  },
+  "DET": {
+   "paul reed": 4,
+   "isaiah stewart": 2,
+   "john collins": 2
+  },
+  "NOP": {
+   "deandre jordan": 2,
+   "karlo matkovic": 6,
+   "yves missi": 2
+  },
+  "MIN": {
+   "rudy gobert": 9,
+   "joan beringer": 1
+  },
+  "LAL": {
+   "walker kessler": 9,
+   "jaxson hayes": 7
+  },
+  "LAC": {
+   "isaiah jackson": 2,
+   "brook lopez": 2,
+   "john collins": 1
+  },
+  "OKC": {
+   "isaiah hartenstein": 6,
+   "aday mara": 4
+  },
+  "DAL": {
+   "daniel gafford": 12
+  },
+  "ORL": {
+   "wendell carter": 11
+  },
+  "TOR": {
+   "jakob poeltl": 7,
+   "trayce jackson-davis": 1,
+   "collin murray-boyles": 4
+  },
+  "SAS": {
+   "victor wembanyama": 9
+  },
+  "CLE": {
+   "jarrett allen": 8,
+   "thomas bryant": 1,
+   "evan mobley": 2
+  },
+  "MEM": {
+   "zach edey": 8
+  },
+  "POR": {
+   "donovan clingan": 11
+  },
+  "SAC": {
+   "domantas sabonis": 8,
+   "dylan cardwell": 2
+  },
+  "BKN": {
+   "dayron sharpe": 9
+  },
+  "NYK": {
+   "karl-anthony towns": 7
+  },
+  "PHI": {
+   "joel embiid": 8,
+   "adem bona": 1
+  },
+  "MIL": {
+   "myles turner": 8,
+   "jericho sims": 2
+  },
+  "BOS": {
+   "neemias queta": 7,
+   "luka garza": 1
+  },
+  "PHX": {
+   "khaman maluach": 2,
+   "oso ighodaro": 5
+  },
+  "IND": {
+   "ivica zubac": 4,
+   "jay huff": 3
+  },
+  "MIA": {
+   "bam adebayo": 7,
+   "kelel ware": 1
+  },
+  "UTA": {
+   "mo bamba": 2
+  }
+ },
+ "wins": {
+  "HOU": {
+   "alperen sengun": 3
+  },
+  "DEN": {
+   "nikola jokic": 5
+  },
+  "WAS": {
+   "anthony davis": 4
+  },
+  "DET": {
+   "paul reed": 2,
+   "john collins": 2
+  },
+  "MIN": {
+   "rudy gobert": 6
+  },
+  "LAL": {
+   "walker kessler": 6
+  },
+  "OKC": {
+   "isaiah hartenstein": 3,
+   "aday mara": 2
+  },
+  "ORL": {
+   "wendell carter": 6
+  },
+  "SAS": {
+   "victor wembanyama": 8
+  },
+  "CLE": {
+   "jarrett allen": 7,
+   "thomas bryant": 1,
+   "evan mobley": 2
+  },
+  "POR": {
+   "donovan clingan": 8
+  },
+  "SAC": {
+   "domantas sabonis": 3,
+   "dylan cardwell": 1
+  },
+  "CHA": {
+   "moussa diabate": 3,
+   "ryan kalkbrenner": 1
+  },
+  "BKN": {
+   "dayron sharpe": 5
+  },
+  "DAL": {
+   "daniel gafford": 4
+  },
+  "GSW": {
+   "draymond green": 2,
+   "al horford": 1,
+   "charles bassey": 1
+  },
+  "NYK": {
+   "karl-anthony towns": 3
+  },
+  "TOR": {
+   "jakob poeltl": 4,
+   "trayce jackson-davis": 1,
+   "collin murray-boyles": 3
+  },
+  "ATL": {
+   "onyeka okongwu": 4
+  },
+  "NOP": {
+   "karlo matkovic": 3,
+   "deandre jordan": 1
+  },
+  "PHX": {
+   "khaman maluach": 1,
+   "oso ighodaro": 1
+  },
+  "LAC": {
+   "brook lopez": 2
+  },
+  "MEM": {
+   "zach edey": 2
+  },
+  "MIL": {
+   "myles turner": 4,
+   "jericho sims": 1
+  },
+  "IND": {
+   "ivica zubac": 3
+  },
+  "BOS": {
+   "neemias queta": 3
+  },
+  "PHI": {
+   "joel embiid": 4,
+   "adem bona": 1
+  },
+  "MIA": {
+   "bam adebayo": 4
+  }
+ },
+ "seen": [
+  "2026-10-26:ATL@HOU",
+  "2026-10-26:CHI@BOS",
+  "2026-10-26:GSW@DEN",
+  "2026-10-26:MEM@UTA",
+  "2026-10-26:MIN@CLE",
+  "2026-10-26:PHX@OKC",
+  "2026-10-26:WAS@CHA",
+  "2026-10-28:CHA@DET",
+  "2026-10-28:DEN@NOP",
+  "2026-10-28:GSW@MIN",
+  "2026-10-28:HOU@MIL",
+  "2026-10-28:LAL@LAC",
+  "2026-10-28:NYK@CHI",
+  "2026-10-28:OKC@DAL",
+  "2026-10-28:ORL@TOR",
+  "2026-10-28:SAS@UTA",
+  "2026-10-28:WAS@CLE",
+  "2026-10-29:CLE@ATL",
+  "2026-10-29:MEM@POR",
+  "2026-10-29:SAC@NOP",
+  "2026-10-30:CHA@WAS",
+  "2026-10-30:CHI@BOS",
+  "2026-10-30:DEN@PHX",
+  "2026-10-30:DET@BKN",
+  "2026-10-30:HOU@DAL",
+  "2026-10-30:IND@MIA",
+  "2026-10-30:LAL@GSW",
+  "2026-10-30:NYK@PHI",
+  "2026-10-30:ORL@TOR",
+  "2026-10-31:ATL@NOP",
+  "2026-10-31:CLE@MIL",
+  "2026-10-31:MIN@SAS",
+  "2026-10-31:OKC@HOU",
+  "2026-10-31:POR@UTA",
+  "2026-10-31:SAC@MEM",
+  "2026-11-01:BOS@ORL",
+  "2026-11-01:LAC@GSW",
+  "2026-11-01:TOR@LAL",
+  "2026-11-02:BOS@HOU",
+  "2026-11-02:BKN@NYK",
+  "2026-11-02:CHI@PHI",
+  "2026-11-02:DET@CHA",
+  "2026-11-02:MIA@LAL",
+  "2026-11-02:NOP@MEM",
+  "2026-11-02:OKC@CLE",
+  "2026-11-02:PHX@GSW",
+  "2026-11-02:POR@DEN",
+  "2026-11-02:SAC@DAL",
+  "2026-11-02:TOR@LAC",
+  "2026-11-02:UTA@SAS",
+  "2026-11-02:WAS@ORL",
+  "2026-11-04:ATL@WAS",
+  "2026-11-04:CHA@BKN",
+  "2026-11-04:CHI@NYK",
+  "2026-11-04:CLE@OKC",
+  "2026-11-04:DAL@SAS",
+  "2026-11-04:IND@MEM",
+  "2026-11-04:LAL@SAC",
+  "2026-11-04:MIA@LAC",
+  "2026-11-04:MIL@BOS",
+  "2026-11-04:POR@PHX",
+  "2026-11-04:TOR@DEN",
+  "2026-11-04:UTA@NOP",
+  "2026-11-05:ORL@PHX",
+  "2026-11-06:BOS@CHA",
+  "2026-11-06:MIN@NOP",
+  "2026-11-06:OKC@MEM",
+  "2026-11-06:POR@LAL",
+  "2026-11-06:SAS@SAC",
+  "2026-11-06:TOR@MIL",
+  "2026-11-06:UTA@DAL",
+  "2026-11-06:WAS@ATL",
+  "2026-11-07:BKN@ATL",
+  "2026-11-07:DEN@IND",
+  "2026-11-07:HOU@PHX",
+  "2026-11-07:ORL@GSW",
+  "2026-11-07:SAS@POR",
+  "2026-11-07:WAS@OKC",
+  "2026-11-08:BOS@MIL",
+  "2026-11-08:LAL@DET",
+  "2026-11-08:MIA@SAC",
+  "2026-11-08:NOP@LAC",
+  "2026-11-08:PHI@CHI",
+  "2026-11-08:UTA@MIN",
+  "2026-11-09:CLE@CHA",
+  "2026-11-09:DEN@HOU",
+  "2026-11-09:IND@DAL",
+  "2026-11-09:LAL@ATL",
+  "2026-11-09:MEM@TOR",
+  "2026-11-09:NOP@GSW",
+  "2026-11-09:SAS@PHX",
+  "2026-11-09:WAS@DET",
+  "2026-11-10:BOS@PHI",
+  "2026-11-10:LAC@PHX",
+  "2026-11-10:MIA@UTA",
+  "2026-11-10:MIL@NYK",
+  "2026-11-10:OKC@POR",
+  "2026-11-10:ORL@SAC",
+  "2026-11-11:BOS@TOR",
+  "2026-11-11:BKN@NOP",
+  "2026-11-11:CLE@NYK",
+  "2026-11-11:DEN@MEM",
+  "2026-11-11:GSW@HOU",
+  "2026-11-11:LAL@MIL",
+  "2026-11-11:OKC@POR",
+  "2026-11-11:ORL@UTA",
+  "2026-11-11:SAS@CHI",
+  "2026-11-11:WAS@IND",
+  "2026-11-12:CHA@PHX",
+  "2026-11-12:DAL@MIN",
+  "2026-11-12:TOR@PHI",
+  "2026-11-13:ATL@CHI",
+  "2026-11-13:GSW@SAS",
+  "2026-11-13:MEM@NOP",
+  "2026-11-13:MIL@ORL",
+  "2026-11-13:NYK@IND",
+  "2026-11-13:OKC@LAC",
+  "2026-11-13:POR@SAC",
+  "2026-11-13:UTA@HOU",
+  "2026-11-14:BKN@MEM",
+  "2026-11-14:CHI@MIN",
+  "2026-11-14:DAL@CLE",
+  "2026-11-14:DEN@NOP",
+  "2026-11-15:ATL@MIL",
+  "2026-11-15:CHA@LAC",
+  "2026-11-15:DAL@BOS",
+  "2026-11-15:HOU@WAS",
+  "2026-11-15:IND@PHI",
+  "2026-11-15:NYK@TOR",
+  "2026-11-15:OKC@SAC",
+  "2026-11-15:SAS@UTA",
+  "2026-11-16:CHI@CLE",
+  "2026-11-16:GSW@NOP",
+  "2026-11-16:HOU@MIA",
+  "2026-11-16:MEM@WAS",
+  "2026-11-16:ORL@BOS",
+  "2026-11-16:PHX@DEN",
+  "2026-11-16:POR@MIN",
+  "2026-11-17:DET@SAS",
+  "2026-11-17:NYK@TOR",
+  "2026-11-17:POR@MIN",
+  "2026-11-17:UTA@LAC",
+  "2026-11-18:ATL@OKC",
+  "2026-11-18:BOS@DEN",
+  "2026-11-18:CHI@BKN",
+  "2026-11-18:DET@NOP",
+  "2026-11-18:GSW@DAL",
+  "2026-11-18:HOU@IND",
+  "2026-11-18:MEM@CLE",
+  "2026-11-18:MIL@MIA",
+  "2026-11-18:PHI@ORL",
+  "2026-11-18:PHX@SAC",
+  "2026-11-18:UTA@LAL",
+  "2026-11-18:WAS@TOR",
+  "2026-10-26:DAL@MIA",
+  "2026-10-26:IND@MIL",
+  "2026-10-28:MIA@ATL",
+  "2026-10-28:PHI@IND",
+  "2026-10-30:LAC@MIN",
+  "2026-10-31:PHI@CHA",
+  "2026-11-01:BKN@IND",
+  "2026-11-02:ATL@IND",
+  "2026-11-02:MIL@MIN",
+  "2026-11-04:MIN@HOU",
+  "2026-11-04:PHI@DET",
+  "2026-11-05:MIA@GSW",
+  "2026-11-06:PHI@CLE",
+  "2026-11-07:NYK@CLE",
+  "2026-11-08:BKN@DAL",
+  "2026-11-12:DET@WAS",
+  "2026-11-13:CLE@MIA",
+  "2026-11-14:DET@MIA",
+  "2026-11-15:LAL@PHX",
+  "2026-11-16:PHI@BKN",
+  "2026-11-17:CHA@LAL"
+ ]
+}
