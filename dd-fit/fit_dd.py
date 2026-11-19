@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Fit double-double correlation + overdispersion from NBA game logs.
 
-Reads stats.nba.com playergamelog responses from a raw directory
-(default: dd-fit/raw, files <slug>_gamelog_<season>.json) and:
+Reads player game logs from a raw directory (default: dd-fit/raw, files
+<slug>_gamelog_<season>.json), written by fetch_logs.py from
+Basketball-Reference and stored in the stats.nba.com resultSets shape
+(headers + rowSet with PTS/REB/AST columns), and:
   * per player: n, mean/sd of PTS/REB/AST, pairwise Pearson correlations,
     overdispersion phi = var/mean for REB and AST (Poisson is phi = 1);
   * pooled correlations via Fisher-z average (weighted by n-3) and pooled phi
@@ -62,7 +64,12 @@ def load_logs(raw_dir):
         if not all(c in h for c in need):
             raise ValueError(f"{fn}: missing PTS/REB/AST columns")
         ip, ir, ia = h.index("PTS"), h.index("REB"), h.index("AST")
-        arr = np.array([[r[ip], r[ir], r[ia]] for r in rs["rowSet"]], dtype=float)
+        rows = rs["rowSet"]
+        if not rows:
+            # Empty log (player did not play that season) — skip it so
+            # the player is fit only on seasons with real games.
+            continue
+        arr = np.array([[r[ip], r[ir], r[ia]] for r in rows], dtype=float)
         if slug in players:
             players[slug] = np.vstack([players[slug], arr])
         else:
@@ -258,11 +265,12 @@ def main():
             "phi_ast": round(phi_ast_pool, 4),
             "fitted_on_players": len(players),
             "fitted_at": date.today().isoformat(),
-            "note": ("Gaussian-copula params fitted from stats.nba.com "
-                     "game logs (dd-fit). The pipeline computes the "
-                     "parallel p_cop field from these; the live DD "
-                     "probability stays the independent formula until "
-                     "the copula beats it on held-out joint NLL."),
+            "note": ("Gaussian-copula params fitted from "
+                     "Basketball-Reference game logs (dd-fit). The "
+                     "pipeline computes the parallel p_cop field from "
+                     "these; the live DD probability stays the "
+                     "independent formula until the copula beats it on "
+                     "held-out joint NLL."),
         }
         os.makedirs(os.path.dirname(os.path.abspath(args.write_params)),
                     exist_ok=True)
