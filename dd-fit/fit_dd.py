@@ -195,6 +195,11 @@ def main():
     ap.add_argument("--slate-json", default="data.json",
                     help="repo data.json with the slate DD list (falls back to the page HTML)")
     ap.add_argument("--mc", type=int, default=N_MC)
+    ap.add_argument("--write-params", default=None,
+                    help="write the fitted copula params (R, phi_reb, "
+                         "phi_ast) as JSON to this path — the pipeline "
+                         "reads it as data/dd_copula.json and computes "
+                         "the parallel p_cop field (improvement #7)")
     args = ap.parse_args()
 
     if not os.path.isdir(args.raw_dir):
@@ -244,6 +249,27 @@ def main():
                   [pooled[(0, 2)], pooled[(1, 2)], 1.0]])
     print("\nPooled correlation matrix R:")
     print(R)
+
+    if args.write_params:
+        from datetime import date
+        params = {
+            "R": [[round(float(v), 4) for v in row] for row in R],
+            "phi_reb": round(phi_reb_pool, 4),
+            "phi_ast": round(phi_ast_pool, 4),
+            "fitted_on_players": len(players),
+            "fitted_at": date.today().isoformat(),
+            "note": ("Gaussian-copula params fitted from stats.nba.com "
+                     "game logs (dd-fit). The pipeline computes the "
+                     "parallel p_cop field from these; the live DD "
+                     "probability stays the independent formula until "
+                     "the copula beats it on held-out joint NLL."),
+        }
+        os.makedirs(os.path.dirname(os.path.abspath(args.write_params)),
+                    exist_ok=True)
+        with open(args.write_params, "w") as f:
+            json.dump(params, f, indent=1)
+            f.write("\n")
+        print(f"\nwrote copula params to {args.write_params}")
 
     print("\nDouble-double before/after (current DD list, projections from page slate):")
     print(f"{'Player':28s} {'proj P/R/A':>16s} {'before':>8s} {'after':>8s} {'delta pp':>9s} {'fair before':>11s} {'fair after':>10s}")
