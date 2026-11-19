@@ -66,6 +66,17 @@ from zoneinfo import ZoneInfo
 import requests
 from bs4 import BeautifulSoup
 
+try:  # shrinkage.py sits next to this file; absent in old checkouts.
+    from shrinkage import platt_apply
+except ImportError:
+    # When this module is imported by path (tests, harnesses), its own
+    # directory may not be on sys.path yet; retry with it added.
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from shrinkage import platt_apply
+    except ImportError:  # pragma: no cover - old checkout without #2
+        platt_apply = None
+
 NY = ZoneInfo("America/New_York")
 UA = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/120.0 Safari/537.36")
@@ -905,9 +916,15 @@ def _pbp_first_fg_putbacks(events):
 
 
 def fetch_bref_pbp_putbacks(root, day, away, home):
-    """BRef PBP for one game -> {side: bool} for each side's first FG.
-    Best-effort: any failure returns {} with a WARNING (the caller logs
-    the entry at full weight)."""
+    """BRef PBP for one game -> {"putbacks": {side: bool},
+    "first_fga": {side: short_name}, "jumpball": {...}} for each side's
+    first FG / first FG attempt, plus the opening jump ball. Best-effort:
+    any failure returns {} with a WARNING (the caller logs the entry at
+    full weight and skips the first-shot record for that game). The
+    first-FGA record feeds the first-shot table (improvement #1); the
+    jump-ball record feeds the jump-ball table (improvement #3); both
+    are short names ("L. Doncic") resolved later against the player
+    universe."""
     url = bref_pbp_url(day, home)
     try:
         html = http_get(url, root, f"bref-pbp-{day.isoformat()}-{away}-{home}",
@@ -917,11 +934,340 @@ def fetch_bref_pbp_putbacks(root, day, away, home):
               file=sys.stderr)
         return {}
     try:
-        return _pbp_first_fg_putbacks(_pbp_events(html))
+        events = _pbp_events(html)
+        return {"putbacks": _pbp_first_fg_putbacks(events),
+                "first_fga": _pbp_first_fga(events),
+                "jumpball": _pbp_jumpball(html)}
     except Exception as e:
         print(f"WARNING: putback check unparsable for {away}@{home} {day}: {e}",
               file=sys.stderr)
         return {}
+
+
+# ---------------------------------------------------------------------------
+# First-shot tendency (improvement #1, Nov 2026). Who takes his team's
+# first field-goal attempt is the missing middle link of the first-basket
+# chain (tip -> first possession -> first shot -> make): season scoring
+# cannot see a 30% first-shot player vs a 15% league-average starter
+# (HeatCheck guide; StatsBench live model). The table is built from the
+# same BRef play-by-play pages the putback check already fetches (one
+# per game): the first FG attempt per side. PBP names are short forms
+# ("L. Doncic"), resolved against the player universe after it is built
+# (last-name + first-initial, exactly one candidate or skipped — never
+# guessed). Forward-only from landing, plus the one-off backfill
+# (scripts/backfill_firstshot.py) for the logged window. Stored in
+# data/firstshot.json (committed by the nightly workflow alongside
+# data.json): {"games": {team: games_tracked},
+#              "c": {team: {nk_name: first_fga_count}},
+#              "seen": ["2026-11-18:UTA@LAL", ...]} — "seen" makes a
+# re-run idempotent: a game counted once is never counted again.
+# ---------------------------------------------------------------------------
+FS_K = 10   # shrinkage games for the first-shot rate (prior = model share)
+FS_W = 0.5  # weight on the (shrunk) first-shot rate vs the model share
+# Defaults to fit later from the accumulated table (harness #6): FS_K /
+# FS_W are neutral starting values, not fitted constants.
+
+_FGA_RE = re.compile(r"^(.+?)\s+(?:makes|misses)\b")
+
+
+def _pbp_first_fga(events):
+    """First field-goal attempt per side -> short scorer name. events is
+    the (side, text) list from _pbp_events, in game order. Free throws
+    never count (a team can score first from the line; its first FGA
+    still comes later). Returns {side: short_name}; a side is absent
+    if no FG attempt was found for it."""
+    first = {}
+    for side, text in events:
+        if side in first:
+            continue
+        if "free throw" in text:
+            continue
+        m = _FGA_RE.match(text)
+        if m:
+            first[side] = m.group(1).strip()
+        if len(first) == 2:
+            break
+    return first
+
+
+def resolve_short_name(short, universe):
+    """PBP short name ("L. Doncic") -> display name from the universe
+    ({nk: display}). Matches on last name + first initial; returns None
+    unless exactly one candidate matches (ambiguous or unknown names
+    are skipped, never guessed)."""
+    key = nk(short)
+    parts = key.split()
+    if len(parts) < 2:
+        return None
+    initial, last = parts[0][:1], parts[-1]
+    cands = []
+    for cand_key, disp in universe.items():
+        cparts = cand_key.split()
+        if len(cparts) < 2 or cparts[-1] != last:
+            continue
+        if cparts[0][:1] == initial:
+            cands.append(disp)
+    if len(cands) == 1:
+        return cands[0]
+    return None
+
+
+def load_firstshot(root):
+    """Read data/firstshot.json (missing file -> empty table)."""
+    path = os.path.join(root, "data", "firstshot.json")
+    table = {"games": {}, "c": {}, "seen": []}
+    if os.path.exists(path):
+        with open(path) as f:
+            table = json.load(f)
+        table.setdefault("games", {})
+        table.setdefault("c", {})
+        table.setdefault("seen", [])
+    return table, path
+
+
+def save_firstshot(path, table):
+    """Atomic write of the first-shot table."""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(table, f, indent=1)
+        f.write("\n")
+    os.replace(tmp, path)
+
+
+def accumulate_firstshot(table, day_iso, away, home, first_fga, universe):
+    """Add one game's first-FGA records to the table. first_fga is
+    {side: short_name} from _pbp_first_fga. Returns (added, skipped):
+    added = sides successfully attributed, skipped = sides whose short
+    name could not be resolved (WARNING printed). A game already in
+    table["seen"] adds nothing (idempotent re-runs)."""
+    key = f"{day_iso}:{away}@{home}"
+    if key in table["seen"]:
+        return 0, 0
+    table["seen"].append(key)
+    added, skipped = 0, 0
+    for side, short in (first_fga or {}).items():
+        team = away if side == "away" else home
+        disp = resolve_short_name(short, universe)
+        if disp is None:
+            print(f"WARNING: first-shot: cannot resolve {short!r} "
+                  f"({team}, {day_iso}); game counted for the other side "
+                  f"only", file=sys.stderr)
+            skipped += 1
+            continue
+        table["games"][team] = table["games"].get(team, 0) + 1
+        c = table["c"].setdefault(team, {})
+        c[nk(disp)] = c.get(nk(disp), 0) + 1
+        added += 1
+    return added, skipped
+
+
+def apply_first_shot(shares, fs_table, team):
+    """Blend one team's model shares with the (shrunk) first-shot rate.
+    shares: {name: share_percent} for the 5 starters. The first-shot
+    rate for a player is (att + FS_K * model_share) / (games + FS_K) —
+    shrunk toward his model share, so with no first-shot data the input
+    passes through unchanged. The blend is (1 - FS_W) * model + FS_W *
+    shrunk rate, renormalized to the original share sum: first-shot
+    reallocates share among starters and never moves the bench share.
+    Returns {name: share_percent rounded to 1 decimal}."""
+    games = (fs_table.get("games") or {}).get(team, 0)
+    c = (fs_table.get("c") or {}).get(team, {})
+    total_m = sum(shares.values()) / 100.0
+    if total_m <= 0:
+        return dict(shares)
+    out = {}
+    for name, sh in shares.items():
+        m = sh / 100.0
+        att = c.get(nk(name), 0)
+        f_hat = (att + FS_K * m) / (games + FS_K)
+        out[name] = (1 - FS_W) * m + FS_W * f_hat
+    s = sum(out.values())
+    if s > 0:
+        scale = total_m / s
+        out = {n: v * scale for n, v in out.items()}
+    return {n: round(v * 100, 1) for n, v in out.items()}
+
+
+# ---------------------------------------------------------------------------
+# Jump-ball table (improvement #3, Nov 2026). Jumper-level tip records
+# from the same BRef play-by-play pages the putback/first-shot checks
+# already fetch (one per game): the opening jump ball names both jumpers
+# ("M. Bamba vs. W. Kessler") and who gains possession ("L. Doncic
+# gains possession"). The possession-gainer is NOT necessarily a jumper
+# (a tip can be tipped to a teammate), so the winning TEAM is resolved
+# from the gainer's name against the two teams' rosters, and the win is
+# credited to that team's jumper. The table is the pipeline's own
+# jumper-level tip source: it backs up StatPick (which 403s sometimes)
+# and covers jumpers StatPick never lists. Stored in data/jumptip.json
+# (committed by the nightly workflow): {"games": {team: n},
+# "jumps": {team: {nk_jumper: attempts}},
+# "wins": {team: {nk_jumper: wins}}, "seen": [...]} — "seen" makes
+# re-runs idempotent, like the first-shot table.
+# ---------------------------------------------------------------------------
+_JB_RE = re.compile(r"Jump ball:\s*(.+?)\s+vs\.\s+(.+?)\s*\(\s*(.+?)\s+"
+                    r"gains possession\)")
+
+
+def _pbp_jumpball(html):
+    """Opening jump ball from a BRef PBP page -> {"jumpers": (a, b),
+    "winner": w} (short names), or None. The jump-ball row is a single
+    colspan cell, so it is scanned separately from _pbp_events (which
+    only reads the two play columns). Verified on the real Nov 18
+    UTA@LAL page: \"Jump ball: M. Bamba vs. W. Kessler
+    ( L. Doncic gains possession)\"."""
+    soup = BeautifulSoup(html, "html.parser")
+    tbl = soup.find("table", id="pbp")
+    if tbl is None:
+        return None
+    for cell in tbl.find_all(["td", "th"]):
+        text = cell.get_text(" ", strip=True)
+        m = _JB_RE.search(text)
+        if m:
+            return {"jumpers": (m.group(1).strip(), m.group(2).strip()),
+                    "winner": m.group(3).strip()}
+    return None
+
+
+def load_jumptip(root):
+    """Read data/jumptip.json (missing file -> empty table)."""
+    path = os.path.join(root, "data", "jumptip.json")
+    table = {"games": {}, "jumps": {}, "wins": {}, "seen": []}
+    if os.path.exists(path):
+        with open(path) as f:
+            table = json.load(f)
+        for k in ("games", "jumps", "wins"):
+            table.setdefault(k, {})
+        table.setdefault("seen", [])
+    return table, path
+
+
+def save_jumptip(path, table):
+    """Atomic write of the jump-ball table."""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(table, f, indent=1)
+        f.write("\n")
+    os.replace(tmp, path)
+
+
+def _resolve_nk_team(short, team_of):
+    """PBP short name -> (nk_key, team) via a {nk: team} roster map.
+    Same last-name + first-initial rule as resolve_short_name; None
+    unless exactly one candidate matches."""
+    key = nk(short)
+    parts = key.split()
+    if len(parts) < 2:
+        return None
+    initial, last = parts[0][:1], parts[-1]
+    cands = []
+    for cand_key, team in team_of.items():
+        cparts = cand_key.split()
+        if len(cparts) < 2 or cparts[-1] != last:
+            continue
+        if cparts[0][:1] == initial:
+            cands.append((cand_key, team))
+    if len(cands) == 1:
+        return cands[0]
+    return None
+
+
+def accumulate_jumptip(table, day_iso, away, home, jumpball, team_of):
+    """Add one game's jump ball to the table. jumpball is the dict from
+    _pbp_jumpball; team_of is {nk: team} covering both teams' players
+    (bref_cur + postasb in the nightly run). Each jumper's team gets
+    +1 attempt for its jumper; the winner's team gets +1 win for ITS
+    jumper. A game already in table["seen"] adds nothing. If any of the
+    three names cannot be resolved to exactly one player, the whole
+    game is skipped (a WARNING is printed) — a half-record would
+    corrupt the rates. Returns (added, skipped)."""
+    key = f"{day_iso}:{away}@{home}"
+    if key in table["seen"]:
+        return 0, 0
+    table["seen"].append(key)
+    if not jumpball:
+        return 0, 1
+    resolved = []
+    for short in list(jumpball["jumpers"]) + [jumpball["winner"]]:
+        r = _resolve_nk_team(short, team_of)
+        if r is None:
+            print(f"WARNING: jump-ball: cannot resolve {short!r} "
+                  f"({away}@{home}, {day_iso}); game skipped",
+                  file=sys.stderr)
+            return 0, 1
+        resolved.append(r)
+    (j1_key, j1_team), (j2_key, j2_team), (_w_key, w_team) = resolved
+    if j1_team == j2_team or w_team not in (j1_team, j2_team):
+        print(f"WARNING: jump-ball: inconsistent teams for "
+              f"{away}@{home} on {day_iso}; game skipped", file=sys.stderr)
+        return 0, 1
+    for jkey, jteam in ((j1_key, j1_team), (j2_key, j2_team)):
+        table["games"][jteam] = table["games"].get(jteam, 0) + 1
+        j = table["jumps"].setdefault(jteam, {})
+        j[jkey] = j.get(jkey, 0) + 1
+    w_key = j1_key if w_team == j1_team else j2_key
+    w = table["wins"].setdefault(w_team, {})
+    w[w_key] = w.get(w_key, 0) + 1
+    return 1, 0
+
+
+def jumptip_record(table, name, team):
+    """(wins, attempts) for one jumper from the table, or None when the
+    jumper has no recorded jumps. The K=16 padding in tip_pct handles
+    small samples, so a single recorded jump is usable."""
+    jumps = (table.get("jumps") or {}).get(team, {})
+    att = jumps.get(nk(name), 0)
+    if att <= 0:
+        return None
+    wins = (table.get("wins") or {}).get(team, {}).get(nk(name), 0)
+    return wins, att
+
+
+# ---------------------------------------------------------------------------
+# Jumper heights (improvement #3). Darko's tip work: height +4in =
+# 63.2% tip win, i.e. a logit shift of ln(0.632/0.368)/4 = 0.135 per
+# inch of height difference. data/jumper_heights.json ({nk: inches})
+# is built by scripts/build_jumper_heights.py from the ESPN roster API
+# (reachable from this VM and from Actions) and committed as a static
+# file — heights do not change mid-season. A missing file or a missing
+# jumper means no height shift (the tip falls back to the padded
+# record alone); the run never fails on heights.
+# ---------------------------------------------------------------------------
+HEIGHT_LOGIT_PER_IN = 0.135
+
+
+def load_jumper_heights(root):
+    """{nk: inches} from data/jumper_heights.json (missing -> {})."""
+    path = os.path.join(root, "data", "jumper_heights.json")
+    if not os.path.exists(path):
+        return {}
+    try:
+        with open(path) as f:
+            raw = json.load(f)
+        return {nk(k): float(v) for k, v in raw.items()
+                if isinstance(v, (int, float)) and 60 <= v <= 96}
+    except Exception as e:
+        print(f"WARNING: jumper_heights.json unreadable ({e}); no height "
+              f"shift", file=sys.stderr)
+        return {}
+
+
+def height_logit_shift(h_away, h_home):
+    """Logit shift for the AWAY jumper's tip probability from the height
+    difference, or 0.0 when either height is unknown."""
+    if h_away is None or h_home is None:
+        return 0.0
+    return HEIGHT_LOGIT_PER_IN * (h_away - h_home)
+
+
+def apply_logit_shift(pct, shift):
+    """Apply a logit shift to a percentage (0-100) -> percentage."""
+    if shift == 0.0:
+        return pct
+    p = min(max(pct / 100.0, 1e-6), 1 - 1e-6)
+    logit = math.log(p / (1 - p)) + shift
+    return 100 / (1 + math.exp(-logit))
 
 
 def bref_boxscore_url(day, home_team):
@@ -1006,6 +1352,8 @@ def build_track_dd(dd_ranked):
     """
     return [{"n": re.sub(r"\s*\([A-Z]+\)$", "", d["n"]), "t": d["t"],
              "p": round(d["_p"], 4),
+             "p_cop": (round(d["_p_cop"], 4)
+                       if d.get("_p_cop") is not None else None),
              "pts": d["pts"], "reb": d["reb"], "ast": d["ast"],
              "act": None} for d in dd_ranked[:DD_TOP]]
 
@@ -1074,13 +1422,28 @@ def gamelog_url(player_url, season):
     return f"https://www.basketball-reference.com{base}/gamelog/{season}/"
 
 
+def _parse_mp(text):
+    """BRef game-log minutes ("32:15") -> float minutes; None when
+    missing or unparseable (DNP rows carry no minutes)."""
+    if not text:
+        return None
+    try:
+        parts = text.strip().split(":")
+        if len(parts) == 2:
+            return float(parts[0]) + float(parts[1]) / 60.0
+        return float(parts[0])
+    except (ValueError, TypeError):
+        return None
+
+
 def _parse_gamelog_html(html):
     """Parse a BRef player game-log page into
-    [{date, opp, trb, ast, pts, fg3}] in chronological order. Rows
+    [{date, opp, trb, ast, pts, fg3, mp}] in chronological order. Rows
     without a parseable date or trb/ast (DNP, inactive, header/footer)
     are skipped. opp is normalized to the page's team codes (BRef uses
     BRK/CHO/PHO). pts/fg3 default to 0.0 when a game row lacks them, so
-    a real game is never dropped for a missing shooting column."""
+    a real game is never dropped for a missing shooting column. mp is
+    minutes played (None when the row carries none)."""
     soup = BeautifulSoup(html, "html.parser")
     tbl = soup.find("table", id="player_game_log_reg")
     if tbl is None:
@@ -1107,7 +1470,8 @@ def _parse_gamelog_html(html):
                 return 0.0
 
         games.append({"date": d, "opp": opp, "trb": trb, "ast": ast,
-                      "pts": _f("pts"), "fg3": _f("fg3")})
+                      "pts": _f("pts"), "fg3": _f("fg3"),
+                      "mp": _parse_mp(cells.get("mp"))})
     return games
 
 
@@ -1225,6 +1589,68 @@ def dd_prob(pts, reb, ast):
 
 
 # ---------------------------------------------------------------------------
+# Gaussian-copula double-double (improvement #7, parallel field only).
+# The live DD probability stays dd_prob (independent marginals) — the
+# page recomputes it from the means, and the copula must not move the
+# live number until its correlation matrix is FIT from real game logs
+# and validated out of sample (research §7: compare joint NLL vs the
+# independent model; keep the simpler model if the copula does not
+# improve it). The machinery lives in dd-fit/fit_dd.py (validated on
+# synthetic data; Monte Carlo, seed 42): Normal pts marginal,
+# negative-binomial reb/ast marginals, pooled correlation matrix R.
+# data/dd_copula.json is written by `fit_dd.py --write-params` once the
+# Mac fetch (dd-fit/fetch_logs.py) has produced real logs. Until that
+# file exists, p_cop is None everywhere and the run is unaffected.
+# Landing the file ALSO needs numpy on the nightly runner (pip install
+# numpy in workflows/nightly.yml) — without it the import below fails
+# softly (WARNING, p_cop None) and the run continues.
+# ---------------------------------------------------------------------------
+def load_dd_copula(root):
+    """{"R": 3x3, "phi_reb": float, "phi_ast": float} from
+    data/dd_copula.json, or None. Invalid files warn and return None."""
+    path = os.path.join(root, "data", "dd_copula.json")
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path) as f:
+            raw = json.load(f)
+        R = raw["R"]
+        phi_reb, phi_ast = float(raw["phi_reb"]), float(raw["phi_ast"])
+        if (len(R) != 3 or any(len(row) != 3 for row in R)
+                or any(abs(R[i][i] - 1.0) > 1e-9 for i in range(3))
+                or any(abs(R[i][j]) >= 1.0
+                       for i in range(3) for j in range(3) if i != j)
+                or not (phi_reb > 0 and phi_ast > 0)):
+            raise ValueError("malformed R / phi")
+        return {"R": [[float(v) for v in row] for row in R],
+                "phi_reb": phi_reb, "phi_ast": phi_ast}
+    except Exception as e:
+        print(f"WARNING: dd_copula.json unreadable ({e}); p_cop disabled",
+              file=sys.stderr)
+        return None
+
+
+def dd_prob_copula(pts, reb, ast, params, root, n_mc=100000):
+    """(p_cop, se) via the Gaussian copula in dd-fit/fit_dd.py, or
+    (None, None) when params is None, numpy is unavailable, or the
+    import fails. Deterministic (seed 42 in fit_dd)."""
+    if params is None:
+        return None, None
+    try:
+        dd_fit_dir = os.path.join(root, "dd-fit")
+        if dd_fit_dir not in sys.path:
+            sys.path.insert(0, dd_fit_dir)
+        import fit_dd  # noqa: E402
+    except ImportError as e:
+        print(f"WARNING: copula unavailable ({e}); p_cop disabled",
+              file=sys.stderr)
+        return None, None
+    d = {"pts": pts, "reb": reb, "ast": ast}
+    return fit_dd.dd_copula(d, params["R"], params["phi_reb"],
+                            params["phi_ast"], n_mc=n_mc)
+
+
+# ---------------------------------------------------------------------------
 # Player props: points + threes (Nov 13). Manual-entry lines on the page:
 # the pipeline supplies each player's scoring distribution (points mean +
 # SD from season game logs; threes mean from the same logs) and a
@@ -1265,6 +1691,50 @@ def props_stats_from_log(games):
     return pm, psd, fm, n
 
 
+def props_minutes_from_log(games):
+    """Minutes-first inputs (improvement #7, Fourth & Value recipe):
+    (mp_mean, mp_recent, ppm). mp_mean is mean minutes over the log;
+    mp_recent is mean minutes over the last 5 logged games (the role
+    the player is actually playing now); ppm is points per minute over
+    the whole log. Returns (None, None, None) when the log carries no
+    minutes (old fixtures, or a source without an MP column) — the
+    caller then falls back to the plain per-game mean. The log is in
+    chronological order, so the last 5 entries are the most recent."""
+    with_mp = [g for g in games if g.get("mp") is not None]
+    if not with_mp:
+        return None, None, None
+    total_mp = sum(g["mp"] for g in with_mp)
+    if total_mp <= 0:
+        return None, None, None
+    total_pts = sum(g["pts"] for g in with_mp)
+    mp_mean = total_mp / len(with_mp)
+    recent = with_mp[-5:]
+    mp_recent = sum(g["mp"] for g in recent) / len(recent)
+    return mp_mean, mp_recent, total_pts / total_mp
+
+
+def props_minutes_from_log(games):
+    """Minutes-first inputs (improvement #7, Fourth & Value recipe):
+    (mp_mean, mp_recent, ppm). mp_mean is mean minutes over the log;
+    mp_recent is mean minutes over the last 5 logged games (the role
+    the player is actually playing now); ppm is points per minute over
+    the whole log. Returns (None, None, None) when the log carries no
+    minutes (old fixtures, or a source without an MP column) — the
+    caller then falls back to the plain per-game mean. The log is in
+    chronological order, so the last 5 entries are the most recent."""
+    with_mp = [g for g in games if g.get("mp") is not None]
+    if not with_mp:
+        return None, None, None
+    total_mp = sum(g["mp"] for g in with_mp)
+    if total_mp <= 0:
+        return None, None, None
+    total_pts = sum(g["pts"] for g in with_mp)
+    mp_mean = total_mp / len(with_mp)
+    recent = with_mp[-5:]
+    mp_recent = sum(g["mp"] for g in recent) / len(recent)
+    return mp_mean, mp_recent, total_pts / total_mp
+
+
 def assumed_pts_sd(pts_mean):
     """Fallback SD when no game log could be fetched — the same assumed
     spread the DD points model uses (0.28*mean + 2, min 3.0)."""
@@ -1287,6 +1757,7 @@ def build_props(all_starters, url_map, bref_cur, root,
         pname = re.sub(r"\s*\([A-Z]+\)$", "", name)
         key = nk(pname)
         pts, sd, fg3, g, fg3g = pts_mean, assumed_pts_sd(pts_mean), None, 0, 0
+        mp_out, ppm_out = None, None  # minutes-first fields (improvement #7)
         url = url_map.get(key)
         log = None
         if url:
@@ -1302,6 +1773,17 @@ def build_props(all_starters, url_map, bref_cur, root,
             if n:
                 pts, fg3, g, fg3g = pm, fm, n, n
                 sd = psd if psd > 0 else assumed_pts_sd(pm)
+                # Minutes-first (improvement #7): project points as
+                # (points per minute) x (recent mean minutes) instead of
+                # the season per-game mean, so a role/minutes change
+                # moves the projection immediately. Falls back to the
+                # per-game mean when the log carries no minutes.
+                _mp_mean, mp_recent, ppm = props_minutes_from_log(log)
+                if mp_recent is not None and ppm is not None:
+                    pts = ppm * mp_recent
+                    mp_out, ppm_out = round(mp_recent, 1), round(ppm, 2)
+                else:
+                    mp_out, ppm_out = None, None
         if fg3 is None:
             rec = bref_cur.get(key) or {}
             if rec.get("fg3") is not None:
@@ -1316,6 +1798,7 @@ def build_props(all_starters, url_map, bref_cur, root,
         line_pts = ref_line(pts)
         entry = {"n": pname, "t": team, "pts": round(pts, 1),
                  "sd": round(sd, 1), "g": g,
+                 "mp": mp_out, "ppm": ppm_out,
                  "fg3": (round(fg3, 2) if fg3 is not None else None),
                  "fg3g": fg3g,
                  "line_pts": line_pts,
@@ -1377,9 +1860,15 @@ def fill_props_actuals(night, yesterday, matchups, fetch_box):
 
 
 def tip_pct(wins_a, att_a, wins_h, att_h):
-    """Log5 tip probability from shrunk rates. Returns away win %."""
-    ra = (wins_a + 5) / (att_a + 10)
-    rh = (wins_h + 5) / (att_h + 10)
+    """Log5 tip probability from shrunk rates. Returns away win %.
+    Padding is +8/+16 (K=16 pseudo-attempts at 50%): the tip rate
+    needs only ~16 jumps of padding (Darko tip work; research Nov 2026)
+    — the old +5/+10 over-shrunk established jumpers. Pinned values
+    recomputed on the change: tip_pct(27,38,2,8)=72.1 (was 75.9),
+    tip_pct(40,55,8,30)=79.6 (was 82.4), tip_pct(61,84,5,7)=63.1
+    (was 62.3)."""
+    ra = (wins_a + 8) / (att_a + 16)
+    rh = (wins_h + 8) / (att_h + 16)
     return 100 * ra * (1 - rh) / (ra * (1 - rh) + rh * (1 - ra))
 
 
@@ -1465,8 +1954,13 @@ def score_rates(spread_home, total):
             round(90 * home_imp / total, 1))
 
 
-def resolve_tip_record(name, team, statpick, priors, team_tips):
-    """Tip record for one jumper. Precedence: StatPick > user prior > team.
+def resolve_tip_record(name, team, statpick, priors, team_tips,
+                       jumptip=None):
+    """Tip record for one jumper. Precedence: StatPick > user prior >
+    own jump-ball table (improvement #3) > team. The jump-ball table is
+    the pipeline's own accumulating log, so it sits below the deliberate
+    sources (StatPick, user priors) and above the team record — it only
+    fires when neither deliberate source lists the jumper.
     Returns ((wins, attempts), source)."""
     key = nk(name)
     if key in statpick:
@@ -1474,10 +1968,15 @@ def resolve_tip_record(name, team, statpick, priors, team_tips):
     for pname, rec in priors.items():
         if nk(pname) == key:
             return (rec["wins"], rec["attempts"]), "prior"
+    if jumptip is not None:
+        rec = jumptip_record(jumptip, name, team)
+        if rec is not None:
+            return rec, "jumptip"
     if team in team_tips:
         return team_tips[team], "team"
     raise FetchError(f"no tip record for {name} ({team}): "
-                     "no StatPick, no prior, no team tip record")
+                     "no StatPick, no prior, no jump-ball table, "
+                     "no team tip record")
 
 
 def _g_for_blend(key, y_i, team_g_nk, n_t, established_nk):
@@ -1497,14 +1996,19 @@ def _g_for_blend(key, y_i, team_g_nk, n_t, established_nk):
     return n_t
 
 
-def adjusted_shares(game, hist, gmap, established_nk):
+def adjusted_shares(game, hist, gmap, established_nk, k=K_BLEND):
     """Per-player adjusted shares with the corrected blend:
-        m_hat_i = (K*m_i + y_i) / (K + g_i)
+        m_hat_i = (k*m_i + y_i) / (k + g_i)
     NO renormalization (dropped per the Nov 5 correction — renormalizing
     starter shares to the model-share sum would fight the bench-share fit
     and change numbers without basis). With g_i = n_T for every starter
     the frozen Nov 5 slate reproduces exactly (Bam 0.1707, Booker 0.1638);
     a synthetic g=0 player keeps his full model share.
+    k defaults to K_BLEND (20); the nightly run passes the fitted K from
+    data/calibration_params.json when that file exists (improvement #2:
+    MoM K=88, time-split K=50 on 44 games, Nov 2026 — the pipeline
+    writes the effective K into fblog["K"], which the page reads as
+    FB.K, so the page follows the switch with no page change).
     Returns ({name: adj_share_fraction}, {name: {"y": y_i, "g": g_i}}) —
     the y/g detail is logged to the calibration record so the on-demand
     fitter can recompute the blend under a different K."""
@@ -1519,7 +2023,7 @@ def adjusted_shares(game, hist, gmap, established_nk):
             key = nk(p["n"])
             y_i = h["c"].get(key, 0)
             g_i = _g_for_blend(key, y_i, team_g_nk, n_t, established_nk)
-            out[p["n"]] = (K_BLEND * (p["sh"] / 100.0) + y_i) / (K_BLEND + g_i)
+            out[p["n"]] = (k * (p["sh"] / 100.0) + y_i) / (k + g_i)
             detail[p["n"]] = {"y": y_i, "g": g_i}
     return out, detail
 
@@ -1550,6 +2054,67 @@ def save_calibration(path, recs):
         for r in recs:
             f.write(json.dumps(r) + "\n")
     os.replace(tmp, path)
+
+
+# ---------------------------------------------------------------------------
+# Fitted calibration parameters (improvement #2). Written by
+# scripts/fit_calibration.py --write-params (data/calibration_params.json)
+# only when the time-split held-out log-loss improves; otherwise the
+# file holds the defaults (K=20, no Platt). The nightly run applies
+# them: K drives the history blend (and is written into fblog["K"],
+# which the page reads as FB.K), and the Platt map reshapes the frozen
+# track probabilities (renormalized per game, so the total mass and
+# the validation gate are untouched). A missing or invalid file means
+# "defaults" — the run never fails on calibration parameters.
+# ---------------------------------------------------------------------------
+def load_calibration_params(root):
+    """(params, source_note). params: {"K": int, "platt": [a, b] | None}."""
+    defaults = {"K": K_BLEND, "platt": None}
+    path = os.path.join(root, "data", "calibration_params.json")
+    if not os.path.exists(path):
+        return defaults, None
+    try:
+        with open(path) as f:
+            raw = json.load(f)
+        k = raw.get("K", K_BLEND)
+        k = int(k)
+        if not (1 <= k <= 500):
+            raise ValueError(f"K={k} out of range 1..500")
+        platt = raw.get("platt")
+        if platt is not None:
+            a, b = float(platt[0]), float(platt[1])
+            if not (math.isfinite(a) and math.isfinite(b)):
+                raise ValueError("non-finite Platt coefficients")
+            platt = [a, b]
+        note = (f"calibration params: K={k}"
+                + (f", Platt a={platt[0]:.3f} b={platt[1]:.3f}"
+                   if platt else ", no Platt map")
+                + f" (fitted on {raw.get('fitted_on_games', '?')} games, "
+                f"{raw.get('fitted_at', '?')})")
+        return {"K": k, "platt": platt}, note
+    except Exception as e:
+        print(f"WARNING: calibration_params.json unreadable ({e}); "
+              f"using defaults K={K_BLEND}, no Platt", file=sys.stderr)
+        return defaults, None
+
+
+def apply_platt_to_track(plist, params):
+    """Reshape frozen track probabilities with the fitted Platt map
+    (improvement #2). plist is [[name, team, prob]]; returns a new list
+    with the same total mass (renormalized per game) so the validation
+    gate and the page's track sums are unaffected. params None -> the
+    input list, unchanged."""
+    if params is None or platt_apply is None:
+        return plist
+    total = sum(p[2] for p in plist)
+    if total <= 0:
+        return plist
+    cal = [[n, t, platt_apply(p, params)] for n, t, p in plist]
+    ctot = sum(p[2] for p in cal)
+    if ctot <= 0:
+        return plist
+    scale = total / ctot
+    return [[n, t, round(p * scale, 4)] for n, t, p in cal]
 
 
 def fill_calibration_yesterday(recs, day, games_by_matchup):
@@ -1681,6 +2246,16 @@ def main():
     track = data["track"]
     postasb_players = data["postasb"]["players"]
     cal_recs, cal_path = load_calibration(root)
+    fs_table, fs_path = load_firstshot(root)
+    jb_table, jb_path = load_jumptip(root)
+    heights = load_jumper_heights(root)
+    dd_cop = load_dd_copula(root)
+    if dd_cop is not None:
+        notes.append("dd copula params loaded (p_cop computed in parallel)")
+    cal_params, cal_params_note = load_calibration_params(root)
+    k_blend = cal_params["K"]
+    if cal_params_note:
+        notes.append(cal_params_note)
 
     # ---- 1. Yesterday's results: JediBets -> fblog log + track act -------
     try:
@@ -1707,13 +2282,21 @@ def main():
         if aw and hm:
             matchups[m] = (aw, hm)
     first_page = True
+    fs_raw = []  # (day_iso, away, home, side, short_name) first-FGA records
+    jb_raw = []  # (day_iso, away, home, jumpball-dict) jump-ball records
     for m, (aw, hm) in sorted(matchups.items()):
         if not first_page:
             time.sleep(1.0)  # polite delay between BRef PBP pages
         first_page = False
-        flags = fetch_bref_pbp_putbacks(root, yesterday, aw, hm)
-        if not flags:
+        pb = fetch_bref_pbp_putbacks(root, yesterday, aw, hm)
+        if not pb:
             continue  # fetch/parse already warned; log at full weight
+        flags = pb.get("putbacks", {})
+        for side, short in (pb.get("first_fga") or {}).items():
+            fs_raw.append((yesterday.isoformat(), aw, hm, side, short))
+        if pb.get("jumpball"):
+            jb_raw.append((yesterday.isoformat(), aw, hm,
+                           pb["jumpball"]))
         for r in games_by_matchup[m]:
             side = "away" if r["team"] == aw else "home"
             if side not in flags:
@@ -1849,6 +2432,39 @@ def main():
     if fuzzy_n:
         notes.append(f"names: {fuzzy_n} fuzzy BM name resolution(s) "
                      f"(see WARNINGs)")
+    # First-shot accumulation (improvement #1): yesterday's first-FGA
+    # records, resolved now that the universe exists. Idempotent via
+    # the table's "seen" game keys.
+    fs_added = fs_skipped = 0
+    fs_by_game = {}
+    for day_iso, aw, hm, side, short in fs_raw:
+        fs_by_game.setdefault((day_iso, aw, hm), {})[side] = short
+    for (day_iso, aw, hm), first_fga in sorted(fs_by_game.items()):
+        a, s = accumulate_firstshot(fs_table, day_iso, aw, hm, first_fga,
+                                    universe)
+        fs_added += a
+        fs_skipped += s
+    if fs_added or fs_skipped:
+        notes.append(f"first-shot: +{fs_added} first-FGA records for "
+                     f"{yesterday} ({fs_skipped} unresolvable)")
+    # Jump-ball accumulation (improvement #3): yesterday's jump balls,
+    # resolved now that the universe exists. team_of covers both teams'
+    # players (current-season BRef + post-All-Star tables); the winner
+    # is resolved to a team through it. Idempotent via "seen".
+    jb_added = jb_skipped = 0
+    team_of = {}
+    for k, v in (bref_cur or {}).items():
+        team_of[k] = v["team"] if isinstance(v, dict) else v[0]
+    for k, v in (postasb_players or {}).items():
+        team_of.setdefault(nk(k), v[0])
+    for day_iso, aw, hm, jumpball in sorted(jb_raw):
+        a, s = accumulate_jumptip(jb_table, day_iso, aw, hm, jumpball,
+                                  team_of)
+        jb_added += a
+        jb_skipped += s
+    if jb_added or jb_skipped:
+        notes.append(f"jump-ball: +{jb_added} jump-ball records for "
+                     f"{yesterday} ({jb_skipped} unresolvable)")
 
     hist = build_history(fblog)
     gmap = fblog.get("g") or {}
@@ -1896,6 +2512,11 @@ def main():
                 blended[s["name"]] = vals
                 fgm_map[s["name"]] = vals[0]
             shares = compute_shares(fgm_map)
+            # First-shot tendency (improvement #1): reallocate the model
+            # shares toward who actually takes his team's first shot.
+            # With no first-shot data the shares pass through unchanged.
+            shares = apply_first_shot(
+                shares, fs_table, away if side == "away" else home)
             for s in starters[side]:
                 tag = f" ({s['tag']})" if s.get("tag") else ""
                 players_out.append({"n": s["name"] + tag, "s": side,
@@ -1919,10 +2540,14 @@ def main():
             cands = [s for s in starters[side] if s.get("pos") == "C"]
             if not cands:
                 cands = starters[side]
-            # Prefer the candidate with a StatPick/prior record.
+            # Prefer the candidate with a StatPick/prior/jump-ball record.
             cands.sort(key=lambda s: (nk(s["name"]) in statpick,
                                       any(nk(p) == nk(s["name"])
-                                          for p in priors)), reverse=True)
+                                          for p in priors),
+                                      jumptip_record(jb_table, s["name"],
+                                                     away if side == "away"
+                                                     else home)
+                                      is not None), reverse=True)
             jumpers[side] = cands[0]["name"]
         tip_src = {}
         recs = {}
@@ -1930,19 +2555,34 @@ def main():
             team = away if side == "away" else home
             try:
                 recs[side], tip_src[side] = resolve_tip_record(
-                    jumpers[side], team, statpick, priors, team_tips)
+                    jumpers[side], team, statpick, priors, team_tips,
+                    jb_table)
             except Exception as e:
                 print(f"FATAL: {key} {side} jumper {jumpers[side]} "
                       f"({team}): tip record failed: {e}", file=sys.stderr)
                 return 2
         away_tip = round(tip_pct(recs["away"][0], recs["away"][1],
                                  recs["home"][0], recs["home"][1]), 1)
+        # Height prior (improvement #3): +4in of jumper height = 63.2%
+        # tip win (0.135 logit per inch). Applied only when both
+        # jumpers' heights are known; noted on the slate line.
+        h_shift = height_logit_shift(
+            heights.get(nk(jumpers["away"])),
+            heights.get(nk(jumpers["home"])))
+        height_note = ""
+        if h_shift:
+            away_tip = round(apply_logit_shift(away_tip, h_shift), 1)
+            height_note = (f"; height {jumpers['away']} "
+                           f"{heights[nk(jumpers['away'])]:.0f}in vs "
+                           f"{jumpers['home']} "
+                           f"{heights[nk(jumpers['home'])]:.0f}in "
+                           f"(logit {h_shift:+.2f})")
         notes.append(
             f"{key}: line {line} (open spread {spread_home}, "
             f"median total {total} from {len(cov['totals'])} books); "
             f"tip {jumpers['away']} {recs['away']} ({tip_src['away']}) vs "
             f"{jumpers['home']} {recs['home']} ({tip_src['home']}) -> "
-            f"awayTip {away_tip}")
+            f"awayTip {away_tip}{height_note}")
         games_out.append({
             "away": away, "home": home, "awayTip": away_tip,
             "awayRate": away_rate, "homeRate": home_rate,
@@ -2002,8 +2642,20 @@ def main():
         d["matchup_reb"] = round(m_reb, 1) if n else None
         d["matchup_ast"] = round(m_ast, 1) if n else None
         d["_p"] = dd_prob(d["pts"], d["reb"], d["ast"])
+        # Parallel copula probability (improvement #7): computed from
+        # the same adjusted means when fitted params exist; None
+        # otherwise. The live _p above is untouched.
+        d["_p_cop"] = None
+        d["_p_cop_se"] = None
+        if dd_cop is not None:
+            p_cop, se = dd_prob_copula(d["pts"], d["reb"], d["ast"],
+                                       dd_cop, root)
+            if p_cop is not None:
+                d["_p_cop"] = round(p_cop, 4)
+                d["_p_cop_se"] = round(se, 4)
     dd_out = [{k: d[k] for k in ("n", "t", "pts", "reb", "ast",
                                  "matchup_n", "matchup_reb", "matchup_ast")}
+              | {"p_cop": d.get("_p_cop")}
               for d in dd_ranked[:DD_TOP]]
     notes.append("dd top25: " + ", ".join(
         f"{d['n']} {d['_p']*100:.1f}%" for d in dd_ranked[:DD_TOP]))
@@ -2021,8 +2673,8 @@ def main():
     # ---- 3. Tonight's slate + frozen track predictions --------------------
     slate = {"date": today.isoformat(),
              "note": (f"{len(games_out)} games · post-All-Star '25-26 + "
-                      "'26-27 blend, first-basket history, Covers lines, "
-                      "tip records"),
+                      "'26-27 blend, first-basket history, first-shot "
+                      "tendency, Covers lines, tip records"),
              "games": games_out, "dd": dd_out}
     # Track predictions use the UPDATED history (incl. yesterday) and the
     # corrected blend (per-player g, no renormalization).
@@ -2038,7 +2690,8 @@ def main():
     for g in games_out:
         g_key = f"{g['away']}@{g['home']}"
         af, hf = game_calc(g["awayTip"], g["awayRate"], g["homeRate"])
-        adj, detail = adjusted_shares(g, hist, gmap, established_nk)
+        adj, detail = adjusted_shares(g, hist, gmap, established_nk,
+                                      k=k_blend)
         plist = []
         starters_cal = []
         for p in g["players"]:
@@ -2049,12 +2702,20 @@ def main():
             # matching the frozen track format.
             pname = re.sub(r"\s*\([A-Z]+\)$", "", p["n"])
             plist.append([pname, team, round(prob, 4)])
+            fs_c = (fs_table.get("c") or {}).get(team, {})
+            fs_g = (fs_table.get("games") or {}).get(team, 0)
             starters_cal.append({"n": pname, "team": team,
                                  "sh": round(p["sh"] / 100.0, 4),
                                  "adj": round(adj[p["n"]], 4),
                                  "y": detail[p["n"]]["y"],
-                                 "g": detail[p["n"]]["g"]})
+                                 "g": detail[p["n"]]["g"],
+                                 "fs_att": fs_c.get(nk(pname), 0),
+                                 "fs_g": fs_g})
         plist.sort(key=lambda x: -x[2])
+        # Platt calibration (improvement #2): reshape the frozen track
+        # probabilities with the fitted map, if one is configured. The
+        # total mass is preserved, so the validation gate is unaffected.
+        plist = apply_platt_to_track(plist, cal_params["platt"])
         track_games.append({"g": f"{g['away']}@{g['home']}",
                             "pa": round(af, 4), "p": plist, "act": None})
         cal_tonight.append({"date": today.isoformat(),
@@ -2126,6 +2787,11 @@ def main():
 
     # ---- 6. Write -----------------------------------------------------------
     data["slate"] = slate
+    # The effective blend K is written into fblog["K"]: the page reads it
+    # as FB.K, so the page's own blend follows the fitted K with no page
+    # change. (The frozen Nov 5 local data.json keeps K=20; the live
+    # file's K moves only when a params file is landed.)
+    fblog["K"] = k_blend
     data["props"] = {
         "as_of": today.isoformat(),
         "note": ("Points: Normal(mean, sd) from season game logs. Threes: "
@@ -2148,6 +2814,12 @@ def main():
         print(f"wrote {data_path}")
         save_calibration(cal_path, cal_recs)
         print(f"wrote {cal_path} ({len(cal_recs)} records)")
+        save_firstshot(fs_path, fs_table)
+        print(f"wrote {fs_path} "
+              f"({sum(fs_table.get('games', {}).values())} team-games)")
+        save_jumptip(jb_path, jb_table)
+        print(f"wrote {jb_path} "
+              f"({sum(jb_table.get('games', {}).values())} team-games)")
     print(f"run {today.isoformat()}: {len(games_out)} games, "
           f"{len(track_games)} track games")
     for n in notes:
