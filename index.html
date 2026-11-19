@@ -197,7 +197,8 @@ function ddProb(d){const pp=normGE(d.pts,Math.max(3,.28*d.pts+2),10),pr=poisGE(+
 const badge=(t,big)=>`<span class="badge${big?' big':''}" style="background:${COLORS[t]||'#333'};color:${t==='SAS'?'#111':'#fff'};border-color:${t==='BKN'?'#fff':'#c9a24a'}">${t}</span>`;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function fmtSlateShort(){if(!SLATE||!SLATE.date)return '';try{return new Date(SLATE.date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}catch(e){return '';}}
-function gameWhen(g){const d=fmtSlateShort();const t=g&&g.time?String(g.time).trim():'';if(d&&t)return d+', '+t+' ET';if(d)return d;if(t)return t+' ET';return '';}
+function fmtTime12(t){const m=/^(\d{1,2}):(\d{2})(?::\d{2})?$/.exec(String(t||'').trim());if(!m)return String(t||'').trim();let h=+m[1];const ap=h>=12?'PM':'AM';h=h%12||12;return h+':'+m[2]+' '+ap;}
+function gameWhen(g){const d=fmtSlateShort();const t=fmtTime12(g&&g.time?String(g.time).trim():'');if(d&&t)return d+', '+t+' ET';if(d)return d;if(t)return t+' ET';return '';}
 function gameWhenHTML(g){const w=gameWhen(g);return w?`<span class="gwhen"> &middot; ${esc(w)}</span>`:'';}
 function viewToggle(kind,cur){
   return `<div class="viewtoggle" role="group" aria-label="View by player, by game, or track record"><button data-vt="${kind}:player" class="${cur==='player'?'on':''}">By player</button><button data-vt="${kind}:game" class="${cur==='game'?'on':''}">By game</button><button data-vt="${kind}:track" class="${cur==='track'?'on':''}">Track record</button></div>`;
@@ -575,7 +576,7 @@ function renderTD(){
    <td>${fair(x.p)}</td>${tdBookCell(x)}</tr>`).join('')}
   </table>${all.length>25?`<div class="row" style="justify-content:center;margin-top:10px"><button class="btn sm" data-act="tdall">${tdShowAll?'Show top 25':'Show all '+all.length}</button></div>`:''}</div>`;
 }
-function tdGameWhen(g){let d='';const raw=g&&g.date?String(g.date).trim():'';if(raw){try{const dt=new Date(raw+'T12:00:00');if(!isNaN(dt.getTime()))d=dt.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).replace(/,/g,'');}catch(e){d='';}}const t=g&&g.time?String(g.time).trim():'';if(d&&t)return d+', '+t+' ET';if(d)return d;if(t)return t+' ET';return '';}
+function tdGameWhen(g){let d='';const raw=g&&g.date?String(g.date).trim():'';if(raw){try{const dt=new Date(raw+'T12:00:00');if(!isNaN(dt.getTime()))d=dt.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).replace(/,/g,'');}catch(e){d='';}}const t=fmtTime12(g&&g.time?String(g.time).trim():'');if(d&&t)return d+', '+t+' ET';if(d)return d;if(t)return t+' ET';return '';}
 function tdGameWhenHTML(g){const w=tdGameWhen(g);return w?`<span class="gwhen"> &middot; ${esc(w)}</span>`:'';}
 function renderTDByGame(){
   const poff=tdPoff();let secs='';
