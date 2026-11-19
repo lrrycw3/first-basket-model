@@ -1,0 +1,24 @@
+{
+ "R": [
+  [
+   1.0,
+   0.2289,
+   0.1111
+  ],
+  [
+   0.2289,
+   1.0,
+   0.1835
+  ],
+  [
+   0.1111,
+   0.1835,
+   1.0
+  ]
+ ],
+ "phi_reb": 1.1914,
+ "phi_ast": 1.1372,
+ "fitted_on_players": 10,
+ "fitted_at": "2026-11-19",
+ "note": "Gaussian-copula params fitted from Basketball-Reference game logs (dd-fit). The pipeline computes the parallel p_cop field from these; the live DD probability stays the independent formula until the copula beats it on held-out joint NLL."
+}
