@@ -785,6 +785,65 @@ def _parse_bref_html(html):
     return rows
 
 
+def _parse_bref_standings_html(html):
+    """Parse BRef standings tables (confs_standings_E/W) -> {page abbr:
+    'W-L'}. Team cells carry a seed suffix ('Philadelphia 76ers(1)')
+    and may carry a '*' playoff marker; both are stripped before the
+    full-name lookup. A name the pipeline's map does not know is
+    skipped, never fatal. Returns {} when the tables are absent."""
+    soup = BeautifulSoup(html, "html.parser")
+    out = {}
+    for tid in ("confs_standings_E", "confs_standings_W"):
+        tbl = soup.find("table", id=tid)
+        if tbl is None or tbl.find("tbody") is None:
+            continue
+        for tr in tbl.find("tbody").find_all("tr"):
+            cells = {c.get("data-stat"): c.get_text(strip=True)
+                     for c in tr.find_all(["th", "td"])}
+            name = re.sub(r"(\(\d+\)|\*)+$", "",
+                          cells.get("team_name", "")).strip()
+            abbr = FULL_NAME_TO_ABBR.get(name) or \
+                STANDINGS_NAME_FIXES.get(name)
+            if not abbr:
+                continue
+            try:
+                w, l = int(cells["wins"]), int(cells["losses"])
+            except (KeyError, TypeError, ValueError):
+                continue
+            out[abbr] = f"{w}-{l}"
+    return out
+
+
+# BRef standings names the pipeline's FULL_NAME_TO_ABBR does not carry
+# (other sources use the short form). Checked Nov 19: this is the only
+# one of the 30.
+STANDINGS_NAME_FIXES = {"Los Angeles Clippers": "LAC"}
+
+
+def fetch_bref_standings(root, season=2027):
+    """Basketball-Reference standings for the current season
+    (season 2027 = 2026-27) -> {page abbr: 'W-L'}. Plain HTTP first,
+    Playwright fallback, same pattern as fetch_bref_per_game. Raises
+    FetchError when both fail; an empty parse is {} (the caller treats
+    it as 'no records', never fatal). One request per attempt, so the
+    ~1.5s BRef spacing rule is satisfied trivially."""
+    url = (f"https://www.basketball-reference.com/leagues/"
+           f"NBA_{season}_standings.html")
+    html = None
+    try:
+        html = http_get(url, root, f"bref-standings-{season}")
+        out = _parse_bref_standings_html(html)
+        if out:
+            return out
+    except FetchError:
+        pass
+    if html:
+        debug_dump(root, f"bref-standings-{season}", html)
+    html = playwright_fetch(url, root, f"bref-standings-{season}",
+                            wait_for="table")
+    return _parse_bref_standings_html(html)
+
+
 def fetch_nba_stats_per_game(root, season, label):
     """Fallback: NBA stats API leaguedashplayerstats (PerGame)."""
     nba_season = f"{season - 1}-{str(season)[-2:]}"  # e.g. 2026-27
@@ -2470,6 +2529,26 @@ def main():
     hist = build_history(fblog)
     gmap = fblog.get("g") or {}
     postasb_nk = {nk(k): v for k, v in postasb_players.items()}
+    # Team records (Nov 19): BRef standings for the current season,
+    # wired onto each slate game as awayRec/homeRec ("W-L"). Best
+    # effort only: a failed fetch or a thin parse warns and the slate
+    # builds without records; it never fails the run.
+    try:
+        records = fetch_bref_standings(root, 2027)
+    except FetchError as e:
+        records = {}
+        warnings.append(f"bref standings fetch failed ({e}) -- "
+                        f"slate built without team records")
+    if records:
+        if len(records) < 30:
+            warnings.append(
+                f"bref standings: only {len(records)}/30 teams parsed "
+                f"-- records may be missing for some games")
+        else:
+            notes.append(f"bref standings: {len(records)} team records")
+    else:
+        warnings.append("bref standings: no teams parsed -- slate built "
+                        "without team records")
     games_out, all_starters = [], []
     line_for_cal = {}  # game key -> (spread_home, total), for calibration
     for key in sorted(covers):
@@ -2584,11 +2663,16 @@ def main():
             f"tip {jumpers['away']} {recs['away']} ({tip_src['away']}) vs "
             f"{jumpers['home']} {recs['home']} ({tip_src['home']}) -> "
             f"awayTip {away_tip}{height_note}")
-        games_out.append({
+        game = {
             "away": away, "home": home, "awayTip": away_tip,
             "awayRate": away_rate, "homeRate": home_rate,
             "tipNote": f"{jumpers['away']} vs {jumpers['home']}",
-            "line": line, "time": cov.get("time"), "players": players_out})
+            "line": line, "time": cov.get("time"), "players": players_out}
+        if away in records:
+            game["awayRec"] = records[away]
+        if home in records:
+            game["homeRec"] = records[home]
+        games_out.append(game)
     # Double-double list: top DD_TOP by ddProb among tonight's starters.
     # (On a light night there may be fewer starters than DD_TOP; the list
     # is then every starter, and validation expects min(DD_TOP, starters).)
