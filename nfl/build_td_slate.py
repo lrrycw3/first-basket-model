@@ -142,6 +142,45 @@ def fmt_gametime(gt):
     return f"{h - 12}:{minute} PM"
 
 
+def fmt_record(w, l, t=0):
+    """W-L record string; ties shown only when nonzero ('7-9-1')."""
+    return f"{w}-{l}" + (f"-{t}" if t else "")
+
+
+def team_records(rows, through=None):
+    """W-L-T per team from completed regular-season games in `rows`
+    (nflverse games.csv rows for one season). `through` is an ISO date
+    ('2026-11-19'): only games with gameday <= through count, so a
+    slate built mid-week shows records as of the build date. Rows
+    without a score are skipped. Pure function of the rows — no I/O,
+    so a load failure upstream simply means no records are computed
+    (the build already fails loudly on that, as before)."""
+    recs = {}
+    for r in rows:
+        if r.get("game_type") != "REG":
+            continue
+        if not r.get("away_score") or not r.get("home_score"):
+            continue
+        if through and (r.get("gameday") or "") > through:
+            continue
+        try:
+            a, h = int(r["away_score"]), int(r["home_score"])
+        except (TypeError, ValueError):
+            continue
+        for team, pts, opp in ((r["away_team"], a, h),
+                               (r["home_team"], h, a)):
+            w, l, t = recs.get(team, (0, 0, 0))
+            if pts > opp:
+                w += 1
+            elif pts < opp:
+                l += 1
+            else:
+                t += 1
+            recs[team] = (w, l, t)
+    return {team: fmt_record(w, l, t)
+            for team, (w, l, t) in recs.items()}
+
+
 def team_td_rates(stats, games_played):
     """League-average and per-team expected offensive TDs per game.
 
@@ -710,6 +749,13 @@ def build(season, week, data_dir, today=None):
     completed = [g for g in games if g.get("away_score") not in ("", None)]
     completed_ids = {g["game_id"] for g in completed}
 
+    # Team records (Nov 19): W-L-T from completed regular-season games
+    # through the build date, for the By game headers. Computed from the
+    # same games.csv the build already loads -- no new fetch. A team
+    # with no completed game yet simply gets no record (the page renders
+    # the header exactly as before).
+    records = team_records(completed, through=today.isoformat())
+
     # --- team games played / first-offensive-TD counts -------------------
     games_played = Counter()
     for g in completed:
@@ -782,6 +828,8 @@ def build(season, week, data_dir, today=None):
             "awayFirstTD": away_first,
             "line": line,
             "players": players,
+            **({"awayRec": records[away]} if away in records else {}),
+            **({"homeRec": records[home]} if home in records else {}),
         })
 
     block = {
@@ -829,6 +877,10 @@ def build(season, week, data_dir, today=None):
             "away": g["away"], "home": g["home"],
             "date": g["date"], "time": g["time"],
             "players": at_players,
+            **({"awayRec": records[g["away"]]}
+               if g["away"] in records else {}),
+            **({"homeRec": records[g["home"]]}
+               if g["home"] in records else {}),
         })
     block["anytime"] = {
         "week": week,
@@ -846,6 +898,7 @@ def build(season, week, data_dir, today=None):
         "first_off_td": dict(first_off),
         "poff_games": (n_first_off, n_first_td_games),
         "lam_league": round(lam_league, 4),
+        "records": records,
         "warnings": warnings,
         "unresolved": unresolved,
     }
