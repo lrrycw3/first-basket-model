@@ -92,6 +92,17 @@ Steps:
 - **Merge (`--merge-into data.json`)**: replaces only the slate fields
   (week/season/as_of/poff/note/games); `nfl.track` and all basketball
   keys pass through. Refuses a block for an earlier week.
+- **Team records (Nov 19)**: every First TD game and every Anytime TD
+  game carries `awayRec` / `homeRec` (`"7-9"`, ties only when nonzero,
+  `"7-9-1"`), computed by `team_records()` from completed REG games in
+  the same `games.csv` the build already loads, through the build date
+  — no new fetch. The page shows them in the By game headers as
+  `IND (3-7) @ HOU (3-6)`. A team with no completed game yet gets no
+  record field and the header renders as before. The daily refresh
+  does NOT update records (it leaves the Anytime block untouched by
+  contract), so a record is as fresh as the last weekly build: a team
+  that plays Thursday keeps its Tuesday record on Sunday's slate
+  until the next build.
 - **Lines**: `fetch_lines` now prefers the DraftKings provider entry
   explicitly instead of `odds[0]` (ESPN's provider order is not
   guaranteed stable). Note: live game-day totals genuinely move —
