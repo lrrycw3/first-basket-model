@@ -200,6 +200,7 @@ function fmtSlateShort(){if(!SLATE||!SLATE.date)return '';try{return new Date(SL
 function fmtTime12(t){const m=/^(\d{1,2}):(\d{2})(?::\d{2})?$/.exec(String(t||'').trim());if(!m)return String(t||'').trim();let h=+m[1];const ap=h>=12?'PM':'AM';h=h%12||12;return h+':'+m[2]+' '+ap;}
 function gameWhen(g){const d=fmtSlateShort();const t=fmtTime12(g&&g.time?String(g.time).trim():'');if(d&&t)return d+', '+t+' ET';if(d)return d;if(t)return t+' ET';return '';}
 function gameWhenHTML(g){const w=gameWhen(g);return w?`<span class="gwhen"> &middot; ${esc(w)}</span>`:'';}
+function recHTML(r){return r?` (${esc(r)})`:'';}
 function viewToggle(kind,cur){
   return `<div class="viewtoggle" role="group" aria-label="View by player, by game, or track record"><button data-vt="${kind}:player" class="${cur==='player'?'on':''}">By player</button><button data-vt="${kind}:game" class="${cur==='game'?'on':''}">By game</button><button data-vt="${kind}:track" class="${cur==='track'?'on':''}">Track record</button></div>`;
 }
@@ -353,7 +354,7 @@ function renderGames(){
   <div class="panel">${S.games.map((g,gi)=>{const c=gameCalc(g);
    const list=g.players.map(p=>{const team=p.s==='away'?g.away:g.home;return {...p,team,h:hist(team,p.n),p:c[p.s]*adjSh(team,p)/100};}).sort((a,b)=>b.p-a.p);
    const awaySh=g.players.filter(p=>p.s==='away').reduce((a,p)=>a+ +p.sh,0),homeSh=g.players.filter(p=>p.s==='home').reduce((a,p)=>a+ +p.sh,0);
-   return `<div class="game"><div class="gmeta">${esc(g.away)} @ ${esc(g.home)}${gameWhenHTML(g)}</div><div class="matchup">${badge(g.away,1)}<span class="at">at</span>${badge(g.home,1)}</div>
+   return `<div class="game"><div class="gmeta">${esc(g.away)}${recHTML(g.awayRec)} @ ${esc(g.home)}${recHTML(g.homeRec)}${gameWhenHTML(g)}</div><div class="matchup">${badge(g.away,1)}<span class="at">at</span>${badge(g.home,1)}</div>
    <div class="sfrow"><span>Scores first <b>${(c.away*100).toFixed(1)}%</b></span><b>${(c.home*100).toFixed(1)}%</b></div>
    <div class="bar"><i style="width:${c.away*100}%"></i></div>
    <div class="tipnote">${g.away} wins the tip ${(+g.awayTip).toFixed(1)}% of the time${g.tipNote?`<br>${esc(g.tipNote)}${g.line?' · '+esc(g.line):''}`:''}</div>
@@ -420,7 +421,7 @@ function renderDDByGame(){
     const inGame=rows.filter(d=>d.t===g.away||d.t===g.home).sort((a,b)=>b.p-a.p);
     inGame.forEach(d=>{used.add(d.i);d._opp=d.t===g.away?g.home:g.away;});
     if(!inGame.length)return;
-    secs+=section(`${badge(g.away)}<span class="vs">${esc(g.away)} @ ${esc(g.home)}${gameWhenHTML(g)}</span>${badge(g.home)}`,g.line,inGame);
+    secs+=section(`${badge(g.away)}<span class="vs">${esc(g.away)}${recHTML(g.awayRec)} @ ${esc(g.home)}${recHTML(g.homeRec)}${gameWhenHTML(g)}</span>${badge(g.home)}`,g.line,inGame);
   });
   const rest=rows.filter(d=>!used.has(d.i)).sort((a,b)=>b.p-a.p);
   if(rest.length)secs+=section(`<span class="vs">Other</span>`,'',rest);
@@ -516,7 +517,7 @@ function renderPropsByGame(){
     const inGame=list.filter(x=>x.t===g.away||x.t===g.home);
     inGame.forEach(x=>used.add(x.key));
     if(!inGame.length)return;
-    secs+=section(`${badge(g.away)}<span class="vs">${esc(g.away)} @ ${esc(g.home)}${gameWhenHTML(g)}</span>${badge(g.home)}`,g.line,inGame);
+    secs+=section(`${badge(g.away)}<span class="vs">${esc(g.away)}${recHTML(g.awayRec)} @ ${esc(g.home)}${recHTML(g.homeRec)}${gameWhenHTML(g)}</span>${badge(g.home)}`,g.line,inGame);
   });
   const rest=list.filter(x=>!used.has(x.key));
   if(rest.length)secs+=section(`<span class="vs">Other</span>`,'',rest);
@@ -583,7 +584,7 @@ function renderTDByGame(){
   NFL.games.forEach(g=>{
     const list=tdPlayers(g).sort((a,b)=>b.p-a.p);
     const ap=poff*(+g.awayFirstTD)/100,hp=poff*(1-(+g.awayFirstTD)/100);
-    secs+=`<div class="ddsec"><div class="ddghead">${nbadge(g.away)}<span class="vs">${esc(g.away)} @ ${esc(g.home)}${tdGameWhenHTML(g)}</span>${nbadge(g.home)}${g.line?`<span class="ln">${esc(g.line)}</span>`:''}</div>
+    secs+=`<div class="ddsec"><div class="ddghead">${nbadge(g.away)}<span class="vs">${esc(g.away)}${recHTML(g.awayRec)} @ ${esc(g.home)}${recHTML(g.homeRec)}${tdGameWhenHTML(g)}</span>${nbadge(g.home)}${g.line?`<span class="ln">${esc(g.line)}</span>`:''}</div>
     <div class="sfrow"><span>Scores the first TD <b>${(ap*100).toFixed(1)}%</b></span><b>${(hp*100).toFixed(1)}%</b></div>
     <div class="bar" style="margin-bottom:8px"><i style="width:${(ap+hp)>0?ap/(ap+hp)*100:50}%"></i></div>
     <table><tr><th>Player</th><th>Prob.</th><th>Fair</th><th>Book</th><th>Edge</th></tr>
@@ -623,7 +624,7 @@ function renderATDByGame(){
   let secs='';
   atdGames().forEach(g=>{
     const list=atdPlayers(g).sort((a,b)=>b.p-a.p);
-    secs+=`<div class="ddsec"><div class="ddghead">${nbadge(g.away)}<span class="vs">${esc(g.away)} @ ${esc(g.home)}${tdGameWhenHTML(g)}</span>${nbadge(g.home)}${g.line?`<span class="ln">${esc(g.line)}</span>`:''}</div>
+    secs+=`<div class="ddsec"><div class="ddghead">${nbadge(g.away)}<span class="vs">${esc(g.away)}${recHTML(g.awayRec)} @ ${esc(g.home)}${recHTML(g.homeRec)}${tdGameWhenHTML(g)}</span>${nbadge(g.home)}${g.line?`<span class="ln">${esc(g.line)}</span>`:''}</div>
     <table><tr><th>Player</th><th>Prob.</th><th>Fair</th><th>Book</th><th>Edge</th></tr>
     ${list.map(x=>`<tr><td><div class="pname">${esc(x.n)}</div>${atdMeta(x)}</td><td class="prob">${(x.p*100).toFixed(1)}%</td><td>${fair(x.p)}</td>${atdBookCell(x)}</tr>`).join('')}
     </table></div>`;
