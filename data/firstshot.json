@@ -1,31 +1,31 @@
 {
  "games": {
   "ATL": 12,
-  "BOS": 11,
+  "BOS": 12,
   "CHI": 9,
   "MIA": 9,
-  "DAL": 12,
+  "DAL": 13,
   "DEN": 9,
   "GSW": 10,
   "IND": 13,
-  "MIL": 12,
-  "MEM": 12,
+  "MIL": 13,
+  "MEM": 13,
   "CLE": 14,
-  "MIN": 12,
+  "MIN": 13,
   "OKC": 13,
   "WAS": 10,
   "CHA": 12,
   "DET": 9,
-  "NOP": 14,
+  "NOP": 15,
   "HOU": 10,
   "LAL": 13,
-  "LAC": 8,
-  "NYK": 9,
+  "LAC": 9,
+  "NYK": 10,
   "ORL": 12,
   "TOR": 13,
-  "PHI": 12,
-  "SAS": 11,
-  "POR": 11,
+  "PHI": 13,
+  "SAS": 12,
+  "POR": 12,
   "SAC": 10,
   "PHX": 6,
   "BKN": 10,
@@ -46,7 +46,8 @@
    "baylor scheierman": 1,
    "sam hauser": 1,
    "derrick white": 1,
-   "jordan walsh": 1
+   "jordan walsh": 1,
+   "payton pritchard": 1
   },
   "CHI": {
    "norman powell": 5,
@@ -62,7 +63,7 @@
   },
   "DAL": {
    "kyrie irving": 2,
-   "cooper flagg": 8,
+   "cooper flagg": 9,
    "daniel gafford": 1,
    "caleb martin": 1
   },
@@ -91,7 +92,7 @@
   },
   "MIL": {
    "tyler herro": 3,
-   "myles turner": 2,
+   "myles turner": 3,
    "jaime jaquez": 1,
    "brayden burries": 3,
    "ousmane dieng": 1,
@@ -99,7 +100,7 @@
    "jericho sims": 1
   },
   "MEM": {
-   "cedric coward": 2,
+   "cedric coward": 3,
    "zach edey": 2,
    "cam spencer": 1,
    "jaylen wells": 2,
@@ -117,7 +118,8 @@
   "MIN": {
    "jonathan kuminga": 4,
    "jaden mcdaniels": 5,
-   "lamelo ball": 3
+   "lamelo ball": 3,
+   "ayo dosunmu": 1
   },
   "OKC": {
    "shai gilgeous-alexander": 3,
@@ -155,7 +157,8 @@
    "trey murphy": 2,
    "jeremiah fears": 4,
    "zion williamson": 1,
-   "saddiq bey": 1
+   "saddiq bey": 1,
+   "yves missi": 1
   },
   "HOU": {
    "fred vanvleet": 5,
@@ -172,10 +175,11 @@
    "darius garland": 3,
    "rui hachimura": 2,
    "kobe sanders": 1,
-   "brook lopez": 2
+   "brook lopez": 2,
+   "max strus": 1
   },
   "NYK": {
-   "jalen brunson": 5,
+   "jalen brunson": 6,
    "karl-anthony towns": 2,
    "og anunoby": 2
   },
@@ -199,13 +203,13 @@
    "vj edgecombe": 3,
    "tyrese maxey": 3,
    "joel embiid": 2,
-   "lebron james": 3,
+   "lebron james": 4,
    "jaylen brown": 1
   },
   "SAS": {
    "deaaron fox": 3,
    "victor wembanyama": 2,
-   "devin vassell": 3,
+   "devin vassell": 4,
    "stephon castle": 3
   },
   "POR": {
@@ -213,7 +217,7 @@
    "scoot henderson": 3,
    "damian lillard": 2,
    "donovan clingan": 2,
-   "deni avdija": 2,
+   "deni avdija": 3,
    "sidy cissoko": 1
   },
   "SAC": {
@@ -426,6 +430,12 @@
   "2026-11-20:PHX@UTA",
   "2026-11-20:SAC@LAL",
   "2026-11-20:TOR@DET",
-  "2026-11-20:WAS@CHI"
+  "2026-11-20:WAS@CHI",
+  "2026-11-21:BOS@SAC",
+  "2026-11-21:LAC@DAL",
+  "2026-11-21:MEM@MIN",
+  "2026-11-21:MIL@PHI",
+  "2026-11-21:NOP@SAS",
+  "2026-11-21:POR@NYK"
  ]
 }

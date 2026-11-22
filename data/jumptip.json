@@ -7,24 +7,24 @@
   "WAS": 9,
   "CHA": 9,
   "DET": 9,
-  "NOP": 11,
-  "MIN": 10,
+  "NOP": 12,
+  "MIN": 11,
   "LAL": 17,
-  "LAC": 5,
+  "LAC": 6,
   "OKC": 11,
-  "DAL": 12,
+  "DAL": 13,
   "ORL": 12,
   "TOR": 13,
-  "SAS": 9,
+  "SAS": 10,
   "CLE": 12,
-  "MEM": 8,
-  "POR": 11,
-  "SAC": 11,
+  "MEM": 9,
+  "POR": 12,
+  "SAC": 12,
   "BKN": 10,
-  "NYK": 7,
-  "PHI": 9,
-  "MIL": 10,
-  "BOS": 8,
+  "NYK": 8,
+  "PHI": 10,
+  "MIL": 11,
+  "BOS": 9,
   "PHX": 7,
   "IND": 8,
   "MIA": 8,
@@ -62,10 +62,10 @@
   "NOP": {
    "deandre jordan": 2,
    "karlo matkovic": 6,
-   "yves missi": 3
+   "yves missi": 4
   },
   "MIN": {
-   "rudy gobert": 9,
+   "rudy gobert": 10,
    "joan beringer": 1
   },
   "LAL": {
@@ -74,7 +74,7 @@
   },
   "LAC": {
    "isaiah jackson": 2,
-   "brook lopez": 2,
+   "brook lopez": 3,
    "john collins": 1
   },
   "OKC": {
@@ -82,7 +82,7 @@
    "aday mara": 5
   },
   "DAL": {
-   "daniel gafford": 12
+   "daniel gafford": 13
   },
   "ORL": {
    "wendell carter": 12
@@ -93,7 +93,7 @@
    "collin murray-boyles": 4
   },
   "SAS": {
-   "victor wembanyama": 9
+   "victor wembanyama": 10
   },
   "CLE": {
    "jarrett allen": 9,
@@ -101,31 +101,32 @@
    "evan mobley": 2
   },
   "MEM": {
-   "zach edey": 8
+   "zach edey": 9
   },
   "POR": {
-   "donovan clingan": 11
+   "donovan clingan": 12
   },
   "SAC": {
-   "domantas sabonis": 9,
+   "domantas sabonis": 10,
    "dylan cardwell": 2
   },
   "BKN": {
    "dayron sharpe": 10
   },
   "NYK": {
-   "karl-anthony towns": 7
+   "karl-anthony towns": 7,
+   "andre drummond": 1
   },
   "PHI": {
-   "joel embiid": 8,
+   "joel embiid": 9,
    "adem bona": 1
   },
   "MIL": {
-   "myles turner": 8,
+   "myles turner": 9,
    "jericho sims": 2
   },
   "BOS": {
-   "neemias queta": 7,
+   "neemias queta": 8,
    "luka garza": 1
   },
   "PHX": {
@@ -159,7 +160,7 @@
    "john collins": 2
   },
   "MIN": {
-   "rudy gobert": 6
+   "rudy gobert": 7
   },
   "LAL": {
    "walker kessler": 7
@@ -172,7 +173,7 @@
    "wendell carter": 6
   },
   "SAS": {
-   "victor wembanyama": 8
+   "victor wembanyama": 9
   },
   "CLE": {
    "jarrett allen": 7,
@@ -194,7 +195,7 @@
    "dayron sharpe": 6
   },
   "DAL": {
-   "daniel gafford": 4
+   "daniel gafford": 5
   },
   "GSW": {
    "draymond green": 2,
@@ -202,7 +203,8 @@
    "charles bassey": 1
   },
   "NYK": {
-   "karl-anthony towns": 3
+   "karl-anthony towns": 3,
+   "andre drummond": 1
   },
   "TOR": {
    "jakob poeltl": 5,
@@ -234,10 +236,10 @@
    "ivica zubac": 4
   },
   "BOS": {
-   "neemias queta": 3
+   "neemias queta": 4
   },
   "PHI": {
-   "joel embiid": 4,
+   "joel embiid": 5,
    "adem bona": 1
   },
   "MIA": {
@@ -428,6 +430,12 @@
   "2026-11-20:PHX@UTA",
   "2026-11-20:SAC@LAL",
   "2026-11-20:TOR@DET",
-  "2026-11-20:WAS@CHI"
+  "2026-11-20:WAS@CHI",
+  "2026-11-21:BOS@SAC",
+  "2026-11-21:LAC@DAL",
+  "2026-11-21:MEM@MIN",
+  "2026-11-21:MIL@PHI",
+  "2026-11-21:NOP@SAS",
+  "2026-11-21:POR@NYK"
  ]
 }
