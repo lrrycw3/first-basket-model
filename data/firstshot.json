@@ -1,35 +1,35 @@
 {
  "games": {
-  "ATL": 11,
+  "ATL": 12,
   "BOS": 11,
-  "CHI": 8,
+  "CHI": 9,
   "MIA": 9,
   "DAL": 12,
   "DEN": 9,
   "GSW": 10,
-  "IND": 12,
+  "IND": 13,
   "MIL": 12,
   "MEM": 12,
-  "CLE": 13,
+  "CLE": 14,
   "MIN": 12,
-  "OKC": 12,
+  "OKC": 13,
   "WAS": 10,
-  "CHA": 11,
-  "DET": 8,
-  "NOP": 13,
+  "CHA": 12,
+  "DET": 9,
+  "NOP": 14,
   "HOU": 10,
-  "LAL": 12,
+  "LAL": 13,
   "LAC": 8,
   "NYK": 9,
-  "ORL": 11,
-  "TOR": 12,
+  "ORL": 12,
+  "TOR": 13,
   "PHI": 12,
   "SAS": 11,
   "POR": 11,
-  "SAC": 9,
+  "SAC": 10,
   "PHX": 6,
-  "BKN": 9,
-  "UTA": 8
+  "BKN": 10,
+  "UTA": 9
  },
  "c": {
   "ATL": {
@@ -37,7 +37,8 @@
    "dyson daniels": 3,
    "onyeka okongwu": 2,
    "nickeil alexander-walker": 2,
-   "kingston flemings": 2
+   "kingston flemings": 2,
+   "jalen johnson": 1
   },
   "BOS": {
    "paul george": 4,
@@ -48,7 +49,7 @@
    "jordan walsh": 1
   },
   "CHI": {
-   "norman powell": 4,
+   "norman powell": 5,
    "caleb wilson": 1,
    "josh giddey": 2,
    "isaac okoro": 1
@@ -82,7 +83,7 @@
   "IND": {
    "aaron nesmith": 1,
    "jay huff": 1,
-   "kelly oubre": 1,
+   "kelly oubre": 2,
    "pascal siakam": 3,
    "quenton jackson": 3,
    "andrew nembhard": 2,
@@ -111,7 +112,7 @@
    "evan mobley": 2,
    "sam merrill": 1,
    "meleek thomas": 2,
-   "james harden": 3
+   "james harden": 4
   },
   "MIN": {
    "jonathan kuminga": 4,
@@ -119,7 +120,7 @@
    "lamelo ball": 3
   },
   "OKC": {
-   "shai gilgeous-alexander": 2,
+   "shai gilgeous-alexander": 3,
    "ajay mitchell": 1,
    "isaiah hartenstein": 2,
    "kenrich williams": 2,
@@ -133,7 +134,7 @@
    "trae young": 2
   },
   "CHA": {
-   "naz reid": 5,
+   "naz reid": 6,
    "dennis schroder": 1,
    "moussa diabate": 1,
    "coby white": 2,
@@ -142,7 +143,7 @@
   },
   "DET": {
    "john collins": 1,
-   "cade cunningham": 2,
+   "cade cunningham": 3,
    "duncan robinson": 2,
    "daniss jenkins": 2,
    "kevin huerter": 1
@@ -150,7 +151,7 @@
   "NOP": {
    "dejounte murray": 2,
    "karlo matkovic": 1,
-   "herbert jones": 2,
+   "herbert jones": 3,
    "trey murphy": 2,
    "jeremiah fears": 4,
    "zion williamson": 1,
@@ -162,7 +163,7 @@
    "alperen sengun": 1
   },
   "LAL": {
-   "matisse thybulle": 2,
+   "matisse thybulle": 3,
    "luka doncic": 6,
    "austin reaves": 3,
    "ziaire williams": 1
@@ -182,13 +183,13 @@
    "wendell carter": 2,
    "jase richardson": 1,
    "franz wagner": 2,
-   "desmond bane": 2,
+   "desmond bane": 3,
    "anthony black": 2,
    "alex morales": 1,
    "tristan da silva": 1
   },
   "TOR": {
-   "scottie barnes": 4,
+   "scottie barnes": 5,
    "jakobe walter": 4,
    "collin murray-boyles": 2,
    "rj barrett": 1,
@@ -219,7 +220,7 @@
    "deandre hunter": 2,
    "zach lavine": 1,
    "precious achiuwa": 2,
-   "domantas sabonis": 3,
+   "domantas sabonis": 4,
    "darius acuff": 1
   },
   "PHX": {
@@ -229,13 +230,13 @@
   },
   "BKN": {
    "michael porter": 3,
-   "dayron sharpe": 2,
+   "dayron sharpe": 3,
    "nolan traore": 3,
    "julius randle": 1
   },
   "UTA": {
    "jaxson hayes": 1,
-   "ace bailey": 3,
+   "ace bailey": 4,
    "lauri markkanen": 2,
    "josh okogie": 1,
    "mo bamba": 1
@@ -416,6 +417,15 @@
   "2026-11-18:PHI@ORL",
   "2026-11-18:PHX@SAC",
   "2026-11-18:UTA@LAL",
-  "2026-11-18:WAS@TOR"
+  "2026-11-18:WAS@TOR",
+  "2026-11-20:CHA@ATL",
+  "2026-11-20:HOU@DEN",
+  "2026-11-20:IND@CLE",
+  "2026-11-20:NOP@OKC",
+  "2026-11-20:ORL@BKN",
+  "2026-11-20:PHX@UTA",
+  "2026-11-20:SAC@LAL",
+  "2026-11-20:TOR@DET",
+  "2026-11-20:WAS@CHI"
  ]
 }
