@@ -22305,7 +22305,7 @@
  "nfl": {
   "week": 12,
   "season": 2026,
-  "as_of": "2026-11-24",
+  "as_of": "2026-11-25",
   "poff": 0.9815,
   "note": "Week 12 First TD — team first-TD rates from 2026 nflverse PBP (shrinkage r=(c+5)/(n+10)), log5 team prob plus fitted home-field shift (+0.467 logit), player shares 0.5*TD share + 0.5*usage share (usage = 0.5*red-zone share + 0.5*first-4-drive share, shrunk toward red-zone share, K=20 touches), history blend K=20. Lines: ESPN/DraftKings. Poff (first TD offensive) = 0.9815.",
   "games": [
@@ -22831,7 +22831,7 @@
     "date": "2026-11-26",
     "time": "8:20 PM",
     "awayFirstTD": 48.5,
-    "line": "BUF -3, total 48.5",
+    "line": "BUF -3, total 47.5",
     "players": [
      {
       "n": "Emmett Johnson",
@@ -23258,22 +23258,6 @@
       "qb_gl": 7
      },
      {
-      "n": "Mike Gesicki",
-      "s": "home",
-      "pos": "TE",
-      "sh": 15.5,
-      "td": 6,
-      "g": 9,
-      "c": 2,
-      "trials": 9,
-      "d1": 5,
-      "d4": 16,
-      "rz10": 2,
-      "rz5": 3,
-      "gtg": 4,
-      "qb_gl": 0
-     },
-     {
       "n": "Ja'Marr Chase",
       "s": "home",
       "pos": "WR",
@@ -23285,6 +23269,22 @@
       "d1": 14,
       "d4": 54,
       "rz10": 3,
+      "rz5": 3,
+      "gtg": 4,
+      "qb_gl": 0
+     },
+     {
+      "n": "Mike Gesicki",
+      "s": "home",
+      "pos": "TE",
+      "sh": 15.5,
+      "td": 6,
+      "g": 9,
+      "c": 2,
+      "trials": 9,
+      "d1": 5,
+      "d4": 16,
+      "rz10": 2,
       "rz5": 3,
       "gtg": 4,
       "qb_gl": 0
@@ -23347,7 +23347,7 @@
     "date": "2026-11-29",
     "time": "1:00 PM",
     "awayFirstTD": 27.5,
-    "line": "HOU -6.5, total 46.5",
+    "line": "HOU -7, total 47.5",
     "players": [
      {
       "n": "Derrick Henry",
@@ -23863,7 +23863,7 @@
     "date": "2026-11-29",
     "time": "1:00 PM",
     "awayFirstTD": 48.8,
-    "line": "MIN -7, total 42.5",
+    "line": "MIN -7, total 41.5",
     "players": [
      {
       "n": "Bijan Robinson",
@@ -24035,7 +24035,7 @@
     "date": "2026-11-29",
     "time": "1:00 PM",
     "awayFirstTD": 21.7,
-    "line": "JAX -14.5, total 47.5",
+    "line": "JAX -14.5, total 48.5",
     "players": [
      {
       "n": "Tony Pollard",
@@ -24379,7 +24379,7 @@
     "date": "2026-11-29",
     "time": "4:25 PM",
     "awayFirstTD": 40.4,
-    "line": "WAS -7.5, total 40.5",
+    "line": "WAS -7, total 41.5",
     "players": [
      {
       "n": "Jacory Croskey-Merritt",
@@ -24551,7 +24551,7 @@
     "date": "2026-11-29",
     "time": "4:25 PM",
     "awayFirstTD": 18.0,
-    "line": "SF -3, total 46.5",
+    "line": "SF -3.5, total 45.5",
     "players": [
      {
       "n": "Jaxon Smith-Njigba",
@@ -24723,7 +24723,7 @@
     "date": "2026-11-29",
     "time": "8:20 PM",
     "awayFirstTD": 56.1,
-    "line": "CLE -4.5, total 41.5",
+    "line": "CLE -4.5, total 40.5",
     "players": [
      {
       "n": "Ashton Jeanty",
@@ -27547,7 +27547,7 @@
   "anytime": {
    "week": 12,
    "season": 2026,
-   "as_of": "2026-11-24",
+   "as_of": "2026-11-25",
    "note": "Week 12 Anytime TD -- P = 1-exp(-lam), lam = team expected offensive TDs x player share of team TDs. Team rate shrunk 5 games toward league average (lam_league = 2.475 off TDs/team-game). Same top-5 players and shares as First TD.",
    "games": [
     {
@@ -27992,16 +27992,16 @@
        "p": 0.1623
       },
       {
-       "n": "Mike Gesicki",
+       "n": "Ja'Marr Chase",
        "s": "home",
-       "pos": "TE",
+       "pos": "WR",
        "sh": 15.5,
        "p": 0.3871
       },
       {
-       "n": "Ja'Marr Chase",
+       "n": "Mike Gesicki",
        "s": "home",
-       "pos": "WR",
+       "pos": "TE",
        "sh": 15.5,
        "p": 0.3871
       },
