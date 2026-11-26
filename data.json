@@ -19,7 +19,7 @@
   ],
   "_src": "NBA.com 2025-26 post-All-Star per game",
   "players": {
-   "Luka Don\u010di\u0107": [
+   "Luka Dončić": [
     "LAL",
     22,
     11.6,
@@ -99,7 +99,7 @@
     5.7,
     5.4
    ],
-   "Nikola Joki\u0107": [
+   "Nikola Jokić": [
     "DEN",
     26,
     9.7,
@@ -667,7 +667,7 @@
     9.5,
     1.8
    ],
-   "Kristaps Porzi\u0146\u0123is": [
+   "Kristaps Porziņģis": [
     "GSW",
     15,
     5.1,
@@ -2075,7 +2075,7 @@
     2.6,
     1.4
    ],
-   "Nikola Vu\u010devi\u0107": [
+   "Nikola Vučević": [
     "BOS",
     13,
     3.5,
@@ -2243,7 +2243,7 @@
     7.7,
     1.3
    ],
-   "Dennis Schr\u00f6der": [
+   "Dennis Schröder": [
     "CLE",
     26,
     2.8,
@@ -2467,7 +2467,7 @@
     5.0,
     1.6
    ],
-   "Karlo Matkovi\u0107": [
+   "Karlo Matković": [
     "NOP",
     19,
     2.8,
@@ -2539,7 +2539,7 @@
     4.4,
     2.8
    ],
-   "Yanic Konan Niederh\u00e4user": [
+   "Yanic Konan Niederhäuser": [
     "LAC",
     7,
     2.3,
@@ -2563,7 +2563,7 @@
     8.0,
     0.8
    ],
-   "Moussa Diabat\u00e9": [
+   "Moussa Diabaté": [
     "CHA",
     23,
     3.0,
@@ -2619,7 +2619,7 @@
     8.5,
     0.7
    ],
-   "Kasparas Jaku\u010dionis": [
+   "Kasparas Jakučionis": [
     "MIA",
     24,
     2.1,
@@ -2627,7 +2627,7 @@
     2.8,
     2.8
    ],
-   "Bogdan Bogdanovi\u0107": [
+   "Bogdan Bogdanović": [
     "LAC",
     6,
     2.3,
@@ -2699,7 +2699,7 @@
     1.6,
     1.1
    ],
-   "Egor D\u00ebmin": [
+   "Egor Dëmin": [
     "BKN",
     6,
     2.3,
@@ -2859,7 +2859,7 @@
     2.1,
     0.9
    ],
-   "V\u00edt Krej\u010d\u00ed": [
+   "Vít Krejčí": [
     "POR",
     13,
     2.1,
@@ -2995,7 +2995,7 @@
     3.1,
     1.2
    ],
-   "Nikola Topi\u0107": [
+   "Nikola Topić": [
     "OKC",
     9,
     2.3,
@@ -3323,7 +3323,7 @@
     2.9,
     0.9
    ],
-   "Tidjane Sala\u00fcn": [
+   "Tidjane Salaün": [
     "CHA",
     5,
     1.4,
@@ -3347,7 +3347,7 @@
     0.8,
     1.3
    ],
-   "Hugo Gonz\u00e1lez": [
+   "Hugo González": [
     "BOS",
     25,
     1.7,
@@ -3427,7 +3427,7 @@
     0.7,
     0.9
    ],
-   "Pac\u00f4me Dadiet": [
+   "Pacôme Dadiet": [
     "NYK",
     9,
     1.4,
@@ -3899,7 +3899,7 @@
     1.0,
     0.0
    ],
-   "Nikola Jovi\u0107": [
+   "Nikola Jović": [
     "MIA",
     3,
     0.7,
@@ -4075,7 +4075,7 @@
     1.3,
     0.2
    ],
-   "Chris Ma\u00f1on": [
+   "Chris Mañon": [
     "LAL",
     4,
     0.5,
@@ -6429,7 +6429,7 @@
     "Julius Randle": 10,
     "Day'Ron Sharpe": 10,
     "Terance Mann": 6,
-    "Egor D\u00ebmin": 8,
+    "Egor Dëmin": 8,
     "Mikel Brown Jr.": 13
    },
    "BOS": {
@@ -6585,7 +6585,7 @@
     "Herbert Jones": 10,
     "Trey Murphy": 8,
     "Zion Williamson": 11,
-    "Karlo Matkovi\u0107": 9,
+    "Karlo Matković": 9,
     "Saddiq Bey": 14,
     "Yves Missi": 14
    },
@@ -6688,7 +6688,7 @@
  },
  "slate": {
   "date": "2026-11-25",
-  "note": "9 games \u00b7 post-All-Star '25-26 + '26-27 blend, first-basket history, first-shot tendency, Covers lines, tip records",
+  "note": "9 games · post-All-Star '25-26 + '26-27 blend, first-basket history, first-shot tendency, Covers lines, tip records",
   "games": [
    {
     "away": "BKN",
@@ -6760,7 +6760,7 @@
     "awayTip": 29.6,
     "awayRate": 44.3,
     "homeRate": 45.7,
-    "tipNote": "Jalen Smith vs Moussa Diabat\u00e9",
+    "tipNote": "Jalen Smith vs Moussa Diabaté",
     "line": "CHA -3.5, total 221.8",
     "time": "19:00",
     "players": [
@@ -6810,7 +6810,7 @@
       "sh": 33.0
      },
      {
-      "n": "Moussa Diabat\u00e9",
+      "n": "Moussa Diabaté",
       "s": "home",
       "sh": 14.5
      }
@@ -7412,7 +7412,7 @@
     "p_cop": 0.2259
    },
    {
-    "n": "Moussa Diabat\u00e9",
+    "n": "Moussa Diabaté",
     "t": "CHA",
     "pts": 8.3,
     "reb": 9.7,
@@ -10621,7 +10621,7 @@
         0.0692
        ],
        [
-        "Karlo Matkovi\u0107",
+        "Karlo Matković",
         "NOP",
         0.0588
        ],
@@ -11800,12 +11800,12 @@
         0.0661
        ],
        [
-        "Karlo Matkovi\u0107",
+        "Karlo Matković",
         "NOP",
         0.0651
        ],
        [
-        "Egor D\u00ebmin",
+        "Egor Dëmin",
         "BKN",
         0.0563
        ],
@@ -11950,7 +11950,7 @@
         0.1385
        ],
        [
-        "Nikola Joki\u0107",
+        "Nikola Jokić",
         "DEN",
         0.1306
        ],
@@ -12065,7 +12065,7 @@
       "pa": 0.5723,
       "p": [
        [
-        "Luka Don\u010di\u0107",
+        "Luka Dončić",
         "LAL",
         0.214
        ],
@@ -12363,7 +12363,7 @@
     ],
     "dd": [
      {
-      "n": "Nikola Joki\u0107",
+      "n": "Nikola Jokić",
       "t": "DEN",
       "p": 0.925,
       "pts": 25.0,
@@ -12461,7 +12461,7 @@
       }
      },
      {
-      "n": "Luka Don\u010di\u0107",
+      "n": "Luka Dončić",
       "t": "LAL",
       "p": 0.455,
       "pts": 36.5,
@@ -12742,7 +12742,7 @@
         0.0987
        ],
        [
-        "Moussa Diabat\u00e9",
+        "Moussa Diabaté",
         "CHA",
         0.0855
        ],
@@ -13086,7 +13086,7 @@
       }
      },
      {
-      "n": "Moussa Diabat\u00e9",
+      "n": "Moussa Diabaté",
       "t": "CHA",
       "p": 0.1413,
       "pts": 7.8,
@@ -14836,7 +14836,7 @@
         0.0723
        ],
        [
-        "Egor D\u00ebmin",
+        "Egor Dëmin",
         "BKN",
         0.0659
        ],
@@ -14861,7 +14861,7 @@
       "pa": 0.445,
       "p": [
        [
-        "Nikola Joki\u0107",
+        "Nikola Jokić",
         "DEN",
         0.1641
        ],
@@ -14979,7 +14979,7 @@
     ],
     "dd": [
      {
-      "n": "Nikola Joki\u0107",
+      "n": "Nikola Jokić",
       "t": "DEN",
       "p": 0.9137,
       "pts": 25.1,
@@ -15414,7 +15414,7 @@
       }
      },
      {
-      "n": "Nikola Joki\u0107",
+      "n": "Nikola Jokić",
       "t": "DEN",
       "mkt": "pts",
       "line": 23.5,
@@ -15425,7 +15425,7 @@
       }
      },
      {
-      "n": "Nikola Joki\u0107",
+      "n": "Nikola Jokić",
       "t": "DEN",
       "mkt": "fg3",
       "line": 1.5,
@@ -16209,7 +16209,7 @@
       "pa": 0.4705,
       "p": [
        [
-        "Luka Don\u010di\u0107",
+        "Luka Dončić",
         "LAL",
         0.2456
        ],
@@ -16229,7 +16229,7 @@
         0.098
        ],
        [
-        "Moussa Diabat\u00e9",
+        "Moussa Diabaté",
         "CHA",
         0.0827
        ],
@@ -16563,7 +16563,7 @@
       }
      },
      {
-      "n": "Luka Don\u010di\u0107",
+      "n": "Luka Dončić",
       "t": "LAL",
       "p": 0.2769,
       "pts": 36.6,
@@ -16656,7 +16656,7 @@
       }
      },
      {
-      "n": "Moussa Diabat\u00e9",
+      "n": "Moussa Diabaté",
       "t": "CHA",
       "p": 0.0954,
       "pts": 7.9,
@@ -16854,7 +16854,7 @@
     ],
     "props": [
      {
-      "n": "Luka Don\u010di\u0107",
+      "n": "Luka Dončić",
       "t": "LAL",
       "mkt": "pts",
       "line": 39.5,
@@ -16865,7 +16865,7 @@
       }
      },
      {
-      "n": "Luka Don\u010di\u0107",
+      "n": "Luka Dončić",
       "t": "LAL",
       "mkt": "fg3",
       "line": 5.5,
@@ -17775,7 +17775,7 @@
       "pa": 0.4752,
       "p": [
        [
-        "Nikola Joki\u0107",
+        "Nikola Jokić",
         "DEN",
         0.1502
        ],
@@ -17865,7 +17865,7 @@
         0.0785
        ],
        [
-        "Egor D\u00ebmin",
+        "Egor Dëmin",
         "BKN",
         0.0725
        ],
@@ -18315,7 +18315,7 @@
       "pa": 0.4042,
       "p": [
        [
-        "Luka Don\u010di\u0107",
+        "Luka Dončić",
         "LAL",
         0.257
        ],
@@ -18433,7 +18433,7 @@
     ],
     "dd": [
      {
-      "n": "Nikola Joki\u0107",
+      "n": "Nikola Jokić",
       "t": "DEN",
       "p": 0.8637,
       "pts": 25.3,
@@ -18568,7 +18568,7 @@
       }
      },
      {
-      "n": "Luka Don\u010di\u0107",
+      "n": "Luka Dončić",
       "t": "LAL",
       "p": 0.402,
       "pts": 36.6,
@@ -18780,7 +18780,7 @@
     ],
     "props": [
      {
-      "n": "Luka Don\u010di\u0107",
+      "n": "Luka Dončić",
       "t": "LAL",
       "mkt": "pts",
       "line": 36.5,
@@ -18791,7 +18791,7 @@
       }
      },
      {
-      "n": "Luka Don\u010di\u0107",
+      "n": "Luka Dončić",
       "t": "LAL",
       "mkt": "fg3",
       "line": 5.5,
@@ -18928,7 +18928,7 @@
       }
      },
      {
-      "n": "Nikola Joki\u0107",
+      "n": "Nikola Jokić",
       "t": "DEN",
       "mkt": "pts",
       "line": 24.5,
@@ -18939,7 +18939,7 @@
       }
      },
      {
-      "n": "Nikola Joki\u0107",
+      "n": "Nikola Jokić",
       "t": "DEN",
       "mkt": "fg3",
       "line": 1.5,
@@ -21244,7 +21244,7 @@
         0.0485
        ],
        [
-        "Hugo Gonz\u00e1lez",
+        "Hugo González",
         "BOS",
         0.0359
        ]
@@ -21491,7 +21491,7 @@
       "act": null
      },
      {
-      "n": "Hugo Gonz\u00e1lez",
+      "n": "Hugo González",
       "t": "BOS",
       "p": 0.0,
       "p_cop": 0.0003,
@@ -21801,7 +21801,7 @@
       "act": null
      },
      {
-      "n": "Hugo Gonz\u00e1lez",
+      "n": "Hugo González",
       "t": "BOS",
       "mkt": "pts",
       "line": 4.5,
@@ -21809,7 +21809,7 @@
       "act": null
      },
      {
-      "n": "Hugo Gonz\u00e1lez",
+      "n": "Hugo González",
       "t": "BOS",
       "mkt": "fg3",
       "line": 0.5,
@@ -21871,7 +21871,7 @@
         0.0568
        ],
        [
-        "Hugo Gonz\u00e1lez",
+        "Hugo González",
         "BOS",
         0.0303
        ]
@@ -21886,7 +21886,7 @@
       "pa": 0.4168,
       "p": [
        [
-        "Nikola Joki\u0107",
+        "Nikola Jokić",
         "DEN",
         0.1864
        ],
@@ -22001,7 +22001,7 @@
     ],
     "dd": [
      {
-      "n": "Nikola Joki\u0107",
+      "n": "Nikola Jokić",
       "t": "DEN",
       "p": 0.9577,
       "p_cop": 0.9298,
@@ -22253,7 +22253,7 @@
     ],
     "props": [
      {
-      "n": "Nikola Joki\u0107",
+      "n": "Nikola Jokić",
       "t": "DEN",
       "mkt": "pts",
       "line": 26.5,
@@ -22261,7 +22261,7 @@
       "act": null
      },
      {
-      "n": "Nikola Joki\u0107",
+      "n": "Nikola Jokić",
       "t": "DEN",
       "mkt": "fg3",
       "line": 1.5,
@@ -22709,7 +22709,7 @@
       "act": null
      },
      {
-      "n": "Hugo Gonz\u00e1lez",
+      "n": "Hugo González",
       "t": "BOS",
       "mkt": "pts",
       "line": 4.5,
@@ -22717,7 +22717,7 @@
       "act": null
      },
      {
-      "n": "Hugo Gonz\u00e1lez",
+      "n": "Hugo González",
       "t": "BOS",
       "mkt": "fg3",
       "line": 0.5,
@@ -22816,7 +22816,7 @@
         0.094
        ],
        [
-        "Moussa Diabat\u00e9",
+        "Moussa Diabaté",
         "CHA",
         0.0878
        ],
@@ -23375,7 +23375,7 @@
       "act": null
      },
      {
-      "n": "Moussa Diabat\u00e9",
+      "n": "Moussa Diabaté",
       "t": "CHA",
       "p": 0.197,
       "p_cop": 0.2052,
@@ -24135,9 +24135,9 @@
  "nfl": {
   "week": 12,
   "season": 2026,
-  "as_of": "2026-11-25",
+  "as_of": "2026-11-26",
   "poff": 0.9815,
-  "note": "Week 12 First TD \u2014 team first-TD rates from 2026 nflverse PBP (shrinkage r=(c+5)/(n+10)), log5 team prob plus fitted home-field shift (+0.467 logit), player shares 0.5*TD share + 0.5*usage share (usage = 0.5*red-zone share + 0.5*first-4-drive share, shrunk toward red-zone share, K=20 touches), history blend K=20. Lines: ESPN/DraftKings. Poff (first TD offensive) = 0.9815.",
+  "note": "Week 12 First TD — team first-TD rates from 2026 nflverse PBP (shrinkage r=(c+5)/(n+10)), log5 team prob plus fitted home-field shift (+0.467 logit), player shares 0.5*TD share + 0.5*usage share (usage = 0.5*red-zone share + 0.5*first-4-drive share, shrunk toward red-zone share, K=20 touches), history blend K=20. Lines: ESPN/DraftKings. Poff (first TD offensive) = 0.9815.",
   "games": [
    {
     "away": "GB",
@@ -24196,6 +24196,22 @@
       "qb_gl": 0
      },
      {
+      "n": "Josh Jacobs (Q)",
+      "s": "away",
+      "pos": "RB",
+      "sh": 11.0,
+      "td": 3,
+      "g": 3,
+      "c": 0,
+      "trials": 3,
+      "d1": 3,
+      "d4": 18,
+      "rz10": 4,
+      "rz5": 5,
+      "gtg": 8,
+      "qb_gl": 0
+     },
+     {
       "n": "Tucker Kraft",
       "s": "away",
       "pos": "TE",
@@ -24210,22 +24226,6 @@
       "rz5": 3,
       "gtg": 3,
       "qb_gl": 0
-     },
-     {
-      "n": "Jordan Love",
-      "s": "away",
-      "pos": "QB",
-      "sh": 6.9,
-      "td": 2,
-      "g": 10,
-      "c": 1,
-      "trials": 10,
-      "d1": 2,
-      "d4": 5,
-      "rz10": 0,
-      "rz5": 1,
-      "gtg": 1,
-      "qb_gl": 1
      },
      {
       "n": "Kyren Williams",
@@ -24317,7 +24317,7 @@
     "date": "2026-11-26",
     "time": "1:00 PM",
     "awayFirstTD": 48.5,
-    "line": "CHI -2.5, total 55.5",
+    "line": "CHI -1.5, total 55.5",
     "players": [
      {
       "n": "D'Andre Swift",
@@ -24636,16 +24636,16 @@
       "qb_gl": 0
      },
      {
-      "n": "Ryan Flournoy",
+      "n": "Jake Ferguson",
       "s": "home",
-      "pos": "WR",
-      "sh": 4.5,
-      "td": 3,
-      "g": 11,
+      "pos": "TE",
+      "sh": 4.9,
+      "td": 4,
+      "g": 8,
       "c": 0,
-      "trials": 11,
-      "d1": 4,
-      "d4": 18,
+      "trials": 8,
+      "d1": 0,
+      "d4": 7,
       "rz10": 3,
       "rz5": 1,
       "gtg": 2,
@@ -24661,8 +24661,24 @@
     "date": "2026-11-26",
     "time": "8:20 PM",
     "awayFirstTD": 48.5,
-    "line": "BUF -3, total 47.5",
+    "line": "BUF -3, total 46.5",
     "players": [
+     {
+      "n": "Kenneth Walker III",
+      "s": "away",
+      "pos": "RB",
+      "sh": 38.4,
+      "td": 11,
+      "g": 8,
+      "c": 3,
+      "trials": 8,
+      "d1": 26,
+      "d4": 79,
+      "rz10": 10,
+      "rz5": 17,
+      "gtg": 26,
+      "qb_gl": 0
+     },
      {
       "n": "Emmett Johnson",
       "s": "away",
@@ -24726,22 +24742,6 @@
       "rz5": 1,
       "gtg": 3,
       "qb_gl": 1
-     },
-     {
-      "n": "Xavier Worthy",
-      "s": "away",
-      "pos": "WR",
-      "sh": 5.1,
-      "td": 2,
-      "g": 10,
-      "c": 0,
-      "trials": 10,
-      "d1": 6,
-      "d4": 23,
-      "rz10": 2,
-      "rz5": 2,
-      "gtg": 3,
-      "qb_gl": 0
      },
      {
       "n": "Josh Allen",
@@ -24833,7 +24833,7 @@
     "date": "2026-11-27",
     "time": "3:00 PM",
     "awayFirstTD": 38.5,
-    "line": "DEN -3, total 38.5",
+    "line": "DEN -3.5, total 36.5",
     "players": [
      {
       "n": "J.K. Dobbins",
@@ -25005,7 +25005,7 @@
     "date": "2026-11-29",
     "time": "1:00 PM",
     "awayFirstTD": 25.2,
-    "line": "CIN -10, total 50.5",
+    "line": "CIN -10, total 49.5",
     "players": [
      {
       "n": "Alvin Kamara",
@@ -25177,7 +25177,7 @@
     "date": "2026-11-29",
     "time": "1:00 PM",
     "awayFirstTD": 27.5,
-    "line": "HOU -7, total 47.5",
+    "line": "HOU -6.5, total 47.5",
     "players": [
      {
       "n": "Derrick Henry",
@@ -26037,7 +26037,7 @@
     "date": "2026-11-29",
     "time": "4:05 PM",
     "awayFirstTD": 53.8,
-    "line": "LAC -1.5, total 35.5",
+    "line": "NE -1.5, total 35.5",
     "players": [
      {
       "n": "Romeo Doubs",
@@ -26209,7 +26209,7 @@
     "date": "2026-11-29",
     "time": "4:25 PM",
     "awayFirstTD": 40.4,
-    "line": "WAS -7, total 41.5",
+    "line": "WAS -6.5, total 41.5",
     "players": [
      {
       "n": "Jacory Croskey-Merritt",
@@ -26381,7 +26381,7 @@
     "date": "2026-11-29",
     "time": "4:25 PM",
     "awayFirstTD": 18.0,
-    "line": "SF -3.5, total 45.5",
+    "line": "SF -2.5, total 44.5",
     "players": [
      {
       "n": "Jaxon Smith-Njigba",
@@ -26553,7 +26553,7 @@
     "date": "2026-11-29",
     "time": "8:20 PM",
     "awayFirstTD": 56.1,
-    "line": "CLE -4.5, total 40.5",
+    "line": "CLE -4.5, total 39.5",
     "players": [
      {
       "n": "Ashton Jeanty",
@@ -27128,7 +27128,7 @@
          0.0257
         ],
         [
-         "Audric Estim\u00e9",
+         "Audric Estimé",
          "CLE",
          0.0169
         ]
@@ -29377,7 +29377,7 @@
   "anytime": {
    "week": 12,
    "season": 2026,
-   "as_of": "2026-11-25",
+   "as_of": "2026-11-26",
    "note": "Week 12 Anytime TD -- P = 1-exp(-lam), lam = team expected offensive TDs x player share of team TDs. Team rate shrunk 5 games toward league average (lam_league = 2.475 off TDs/team-game). Same top-5 players and shares as First TD.",
    "games": [
     {
@@ -29408,18 +29408,18 @@
        "p": 0.2884
       },
       {
+       "n": "Josh Jacobs (Q)",
+       "s": "away",
+       "pos": "RB",
+       "sh": 11.0,
+       "p": 0.2453
+      },
+      {
        "n": "Tucker Kraft",
        "s": "away",
        "pos": "TE",
        "sh": 11.0,
        "p": 0.2453
-      },
-      {
-       "n": "Jordan Love",
-       "s": "away",
-       "pos": "QB",
-       "sh": 6.9,
-       "p": 0.1618
       },
       {
        "n": "Kyren Williams",
@@ -29610,11 +29610,11 @@
        "p": 0.1456
       },
       {
-       "n": "Ryan Flournoy",
+       "n": "Jake Ferguson",
        "s": "home",
-       "pos": "WR",
-       "sh": 4.5,
-       "p": 0.1345
+       "pos": "TE",
+       "sh": 4.9,
+       "p": 0.1456
       }
      ],
      "awayRec": "3-7",
@@ -29626,6 +29626,13 @@
      "date": "2026-11-26",
      "time": "8:20 PM",
      "players": [
+      {
+       "n": "Kenneth Walker III",
+       "s": "away",
+       "pos": "RB",
+       "sh": 38.4,
+       "p": 0.687
+      },
       {
        "n": "Emmett Johnson",
        "s": "away",
@@ -29653,13 +29660,6 @@
        "pos": "QB",
        "sh": 5.4,
        "p": 0.1507
-      },
-      {
-       "n": "Xavier Worthy",
-       "s": "away",
-       "pos": "WR",
-       "sh": 5.1,
-       "p": 0.143
       },
       {
        "n": "Josh Allen",
