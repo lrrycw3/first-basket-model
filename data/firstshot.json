@@ -1,10 +1,10 @@
 {
  "games": {
   "ATL": 12,
-  "BOS": 12,
+  "BOS": 13,
   "CHI": 9,
   "MIA": 9,
-  "DAL": 13,
+  "DAL": 14,
   "DEN": 9,
   "GSW": 10,
   "IND": 13,
@@ -13,15 +13,15 @@
   "CLE": 14,
   "MIN": 13,
   "OKC": 13,
-  "WAS": 10,
+  "WAS": 11,
   "CHA": 12,
-  "DET": 9,
+  "DET": 10,
   "NOP": 15,
   "HOU": 10,
   "LAL": 13,
   "LAC": 9,
   "NYK": 10,
-  "ORL": 12,
+  "ORL": 13,
   "TOR": 13,
   "PHI": 13,
   "SAS": 12,
@@ -41,7 +41,7 @@
    "jalen johnson": 1
   },
   "BOS": {
-   "paul george": 4,
+   "paul george": 5,
    "jayson tatum": 3,
    "baylor scheierman": 1,
    "sam hauser": 1,
@@ -65,7 +65,8 @@
    "kyrie irving": 2,
    "cooper flagg": 9,
    "daniel gafford": 1,
-   "caleb martin": 1
+   "caleb martin": 1,
+   "zaccharie risacher": 1
   },
   "DEN": {
    "nikola jokic": 5,
@@ -132,7 +133,7 @@
   "WAS": {
    "anthony davis": 4,
    "alex sarr": 2,
-   "aj dybantsa": 2,
+   "aj dybantsa": 3,
    "trae young": 2
   },
   "CHA": {
@@ -148,7 +149,8 @@
    "cade cunningham": 3,
    "duncan robinson": 2,
    "daniss jenkins": 2,
-   "kevin huerter": 1
+   "kevin huerter": 1,
+   "isaiah joe": 1
   },
   "NOP": {
    "dejounte murray": 2,
@@ -188,7 +190,7 @@
    "jase richardson": 1,
    "franz wagner": 2,
    "desmond bane": 3,
-   "anthony black": 2,
+   "anthony black": 3,
    "alex morales": 1,
    "tristan da silva": 1
   },
@@ -436,6 +438,9 @@
   "2026-11-21:MEM@MIN",
   "2026-11-21:MIL@PHI",
   "2026-11-21:NOP@SAS",
-  "2026-11-21:POR@NYK"
+  "2026-11-21:POR@NYK",
+  "2026-11-24:BOS@WAS",
+  "2026-11-24:DAL@DEN",
+  "2026-11-24:DET@ORL"
  ]
 }

@@ -3,17 +3,17 @@
   "ATL": 10,
   "HOU": 9,
   "GSW": 10,
-  "DEN": 9,
+  "DEN": 10,
   "WAS": 9,
   "CHA": 9,
-  "DET": 9,
+  "DET": 10,
   "NOP": 12,
   "MIN": 11,
   "LAL": 17,
   "LAC": 6,
   "OKC": 11,
-  "DAL": 13,
-  "ORL": 12,
+  "DAL": 14,
+  "ORL": 13,
   "TOR": 13,
   "SAS": 10,
   "CLE": 12,
@@ -44,7 +44,7 @@
    "charles bassey": 1
   },
   "DEN": {
-   "nikola jokic": 9
+   "nikola jokic": 10
   },
   "WAS": {
    "anthony davis": 8,
@@ -57,7 +57,7 @@
   "DET": {
    "paul reed": 4,
    "isaiah stewart": 2,
-   "john collins": 3
+   "john collins": 4
   },
   "NOP": {
    "deandre jordan": 2,
@@ -82,10 +82,10 @@
    "aday mara": 5
   },
   "DAL": {
-   "daniel gafford": 13
+   "daniel gafford": 14
   },
   "ORL": {
-   "wendell carter": 12
+   "wendell carter": 13
   },
   "TOR": {
    "jakob poeltl": 8,
@@ -170,7 +170,7 @@
    "aday mara": 3
   },
   "ORL": {
-   "wendell carter": 6
+   "wendell carter": 7
   },
   "SAS": {
    "victor wembanyama": 9
@@ -195,7 +195,7 @@
    "dayron sharpe": 6
   },
   "DAL": {
-   "daniel gafford": 5
+   "daniel gafford": 6
   },
   "GSW": {
    "draymond green": 2,
@@ -436,6 +436,9 @@
   "2026-11-21:MEM@MIN",
   "2026-11-21:MIL@PHI",
   "2026-11-21:NOP@SAS",
-  "2026-11-21:POR@NYK"
+  "2026-11-21:POR@NYK",
+  "2026-11-24:BOS@WAS",
+  "2026-11-24:DAL@DEN",
+  "2026-11-24:DET@ORL"
  ]
 }
