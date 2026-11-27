@@ -24027,7 +24027,7 @@
     "date": "2026-11-29",
     "time": "1:00 PM",
     "awayFirstTD": 25.2,
-    "line": "CIN -10, total 49.5",
+    "line": "CIN -9.5, total 48.5",
     "players": [
      {
       "n": "Alvin Kamara",
@@ -24078,22 +24078,6 @@
       "qb_gl": 0
      },
      {
-      "n": "Devaughn Vele",
-      "s": "away",
-      "pos": "WR",
-      "sh": 7.3,
-      "td": 3,
-      "g": 10,
-      "c": 0,
-      "trials": 10,
-      "d1": 4,
-      "d4": 22,
-      "rz10": 2,
-      "rz5": 3,
-      "gtg": 4,
-      "qb_gl": 0
-     },
-     {
       "n": "Tyler Shough",
       "s": "away",
       "pos": "QB",
@@ -24108,6 +24092,22 @@
       "rz5": 7,
       "gtg": 6,
       "qb_gl": 7
+     },
+     {
+      "n": "Devaughn Vele",
+      "s": "away",
+      "pos": "WR",
+      "sh": 7.3,
+      "td": 3,
+      "g": 10,
+      "c": 0,
+      "trials": 10,
+      "d1": 4,
+      "d4": 22,
+      "rz10": 2,
+      "rz5": 3,
+      "gtg": 4,
+      "qb_gl": 0
      },
      {
       "n": "Ja'Marr Chase",
@@ -24314,22 +24314,6 @@
       "qb_gl": 0
      },
      {
-      "n": "Woody Marks",
-      "s": "home",
-      "pos": "RB",
-      "sh": 10.8,
-      "td": 2,
-      "g": 9,
-      "c": 0,
-      "trials": 9,
-      "d1": 8,
-      "d4": 47,
-      "rz10": 5,
-      "rz5": 3,
-      "gtg": 7,
-      "qb_gl": 0
-     },
-     {
       "n": "Xavier Hutchinson",
       "s": "home",
       "pos": "WR",
@@ -24343,6 +24327,22 @@
       "rz10": 0,
       "rz5": 3,
       "gtg": 3,
+      "qb_gl": 0
+     },
+     {
+      "n": "Woody Marks",
+      "s": "home",
+      "pos": "RB",
+      "sh": 10.8,
+      "td": 2,
+      "g": 9,
+      "c": 0,
+      "trials": 9,
+      "d1": 8,
+      "d4": 47,
+      "rz10": 5,
+      "rz5": 3,
+      "gtg": 7,
       "qb_gl": 0
      },
      {
@@ -24371,7 +24371,7 @@
     "date": "2026-11-29",
     "time": "1:00 PM",
     "awayFirstTD": 27.8,
-    "line": "NYG -6, total 41.5",
+    "line": "NYG -5.5, total 41.5",
     "players": [
      {
       "n": "Cam Skattebo",
@@ -24543,7 +24543,7 @@
     "date": "2026-11-29",
     "time": "1:00 PM",
     "awayFirstTD": 41.3,
-    "line": "NYJ -4.5, total 39.5",
+    "line": "NYJ -5.5, total 39.5",
     "players": [
      {
       "n": "Breece Hall",
@@ -24887,7 +24887,7 @@
     "date": "2026-11-29",
     "time": "1:00 PM",
     "awayFirstTD": 21.7,
-    "line": "JAX -14.5, total 49.5",
+    "line": "JAX -14, total 48.5",
     "players": [
      {
       "n": "Tony Pollard",
@@ -25059,7 +25059,7 @@
     "date": "2026-11-29",
     "time": "4:05 PM",
     "awayFirstTD": 53.8,
-    "line": "NE -2.5, total 35.5",
+    "line": "NE -3, total 34.5",
     "players": [
      {
       "n": "Romeo Doubs",
@@ -25403,7 +25403,7 @@
     "date": "2026-11-29",
     "time": "4:25 PM",
     "awayFirstTD": 18.0,
-    "line": "SF -3, total 43.5",
+    "line": "SEA -1.5, total 42.5",
     "players": [
      {
       "n": "Jaxon Smith-Njigba",
@@ -25575,7 +25575,7 @@
     "date": "2026-11-29",
     "time": "8:20 PM",
     "awayFirstTD": 56.1,
-    "line": "CLE -4.5, total 40.5",
+    "line": "CLE -4.5, total 39.5",
     "players": [
      {
       "n": "Ashton Jeanty",
@@ -28813,35 +28813,35 @@
        "s": "away",
        "pos": "RB",
        "sh": 13.7,
-       "p": 0.2827
+       "p": 0.2825
       },
       {
        "n": "Lamar Miller",
        "s": "away",
        "pos": "RB",
        "sh": 12.3,
-       "p": 0.2579
+       "p": 0.2578
       },
       {
        "n": "Juwan Johnson",
        "s": "away",
        "pos": "TE",
        "sh": 11.2,
-       "p": 0.2379
-      },
-      {
-       "n": "Devaughn Vele",
-       "s": "away",
-       "pos": "WR",
-       "sh": 7.3,
-       "p": 0.1623
+       "p": 0.2377
       },
       {
        "n": "Tyler Shough",
        "s": "away",
        "pos": "QB",
        "sh": 7.3,
-       "p": 0.1623
+       "p": 0.1621
+      },
+      {
+       "n": "Devaughn Vele",
+       "s": "away",
+       "pos": "WR",
+       "sh": 7.3,
+       "p": 0.1621
       },
       {
        "n": "Ja'Marr Chase",
@@ -28928,35 +28928,35 @@
        "s": "home",
        "pos": "WR",
        "sh": 21.7,
-       "p": 0.4427
+       "p": 0.4422
       },
       {
        "n": "David Montgomery",
        "s": "home",
        "pos": "RB",
        "sh": 15.8,
-       "p": 0.3467
-      },
-      {
-       "n": "Woody Marks",
-       "s": "home",
-       "pos": "RB",
-       "sh": 10.8,
-       "p": 0.2524
+       "p": 0.3463
       },
       {
        "n": "Xavier Hutchinson",
        "s": "home",
        "pos": "WR",
        "sh": 10.8,
-       "p": 0.2524
+       "p": 0.2521
+      },
+      {
+       "n": "Woody Marks",
+       "s": "home",
+       "pos": "RB",
+       "sh": 10.8,
+       "p": 0.2521
       },
       {
        "n": "Foster Moreau",
        "s": "home",
        "pos": "TE",
        "sh": 9.9,
-       "p": 0.2341
+       "p": 0.2338
       }
      ],
      "awayRec": "4-7",
