@@ -23157,7 +23157,7 @@
  "nfl": {
   "week": 12,
   "season": 2026,
-  "as_of": "2026-11-27",
+  "as_of": "2026-11-28",
   "poff": 0.9815,
   "note": "Week 12 First TD — team first-TD rates from 2026 nflverse PBP (shrinkage r=(c+5)/(n+10)), log5 team prob plus fitted home-field shift (+0.467 logit), player shares 0.5*TD share + 0.5*usage share (usage = 0.5*red-zone share + 0.5*first-4-drive share, shrunk toward red-zone share, K=20 touches), history blend K=20. Lines: ESPN/DraftKings. Poff (first TD offensive) = 0.9815.",
   "games": [
@@ -24062,19 +24062,19 @@
       "qb_gl": 0
      },
      {
-      "n": "Juwan Johnson",
+      "n": "Devaughn Vele",
       "s": "away",
-      "pos": "TE",
-      "sh": 11.2,
-      "td": 4,
+      "pos": "WR",
+      "sh": 7.3,
+      "td": 3,
       "g": 10,
-      "c": 1,
+      "c": 0,
       "trials": 10,
-      "d1": 1,
-      "d4": 12,
-      "rz10": 3,
-      "rz5": 2,
-      "gtg": 5,
+      "d1": 4,
+      "d4": 22,
+      "rz10": 2,
+      "rz5": 3,
+      "gtg": 4,
       "qb_gl": 0
      },
      {
@@ -24094,19 +24094,19 @@
       "qb_gl": 7
      },
      {
-      "n": "Devaughn Vele",
+      "n": "Chris Olave",
       "s": "away",
       "pos": "WR",
-      "sh": 7.3,
-      "td": 3,
+      "sh": 6.5,
+      "td": 2,
       "g": 10,
       "c": 0,
       "trials": 10,
-      "d1": 4,
-      "d4": 22,
+      "d1": 8,
+      "d4": 37,
       "rz10": 2,
-      "rz5": 3,
-      "gtg": 4,
+      "rz5": 1,
+      "gtg": 2,
       "qb_gl": 0
      },
      {
@@ -24142,7 +24142,7 @@
       "qb_gl": 0
      },
      {
-      "n": "Tee Higgins",
+      "n": "Tee Higgins (Q)",
       "s": "home",
       "pos": "WR",
       "sh": 12.6,
@@ -24314,22 +24314,6 @@
       "qb_gl": 0
      },
      {
-      "n": "Xavier Hutchinson",
-      "s": "home",
-      "pos": "WR",
-      "sh": 10.8,
-      "td": 3,
-      "g": 10,
-      "c": 1,
-      "trials": 10,
-      "d1": 7,
-      "d4": 25,
-      "rz10": 0,
-      "rz5": 3,
-      "gtg": 3,
-      "qb_gl": 0
-     },
-     {
       "n": "Woody Marks",
       "s": "home",
       "pos": "RB",
@@ -24343,6 +24327,22 @@
       "rz10": 5,
       "rz5": 3,
       "gtg": 7,
+      "qb_gl": 0
+     },
+     {
+      "n": "Xavier Hutchinson",
+      "s": "home",
+      "pos": "WR",
+      "sh": 10.8,
+      "td": 3,
+      "g": 10,
+      "c": 1,
+      "trials": 10,
+      "d1": 7,
+      "d4": 25,
+      "rz10": 0,
+      "rz5": 3,
+      "gtg": 3,
       "qb_gl": 0
      },
      {
@@ -24470,22 +24470,6 @@
       "qb_gl": 0
      },
      {
-      "n": "Seth McGowan",
-      "s": "home",
-      "pos": "RB",
-      "sh": 12.9,
-      "td": 2,
-      "g": 11,
-      "c": 2,
-      "trials": 11,
-      "d1": 3,
-      "d4": 23,
-      "rz10": 2,
-      "rz5": 2,
-      "gtg": 2,
-      "qb_gl": 0
-     },
-     {
       "n": "Tyler Warren",
       "s": "home",
       "pos": "TE",
@@ -24532,6 +24516,22 @@
       "rz5": 2,
       "gtg": 1,
       "qb_gl": 2
+     },
+     {
+      "n": "Laquon Treadwell",
+      "s": "home",
+      "pos": "WR",
+      "sh": 3.1,
+      "td": 1,
+      "g": 11,
+      "c": 0,
+      "trials": 11,
+      "d1": 2,
+      "d4": 13,
+      "rz10": 2,
+      "rz5": 0,
+      "gtg": 2,
+      "qb_gl": 0
      }
     ],
     "awayRec": "6-3-1",
@@ -24610,19 +24610,19 @@
       "qb_gl": 0
      },
      {
-      "n": "Omar Cooper Jr.",
+      "n": "Sterling Shepard",
       "s": "away",
       "pos": "WR",
-      "sh": 5.6,
+      "sh": 5.3,
       "td": 2,
-      "g": 4,
+      "g": 3,
       "c": 0,
-      "trials": 4,
-      "d1": 3,
-      "d4": 9,
-      "rz10": 0,
-      "rz5": 1,
-      "gtg": 1,
+      "trials": 3,
+      "d1": 0,
+      "d4": 2,
+      "rz10": 2,
+      "rz5": 0,
+      "gtg": 0,
       "qb_gl": 0
      },
      {
@@ -24782,19 +24782,19 @@
       "qb_gl": 0
      },
      {
-      "n": "Jahan Dotson",
+      "n": "Drake London",
       "s": "away",
       "pos": "WR",
-      "sh": 5.8,
-      "td": 2,
+      "sh": 4.3,
+      "td": 1,
       "g": 10,
       "c": 0,
       "trials": 10,
-      "d1": 5,
-      "d4": 18,
-      "rz10": 0,
-      "rz5": 1,
-      "gtg": 2,
+      "d1": 4,
+      "d4": 24,
+      "rz10": 1,
+      "rz5": 0,
+      "gtg": 0,
       "qb_gl": 0
      },
      {
@@ -24970,38 +24970,6 @@
       "qb_gl": 0
      },
      {
-      "n": "Bhayshul Tuten",
-      "s": "home",
-      "pos": "RB",
-      "sh": 26.0,
-      "td": 8,
-      "g": 10,
-      "c": 2,
-      "trials": 10,
-      "d1": 21,
-      "d4": 73,
-      "rz10": 6,
-      "rz5": 10,
-      "gtg": 14,
-      "qb_gl": 0
-     },
-     {
-      "n": "Parker Washington",
-      "s": "home",
-      "pos": "WR",
-      "sh": 20.9,
-      "td": 6,
-      "g": 10,
-      "c": 3,
-      "trials": 10,
-      "d1": 9,
-      "d4": 39,
-      "rz10": 5,
-      "rz5": 1,
-      "gtg": 8,
-      "qb_gl": 0
-     },
-     {
       "n": "Brian Thomas Jr.",
       "s": "home",
       "pos": "WR",
@@ -25048,6 +25016,38 @@
       "rz5": 1,
       "gtg": 1,
       "qb_gl": 0
+     },
+     {
+      "n": "Jakobi Meyers",
+      "s": "home",
+      "pos": "WR",
+      "sh": 5.7,
+      "td": 2,
+      "g": 10,
+      "c": 0,
+      "trials": 10,
+      "d1": 5,
+      "d4": 20,
+      "rz10": 5,
+      "rz5": 3,
+      "gtg": 8,
+      "qb_gl": 0
+     },
+     {
+      "n": "Brenton Strange",
+      "s": "home",
+      "pos": "TE",
+      "sh": 4.5,
+      "td": 2,
+      "g": 10,
+      "c": 0,
+      "trials": 10,
+      "d1": 5,
+      "d4": 23,
+      "rz10": 2,
+      "rz5": 1,
+      "gtg": 1,
+      "qb_gl": 0
      }
     ],
     "awayRec": "1-9",
@@ -25059,24 +25059,8 @@
     "date": "2026-11-29",
     "time": "4:05 PM",
     "awayFirstTD": 53.8,
-    "line": "NE -3, total 34.5",
+    "line": "NE -3, total 35.5",
     "players": [
-     {
-      "n": "Romeo Doubs",
-      "s": "away",
-      "pos": "WR",
-      "sh": 14.2,
-      "td": 3,
-      "g": 6,
-      "c": 2,
-      "trials": 6,
-      "d1": 3,
-      "d4": 7,
-      "rz10": 1,
-      "rz5": 1,
-      "gtg": 2,
-      "qb_gl": 0
-     },
      {
       "n": "Rhamondre Stevenson",
       "s": "away",
@@ -25126,20 +25110,36 @@
       "qb_gl": 0
      },
      {
-      "n": "Drake Maye",
+      "n": "Hunter Henry",
       "s": "away",
-      "pos": "QB",
-      "sh": 8.4,
-      "td": 3,
+      "pos": "TE",
+      "sh": 5.0,
+      "td": 2,
       "g": 10,
       "c": 0,
       "trials": 10,
-      "d1": 5,
-      "d4": 19,
-      "rz10": 1,
-      "rz5": 4,
-      "gtg": 4,
-      "qb_gl": 4
+      "d1": 7,
+      "d4": 16,
+      "rz10": 3,
+      "rz5": 0,
+      "gtg": 1,
+      "qb_gl": 0
+     },
+     {
+      "n": "Efton Chism III",
+      "s": "away",
+      "pos": "WR",
+      "sh": 4.7,
+      "td": 2,
+      "g": 9,
+      "c": 0,
+      "trials": 9,
+      "d1": 0,
+      "d4": 8,
+      "rz10": 2,
+      "rz5": 1,
+      "gtg": 3,
+      "qb_gl": 0
      },
      {
       "n": "Omarion Hampton",
@@ -25158,22 +25158,6 @@
       "qb_gl": 0
      },
      {
-      "n": "Justin Herbert",
-      "s": "home",
-      "pos": "QB",
-      "sh": 12.4,
-      "td": 2,
-      "g": 10,
-      "c": 1,
-      "trials": 10,
-      "d1": 4,
-      "d4": 19,
-      "rz10": 6,
-      "rz5": 2,
-      "gtg": 8,
-      "qb_gl": 2
-     },
-     {
       "n": "Ladd McConkey",
       "s": "home",
       "pos": "WR",
@@ -25190,22 +25174,6 @@
       "qb_gl": 0
      },
      {
-      "n": "Keaton Mitchell",
-      "s": "home",
-      "pos": "RB",
-      "sh": 9.0,
-      "td": 1,
-      "g": 10,
-      "c": 1,
-      "trials": 10,
-      "d1": 4,
-      "d4": 28,
-      "rz10": 1,
-      "rz5": 1,
-      "gtg": 2,
-      "qb_gl": 0
-     },
-     {
       "n": "Kimani Vidal",
       "s": "home",
       "pos": "RB",
@@ -25219,6 +25187,38 @@
       "rz10": 2,
       "rz5": 0,
       "gtg": 3,
+      "qb_gl": 0
+     },
+     {
+      "n": "Oronde Gadsden II",
+      "s": "home",
+      "pos": "TE",
+      "sh": 4.1,
+      "td": 1,
+      "g": 9,
+      "c": 0,
+      "trials": 9,
+      "d1": 1,
+      "d4": 9,
+      "rz10": 3,
+      "rz5": 0,
+      "gtg": 2,
+      "qb_gl": 0
+     },
+     {
+      "n": "Quentin Johnston",
+      "s": "home",
+      "pos": "WR",
+      "sh": 3.2,
+      "td": 1,
+      "g": 9,
+      "c": 0,
+      "trials": 9,
+      "d1": 2,
+      "d4": 13,
+      "rz10": 0,
+      "rz5": 0,
+      "gtg": 1,
       "qb_gl": 0
      }
     ],
@@ -25534,7 +25534,7 @@
       "qb_gl": 0
      },
      {
-      "n": "Mike Evans",
+      "n": "Mike Evans (Q)",
       "s": "home",
       "pos": "WR",
       "sh": 12.0,
@@ -25575,7 +25575,7 @@
     "date": "2026-11-29",
     "time": "8:20 PM",
     "awayFirstTD": 56.1,
-    "line": "CLE -4.5, total 39.5",
+    "line": "CLE -4.5, total 38.5",
     "players": [
      {
       "n": "Ashton Jeanty",
@@ -25594,7 +25594,7 @@
       "qb_gl": 0
      },
      {
-      "n": "Brock Bowers",
+      "n": "Brock Bowers (Q)",
       "s": "away",
       "pos": "TE",
       "sh": 14.7,
@@ -25706,7 +25706,7 @@
       "qb_gl": 0
      },
      {
-      "n": "Denzel Boston",
+      "n": "Denzel Boston (Q)",
       "s": "home",
       "pos": "WR",
       "sh": 9.5,
@@ -28399,7 +28399,7 @@
   "anytime": {
    "week": 12,
    "season": 2026,
-   "as_of": "2026-11-27",
+   "as_of": "2026-11-28",
    "note": "Week 12 Anytime TD -- P = 1-exp(-lam), lam = team expected offensive TDs x player share of team TDs. Team rate shrunk 5 games toward league average (lam_league = 2.475 off TDs/team-game). Same top-5 players and shares as First TD.",
    "games": [
     {
@@ -28813,7 +28813,7 @@
        "s": "away",
        "pos": "RB",
        "sh": 13.7,
-       "p": 0.2825
+       "p": 0.2826
       },
       {
        "n": "Lamar Miller",
@@ -28823,42 +28823,42 @@
        "p": 0.2578
       },
       {
-       "n": "Juwan Johnson",
+       "n": "Devaughn Vele",
        "s": "away",
-       "pos": "TE",
-       "sh": 11.2,
-       "p": 0.2377
+       "pos": "WR",
+       "sh": 7.3,
+       "p": 0.1622
       },
       {
        "n": "Tyler Shough",
        "s": "away",
        "pos": "QB",
        "sh": 7.3,
-       "p": 0.1621
+       "p": 0.1622
       },
       {
-       "n": "Devaughn Vele",
+       "n": "Chris Olave",
        "s": "away",
        "pos": "WR",
-       "sh": 7.3,
-       "p": 0.1621
+       "sh": 6.5,
+       "p": 0.1458
       },
       {
        "n": "Ja'Marr Chase",
        "s": "home",
        "pos": "WR",
        "sh": 15.5,
-       "p": 0.3871
+       "p": 0.387
       },
       {
        "n": "Mike Gesicki",
        "s": "home",
        "pos": "TE",
        "sh": 15.5,
-       "p": 0.3871
+       "p": 0.387
       },
       {
-       "n": "Tee Higgins",
+       "n": "Tee Higgins (Q)",
        "s": "home",
        "pos": "WR",
        "sh": 12.6,
@@ -28869,7 +28869,7 @@
        "s": "home",
        "pos": "RB",
        "sh": 12.4,
-       "p": 0.3241
+       "p": 0.324
       },
       {
        "n": "Samaje Perine",
@@ -28928,35 +28928,35 @@
        "s": "home",
        "pos": "WR",
        "sh": 21.7,
-       "p": 0.4422
+       "p": 0.4423
       },
       {
        "n": "David Montgomery",
        "s": "home",
        "pos": "RB",
        "sh": 15.8,
-       "p": 0.3463
-      },
-      {
-       "n": "Xavier Hutchinson",
-       "s": "home",
-       "pos": "WR",
-       "sh": 10.8,
-       "p": 0.2521
+       "p": 0.3464
       },
       {
        "n": "Woody Marks",
        "s": "home",
        "pos": "RB",
        "sh": 10.8,
-       "p": 0.2521
+       "p": 0.2522
+      },
+      {
+       "n": "Xavier Hutchinson",
+       "s": "home",
+       "pos": "WR",
+       "sh": 10.8,
+       "p": 0.2522
       },
       {
        "n": "Foster Moreau",
        "s": "home",
        "pos": "TE",
        "sh": 9.9,
-       "p": 0.2338
+       "p": 0.2339
       }
      ],
      "awayRec": "4-7",
@@ -29008,14 +29008,7 @@
        "s": "home",
        "pos": "RB",
        "sh": 37.8,
-       "p": 0.5235
-      },
-      {
-       "n": "Seth McGowan",
-       "s": "home",
-       "pos": "RB",
-       "sh": 12.9,
-       "p": 0.2235
+       "p": 0.5234
       },
       {
        "n": "Tyler Warren",
@@ -29029,7 +29022,7 @@
        "s": "home",
        "pos": "WR",
        "sh": 4.5,
-       "p": 0.0845
+       "p": 0.0844
       },
       {
        "n": "Daniel Jones",
@@ -29037,6 +29030,13 @@
        "pos": "QB",
        "sh": 3.9,
        "p": 0.0736
+      },
+      {
+       "n": "Laquon Treadwell",
+       "s": "home",
+       "pos": "WR",
+       "sh": 3.1,
+       "p": 0.059
       }
      ],
      "awayRec": "6-3-1",
@@ -29053,35 +29053,35 @@
        "s": "away",
        "pos": "RB",
        "sh": 16.3,
-       "p": 0.2812
+       "p": 0.2809
       },
       {
        "n": "Braelon Allen",
        "s": "away",
        "pos": "RB",
        "sh": 13.6,
-       "p": 0.2408
+       "p": 0.2405
       },
       {
        "n": "Kenyon Sadiq",
        "s": "away",
        "pos": "TE",
        "sh": 12.3,
-       "p": 0.2205
+       "p": 0.2203
       },
       {
        "n": "Garrett Wilson",
        "s": "away",
        "pos": "WR",
        "sh": 12.2,
-       "p": 0.219
+       "p": 0.2187
       },
       {
-       "n": "Omar Cooper Jr.",
+       "n": "Sterling Shepard",
        "s": "away",
        "pos": "WR",
-       "sh": 5.6,
-       "p": 0.1072
+       "sh": 5.3,
+       "p": 0.1017
       },
       {
        "n": "Ollie Gordon II",
@@ -29133,21 +29133,21 @@
        "s": "away",
        "pos": "RB",
        "sh": 27.9,
-       "p": 0.4625
+       "p": 0.4624
       },
       {
        "n": "Kyle Pitts",
        "s": "away",
        "pos": "TE",
        "sh": 13.2,
-       "p": 0.2545
+       "p": 0.2544
       },
       {
        "n": "Bijan Robinson",
        "s": "away",
        "pos": "RB",
        "sh": 8.6,
-       "p": 0.1742
+       "p": 0.1741
       },
       {
        "n": "Charlie Woerner",
@@ -29157,11 +29157,11 @@
        "p": 0.148
       },
       {
-       "n": "Jahan Dotson",
+       "n": "Drake London",
        "s": "away",
        "pos": "WR",
-       "sh": 5.8,
-       "p": 0.1211
+       "sh": 4.3,
+       "p": 0.0912
       },
       {
        "n": "Aaron Jones",
@@ -29244,20 +29244,6 @@
        "p": 0.0879
       },
       {
-       "n": "Bhayshul Tuten",
-       "s": "home",
-       "pos": "RB",
-       "sh": 26.0,
-       "p": 0.5285
-      },
-      {
-       "n": "Parker Washington",
-       "s": "home",
-       "pos": "WR",
-       "sh": 20.9,
-       "p": 0.4536
-      },
-      {
        "n": "Brian Thomas Jr.",
        "s": "home",
        "pos": "WR",
@@ -29277,6 +29263,20 @@
        "pos": "WR",
        "sh": 8.2,
        "p": 0.2111
+      },
+      {
+       "n": "Jakobi Meyers",
+       "s": "home",
+       "pos": "WR",
+       "sh": 5.7,
+       "p": 0.1519
+      },
+      {
+       "n": "Brenton Strange",
+       "s": "home",
+       "pos": "TE",
+       "sh": 4.5,
+       "p": 0.122
       }
      ],
      "awayRec": "1-9",
@@ -29289,13 +29289,6 @@
      "time": "4:05 PM",
      "players": [
       {
-       "n": "Romeo Doubs",
-       "s": "away",
-       "pos": "WR",
-       "sh": 14.2,
-       "p": 0.3046
-      },
-      {
        "n": "Rhamondre Stevenson",
        "s": "away",
        "pos": "RB",
@@ -29307,35 +29300,35 @@
        "s": "away",
        "pos": "WR",
        "sh": 10.2,
-       "p": 0.2297
+       "p": 0.2296
       },
       {
        "n": "Eli Raridon",
        "s": "away",
        "pos": "TE",
        "sh": 8.7,
-       "p": 0.1996
+       "p": 0.1995
       },
       {
-       "n": "Drake Maye",
+       "n": "Hunter Henry",
        "s": "away",
-       "pos": "QB",
-       "sh": 8.4,
-       "p": 0.1934
+       "pos": "TE",
+       "sh": 5.0,
+       "p": 0.12
+      },
+      {
+       "n": "Efton Chism III",
+       "s": "away",
+       "pos": "WR",
+       "sh": 4.7,
+       "p": 0.1133
       },
       {
        "n": "Omarion Hampton",
        "s": "home",
        "pos": "RB",
        "sh": 19.3,
-       "p": 0.3059
-      },
-      {
-       "n": "Justin Herbert",
-       "s": "home",
-       "pos": "QB",
-       "sh": 12.4,
-       "p": 0.2091
+       "p": 0.3058
       },
       {
        "n": "Ladd McConkey",
@@ -29345,18 +29338,25 @@
        "p": 0.1629
       },
       {
-       "n": "Keaton Mitchell",
-       "s": "home",
-       "pos": "RB",
-       "sh": 9.0,
-       "p": 0.1566
-      },
-      {
        "n": "Kimani Vidal",
        "s": "home",
        "pos": "RB",
        "sh": 7.7,
-       "p": 0.1356
+       "p": 0.1355
+      },
+      {
+       "n": "Oronde Gadsden II",
+       "s": "home",
+       "pos": "TE",
+       "sh": 4.1,
+       "p": 0.0746
+      },
+      {
+       "n": "Quentin Johnston",
+       "s": "home",
+       "pos": "WR",
+       "sh": 3.2,
+       "p": 0.0587
       }
      ],
      "awayRec": "5-5",
@@ -29488,14 +29488,14 @@
        "s": "home",
        "pos": "RB",
        "sh": 34.6,
-       "p": 0.6943
+       "p": 0.6942
       },
       {
        "n": "Deebo Samuel Sr.",
        "s": "home",
        "pos": "WR",
        "sh": 17.7,
-       "p": 0.4546
+       "p": 0.4545
       },
       {
        "n": "George Kittle",
@@ -29505,7 +29505,7 @@
        "p": 0.4317
       },
       {
-       "n": "Mike Evans",
+       "n": "Mike Evans (Q)",
        "s": "home",
        "pos": "WR",
        "sh": 12.0,
@@ -29516,7 +29516,7 @@
        "s": "home",
        "pos": "RB",
        "sh": 5.9,
-       "p": 0.183
+       "p": 0.1829
       }
      ],
      "awayRec": "6-4",
@@ -29533,10 +29533,10 @@
        "s": "away",
        "pos": "RB",
        "sh": 20.1,
-       "p": 0.4054
+       "p": 0.4053
       },
       {
-       "n": "Brock Bowers",
+       "n": "Brock Bowers (Q)",
        "s": "away",
        "pos": "TE",
        "sh": 14.7,
@@ -29554,7 +29554,7 @@
        "s": "away",
        "pos": "WR",
        "sh": 7.9,
-       "p": 0.1848
+       "p": 0.1847
       },
       {
        "n": "Mike Washington Jr.",
@@ -29568,7 +29568,7 @@
        "s": "home",
        "pos": "RB",
        "sh": 21.2,
-       "p": 0.3491
+       "p": 0.349
       },
       {
        "n": "Harold Fannin Jr.",
@@ -29585,7 +29585,7 @@
        "p": 0.1899
       },
       {
-       "n": "Denzel Boston",
+       "n": "Denzel Boston (Q)",
        "s": "home",
        "pos": "WR",
        "sh": 9.5,
